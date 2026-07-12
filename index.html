@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timir — Motion Designer</title>
+<meta name="description" content="Timir is a motion designer with a computer science background and 6+ years creating Lottie, Rive and 2D animations that captivate audiences and drive results.">
+<meta property="og:title" content="Timir — Motion Designer">
+<meta property="og:description" content="Lottie, Rive & 2D animation for web, apps and brands. 1,007 reviews, 4.9 rating on Fiverr.">
+<meta property="og:image" content="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23101010'/><text x='50' y='68' font-size='58' text-anchor='middle' fill='%234c6fff' font-family='Arial' font-weight='bold'>T</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505;
+  --panel:#0d0d0d;
+  --card:#141414;
+  --card-2:#181818;
+  --line:#232323;
+  --text:#f2f2f2;
+  --muted:#9a9a9a;
+  --faint:#6b6b6b;
+  --accent:#4c6fff;
+  --radius:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent);color:#fff}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.panel{
+  background:var(--panel);
+  border:1px solid #1b1b1b;
+  border-radius:26px;
+  padding:28px;
+  margin:14px auto;
+  max-width:1120px;
+}
+@media(max-width:640px){.panel{padding:16px;border-radius:20px;margin:10px 8px}}
+.page{display:none}
+.page.active{display:block;animation:rise .5s ease both}
+
+/* ---------- NAV ---------- */
+.navbar{padding:16px 28px}
+nav{display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.5px}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+.nav-links a{position:relative;transition:color .25s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--accent);transition:width .25s}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-links a.active{color:var(--text)}
+.btn-talk{
+  background:var(--card-2);border:1px solid var(--line);color:var(--text);
+  font-size:13px;font-weight:600;padding:10px 20px;border-radius:999px;
+  transition:background .25s,border-color .25s,transform .2s;display:inline-block;cursor:pointer;
+}
+.btn-talk:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-1px)}
+@media(max-width:720px){.nav-links{gap:14px;font-size:12.5px}}
+
+/* ---------- BENTO GRID ---------- */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .3s ease,border-color .3s ease;
+}
+.card:hover{transform:translateY(-3px);border-color:#333}
+.card .arrow{
+  position:absolute;right:18px;bottom:16px;
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--muted);
+  transition:background .25s,color .25s,transform .25s;
+}
+.card:hover .arrow{background:var(--accent);color:#fff;border-color:var(--accent);transform:rotate(-45deg)}
+.kicker{font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600}
+
+.hero{grid-column:span 5;display:flex;gap:20px;align-items:center;min-height:230px}
+.hero .photo{
+  width:150px;height:190px;flex-shrink:0;border-radius:16px;
+  background:linear-gradient(160deg,#4c6fff 0%,#77c9ff 100%);
+  overflow:hidden;
+}
+.hero .photo img{width:100%;height:100%;object-fit:cover}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:34px;line-height:1.1;letter-spacing:-1px;margin:6px 0 10px}
+.hero p{font-size:13px;color:var(--muted);max-width:220px}
+
+.ticker-card{grid-column:span 7;display:flex;align-items:center;padding:0;height:52px;background:var(--card)}
+.ticker{overflow:hidden;white-space:nowrap;width:100%}
+.ticker-inner{display:inline-block;animation:scroll 22s linear infinite;padding-left:100%}
+@keyframes scroll{to{transform:translateX(-100%)}}
+.ticker span{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-right:26px}
+.ticker b{color:var(--accent)}
+@media(prefers-reduced-motion:reduce){.ticker-inner{animation:none;padding-left:0}}
+
+.sig-card{grid-column:span 4;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end}
+.sig{font-family:'Space Grotesk',sans-serif;font-size:34px;font-style:italic;color:#ddd;transform:rotate(-4deg);margin-bottom:18px;margin-left:8px}
+.proj-card{grid-column:span 3;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end}
+.proj-visual{display:flex;gap:6px;margin-bottom:16px}
+.proj-visual i{display:block;width:34px;height:44px;border-radius:8px;background:var(--card-2);border:1px solid var(--line)}
+.proj-visual i:nth-child(2){background:var(--accent);border-color:var(--accent);height:52px}
+.proj-visual i:nth-child(3){height:38px}
+
+.shape-card{grid-column:span 3;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end}
+.shapes{display:flex;align-items:flex-end;gap:8px;margin-bottom:16px;height:56px}
+.shapes .c1{width:44px;height:44px;border-radius:50%;background:conic-gradient(from 90deg,#ff5b4a,#ffb02e,#4c6fff)}
+.shapes .c2{width:30px;height:52px;border-radius:8px;background:var(--accent)}
+.shapes .c3{width:38px;height:38px;border-radius:50%;background:#ffb02e}
+
+.services-card{grid-column:span 6}
+.icons-row{display:flex;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.icon-pill{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--card-2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  transition:transform .25s,border-color .25s;
+}
+.icon-pill:hover{transform:scale(1.12);border-color:var(--accent)}
+
+.follow-card{grid-column:span 3}
+.social-row{display:flex;gap:12px;margin-bottom:22px}
+.social-row a{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--card-2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .25s,transform .25s;
+}
+.social-row a:hover{background:var(--accent);transform:translateY(-3px)}
+.social-row svg{width:20px;height:20px;fill:#cfcfcf}
+.social-row a:hover svg{fill:#fff}
+
+.stats-card{grid-column:span 6;display:flex;gap:10px;align-items:stretch;background:var(--card)}
+.stat{flex:1;background:var(--card-2);border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.stat b{font-family:'Space Grotesk',sans-serif;font-size:30px;letter-spacing:-1px}
+.stat span{font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--faint);margin-top:6px}
+.cta-card{grid-column:span 6;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.cta-card h2{font-family:'Space Grotesk',sans-serif;font-size:36px;letter-spacing:-1px;line-height:1.1}
+.cta-card h2 span{color:var(--accent)}
+.spark{position:absolute;top:18px;left:24px;color:#555;font-size:18px}
+
+@media(max-width:880px){
+  .hero{grid-column:span 12}
+  .ticker-card{grid-column:span 12}
+  .sig-card,.proj-card,.shape-card{grid-column:span 6}
+  .services-card,.follow-card{grid-column:span 6}
+  .stats-card,.cta-card{grid-column:span 12}
+}
+@media(max-width:560px){
+  .sig-card,.proj-card,.shape-card,.services-card,.follow-card{grid-column:span 12}
+  .stats-card{flex-direction:column}
+  .cta-card{flex-direction:column;align-items:flex-start;gap:18px}
+}
+
+/* ---------- SECTION HEADERS ---------- */
+.sec-head{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(26px,4.5vw,40px);
+  letter-spacing:1px;text-align:center;
+  text-transform:uppercase;font-weight:700;
+  margin:8px 0 26px;
+}
+.sec-head .star{color:#666;font-size:.6em;vertical-align:middle;margin:0 14px}
+
+/* ---------- ABOUT ---------- */
+.about-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.about-photo{grid-column:span 4;padding:0;min-height:260px}
+.about-photo img{width:100%;height:100%;object-fit:cover}
+.about-bio{grid-column:span 8;display:flex;flex-direction:column;justify-content:center}
+.about-bio h3{font-family:'Space Grotesk',sans-serif;font-size:24px;margin-bottom:12px}
+.about-bio p{font-size:14px;color:var(--muted);max-width:560px}
+.exp-card{grid-column:span 6}
+.exp-item{padding:14px 0;border-bottom:1px solid var(--line)}
+.exp-item:last-child{border-bottom:none}
+.exp-item .years{font-size:12px;color:var(--faint);margin-bottom:2px}
+.exp-item .role{font-size:15px;font-weight:600}
+.exp-item .org{font-size:12.5px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-size:12px;color:#ccc;background:var(--card-2);border:1px solid var(--line);padding:7px 14px;border-radius:999px;transition:border-color .25s,color .25s}
+.chip:hover{border-color:var(--accent);color:#fff}
+@media(max-width:880px){.about-photo{grid-column:span 12;max-height:340px}.about-bio{grid-column:span 12}.exp-card{grid-column:span 12}}
+
+/* ---------- WORKS ---------- */
+.works-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.work{grid-column:span 6;padding:0;display:flex;flex-direction:column}
+.work .thumb{height:230px;overflow:hidden;background:var(--card-2)}
+.work .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.work:hover .thumb img{transform:scale(1.05)}
+.work .info{padding:20px 24px 24px}
+.work .info .kicker{margin-bottom:6px}
+.work .info h3{font-family:'Space Grotesk',sans-serif;font-size:19px;margin-bottom:6px}
+.work .info p{font-size:13px;color:var(--muted)}
+.work .meta{display:flex;gap:14px;margin-top:12px;font-size:12px;color:var(--faint)}
+.work .meta b{color:#ffb02e}
+@media(max-width:720px){.work{grid-column:span 12}}
+
+/* ---------- TESTIMONIALS ---------- */
+.quotes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quote{font-size:13.5px;color:#c9c9c9}
+.quote p{margin-bottom:16px}
+.quote .who{font-size:12px;color:var(--faint)}
+.quote .who b{color:#fff;font-weight:600}
+.quote .stars{color:#ffb02e;letter-spacing:2px;margin-bottom:10px;font-size:12px}
+@media(max-width:720px){.quotes{grid-template-columns:1fr}}
+
+/* ---------- ALL PROJECTS ---------- */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pcard{padding:14px;display:flex;flex-direction:column;cursor:pointer}
+.pcard .pthumb{height:170px;border-radius:12px;overflow:hidden;background:var(--card-2);margin-bottom:14px;position:relative}
+.pcard .pthumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.pcard:hover .pthumb img{transform:scale(1.06)}
+.pcard .pcount{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.65);border:1px solid #333;color:#ddd;font-size:10.5px;padding:3px 9px;border-radius:999px}
+.pcard .pkicker{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--faint)}
+.pcard .pname{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-top:2px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pcard .pname i{font-style:normal;width:26px;height:26px;flex-shrink:0;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);transition:background .25s,color .25s,transform .25s}
+.pcard:hover .pname i{background:var(--accent);color:#fff;border-color:var(--accent);transform:rotate(-45deg)}
+.pcard .pdesc{font-size:12px;color:var(--muted);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@media(max-width:880px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.pgrid{grid-template-columns:1fr}}
+
+/* ---------- CONTACT ---------- */
+.contact-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.contact-info{grid-column:span 5}
+.ci-row{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.ci-row:last-of-type{border-bottom:none}
+.ci-icon{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:var(--card-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:16px}
+.ci-row .lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--faint)}
+.ci-row .val{font-size:14px;margin-top:2px}
+.ci-row .val a:hover{color:var(--accent)}
+.contact-form{grid-column:span 7}
+.contact-form h2{font-family:'Space Grotesk',sans-serif;font-size:30px;margin-bottom:18px}
+.contact-form h2 span{color:var(--accent)}
+.contact-form input,.contact-form textarea{
+  width:100%;background:var(--card-2);border:1px solid var(--line);
+  border-radius:12px;padding:13px 16px;margin-bottom:12px;
+  color:var(--text);font-family:inherit;font-size:14px;outline:none;
+  transition:border-color .25s;
+}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--accent)}
+.contact-form textarea{min-height:120px;resize:vertical}
+.send-btn{
+  width:100%;background:var(--accent);color:#fff;border:none;
+  padding:14px;border-radius:12px;font-size:14px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:filter .25s,transform .2s;
+}
+.send-btn:hover{filter:brightness(1.15);transform:translateY(-1px)}
+@media(max-width:880px){.contact-info,.contact-form{grid-column:span 12}}
+
+/* ---------- FOOTER ---------- */
+footer{text-align:center;padding:30px 20px 40px;color:var(--faint);font-size:12.5px}
+footer .flinks{display:flex;justify-content:center;gap:26px;margin:14px 0 18px;font-size:13px;color:var(--muted)}
+footer .flinks a:hover{color:#fff}
+footer .logo{font-size:20px;margin-bottom:4px}
+
+/* ---------- CATEGORY SECTION HEADERS ---------- */
+.ghead{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;
+  margin:34px 2px 16px;
+}
+.ghead:first-child{margin-top:6px}
+.ghead .gicon{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:var(--card-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent)}
+.ghead .gline{flex:1;height:1px;background:var(--line)}
+
+/* ---------- PROJECT VIEW (Dribbble-style) ---------- */
+.lb{position:fixed;inset:0;background:#0a0a0a;display:none;z-index:100;overflow-y:auto;overscroll-behavior:contain}
+.lb.open{display:block}
+.lb-close{position:fixed;top:22px;right:26px;width:40px;height:40px;border-radius:50%;background:rgba(20,20,20,.85);border:1px solid #3a3a3a;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:101}
+.lb-close:hover{background:var(--accent);border-color:var(--accent)}
+.shot-wrap{max-width:880px;margin:0 auto;padding:54px 22px 70px}
+.shot-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,4vw,34px);letter-spacing:-.5px;margin-bottom:20px;padding-right:50px}
+.shot-author{display:flex;align-items:center;gap:12px;margin-bottom:30px}
+.shot-author>img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.sa-name{font-weight:600;font-size:14.5px}
+.sa-sub{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.sa-sub .dot{width:8px;height:8px;border-radius:50%;background:#3ddc84;display:inline-block}
+.sa-cta{margin-left:auto}
+.shot-media{width:100%;border-radius:16px;background:#000;margin-bottom:26px;display:block}
+.shot-desc{font-size:15px;color:#c9c9c9;line-height:1.7;max-width:720px;margin:4px 0 30px}
+.shot-tags{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 40px}
+.shot-footer{display:flex;align-items:center;gap:18px;margin:10px 0 26px}
+.shot-footer img{width:56px;height:56px;border-radius:50%;object-fit:cover}
+.shot-footer .sf-line{flex:1;height:1px;background:var(--line)}
+.shot-hire{text-align:center;padding-bottom:10px}
+.shot-hire h3{font-family:'Space Grotesk',sans-serif;font-size:22px;margin-bottom:6px}
+.shot-hire p{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+
+.rise{animation:rise .8s ease both}
+@keyframes rise{from{transform:translateY(18px)}to{transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.rise,.page.active{animation:none}}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV (all pages) ================= -->
+<div class="panel navbar">
+  <nav>
+    <a class="logo" href="#home">Timir<span>.</span></a>
+    <div class="nav-links" id="navlinks">
+      <a href="#home" data-page="home">Home</a>
+      <a href="#about" data-page="about">About</a>
+      <a href="#projects" data-page="projects">Projects</a>
+      <a href="#contact" data-page="contact">Contact</a>
+    </div>
+    <a class="btn-talk" href="#contact">Let's talk</a>
+  </nav>
+</div>
+
+<!-- ================= HOME ================= -->
+<section class="panel page" id="home">
+  <div class="grid">
+    <div class="card hero">
+      <div class="photo">
+        <img src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg" alt="Timir — motion designer">
+      </div>
+      <div>
+        <div class="kicker">Motion Designer</div>
+        <h1>Timir.</h1>
+        <p>I craft animations that captivate audiences and drive results.</p>
+      </div>
+      <a class="arrow" href="#about" aria-label="About">&#8599;</a>
+    </div>
+
+    <div class="card ticker-card">
+      <div class="ticker"><div class="ticker-inner">
+        <span>Latest work: <b>Lottie web animation</b></span><span>&#10022;</span>
+        <span>Latest work: <b>Rive app animation</b></span><span>&#10022;</span>
+        <span>Latest work: <b>2D explainer video</b></span><span>&#10022;</span>
+        <span>Latest work: <b>Motion graphics</b></span><span>&#10022;</span>
+        <span>Latest work: <b>Lottie web animation</b></span><span>&#10022;</span>
+        <span>Latest work: <b>Rive app animation</b></span><span>&#10022;</span>
+      </div></div>
+    </div>
+
+    <a class="card sig-card" href="#about">
+      <div class="sig">Timir</div>
+      <div class="kicker">Professional</div>
+      <div class="card-title">Credentials</div>
+      <span class="arrow">&#8599;</span>
+    </a>
+
+    <a class="card proj-card" href="#projects">
+      <div class="proj-visual"><i></i><i></i><i></i></div>
+      <div class="kicker">My portfolio</div>
+      <div class="card-title">Projects</div>
+      <span class="arrow">&#8599;</span>
+    </a>
+
+    <a class="card shape-card" href="#projects">
+      <div class="shapes"><span class="c1"></span><span class="c2"></span><span class="c3"></span></div>
+      <div class="kicker">Lottie &amp; Rive</div>
+      <div class="card-title">Animation</div>
+      <span class="arrow">&#8599;</span>
+    </a>
+
+    <a class="card services-card" href="#projects">
+      <div class="icons-row">
+        <div class="icon-pill" title="Lottie & GIF animation">&#9673;</div>
+        <div class="icon-pill" title="Rive animation">&#10070;</div>
+        <div class="icon-pill" title="Explainer videos">&#9654;</div>
+        <div class="icon-pill" title="Video editing">&#9986;</div>
+      </div>
+      <div class="kicker">What I do</div>
+      <div class="card-title">Services Offering</div>
+      <span class="arrow">&#8599;</span>
+    </a>
+
+    <div class="card follow-card">
+      <div class="social-row">
+        <a href="https://www.fiverr.com/timir69" target="_blank" rel="noopener" aria-label="Fiverr" title="Fiverr">
+          <svg viewBox="0 0 24 24"><path d="M16.25 16.25v-10h-10v-.625c0-1.034.841-1.875 1.875-1.875H10V0H8.125A5.632 5.632 0 0 0 2.5 5.625v.625H0V10h2.5v6.25H0V20h8.75v-3.75h-2.5V10h6.285v6.25H10V20h8.75v-3.75h-2.5z"/><circle cx="14.375" cy="1.875" r="1.875"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/timir69/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+        </a>
+        <a href="mailto:timir690@gmail.com" aria-label="Email" title="Email">
+          <svg viewBox="0 0 24 24"><path d="M12 12.713L.015 3h23.97L12 12.713zM12 15.287L0 5.562V21h24V5.562l-12 9.725z"/></svg>
+        </a>
+      </div>
+      <div class="kicker">Follow me</div>
+      <div class="card-title">Profiles</div>
+    </div>
+
+    <div class="card stats-card">
+      <div class="stat"><b>6+</b><span>Years experience</span></div>
+      <div class="stat"><b>1,007</b><span>Client reviews</span></div>
+      <div class="stat"><b>4.9&#9733;</b><span>Average rating</span></div>
+    </div>
+
+    <a class="card cta-card" href="#contact">
+      <span class="spark">&#10022;</span>
+      <h2>Let's<br>work <span>together.</span></h2>
+      <span class="arrow">&#8599;</span>
+    </a>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="panel page" id="about">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Self-Summary<span class="star">&#10022;</span></h2>
+  <div class="about-grid">
+    <div class="card about-photo">
+      <img src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg" alt="Timir">
+    </div>
+    <div class="card about-bio">
+      <h3>Timir</h3>
+      <p>I'm Timir, a motion designer with a computer science background and 6+ years creating animations that captivate audiences and drive results. I specialize in 2D animation, motion graphics, explainer videos, Rive animations, and video editing. I blend technical expertise with creative storytelling to bring your vision to life, with meticulous attention, clear communication, and polished deliverables.</p>
+    </div>
+
+    <div class="card exp-card">
+      <div class="kicker" style="margin-bottom:10px">Experience</div>
+      <div class="exp-item">
+        <div class="years">2023 - Present</div>
+        <div class="role">Freelance Motion Designer</div>
+        <div class="org">Fiverr - Level 2 Seller, 1,007 reviews, 4.9 rating</div>
+      </div>
+      <div class="exp-item">
+        <div class="years">2016 - 2023</div>
+        <div class="role">Creative Designer</div>
+        <div class="org">G Technologies - motion graphics, explainer videos, UI/UX prototypes</div>
+      </div>
+      <div class="exp-item">
+        <div class="years">2014 - 2017</div>
+        <div class="role">Executive (Design)</div>
+        <div class="org">Daffodil Japan IT - branding, image enhancement, clipping path</div>
+      </div>
+    </div>
+
+    <div class="card exp-card">
+      <div class="kicker" style="margin-bottom:10px">Skills &amp; Tools</div>
+      <div class="chips">
+        <span class="chip">Lottie</span>
+        <span class="chip">Rive</span>
+        <span class="chip">2D Animation</span>
+        <span class="chip">Motion Graphics</span>
+        <span class="chip">Explainer Videos</span>
+        <span class="chip">After Effects</span>
+        <span class="chip">Blender</span>
+        <span class="chip">Adobe Photoshop</span>
+        <span class="chip">Adobe Illustrator</span>
+        <span class="chip">Video Editing</span>
+        <span class="chip">Photo Editing</span>
+      </div>
+      <div class="kicker" style="margin:22px 0 6px">Background</div>
+      <p style="font-size:13px;color:var(--muted)">Computer science foundation - I speak both designer and developer, so animations ship web-ready and integration-friendly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section class="panel page" id="projects">
+  <h2 class="sec-head"><span class="star">&#10022;</span>All Projects<span class="star">&#10022;</span></h2>
+  <div id="pgroups"></div>
+  <p style="text-align:center;margin-top:22px"><a class="btn-talk" href="https://www.fiverr.com/users/timir69/portfolio" target="_blank" rel="noopener">View portfolio on Fiverr &#8599;</a></p>
+
+  <div style="height:14px"></div>
+  <div class="card">
+    <div class="kicker" style="margin-bottom:16px">What clients say</div>
+    <div class="quotes">
+      <div class="quote">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>"Timir did a great job of understanding a very detailed animation and managed all the moving parts effectively. He took direction well and was willing to adjust the plan. The delivery is exactly as I had envisioned."</p>
+        <div class="who"><b>reecenanfito</b> - United States</div>
+      </div>
+      <div class="quote">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>"Getting the animation to work correctly with iOS and Lottie had proven difficult with other animators, but he was able to make it work and deliver what was needed. Highly recommended."</p>
+        <div class="who"><b>redmangostudio</b> - Canada</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="panel page" id="contact">
+  <div class="contact-grid">
+    <div class="card contact-info">
+      <div class="kicker" style="margin-bottom:8px">Contact info</div>
+      <div class="ci-row">
+        <div class="ci-icon">&#9993;</div>
+        <div><div class="lbl">Email us</div><div class="val"><a href="mailto:timir690@gmail.com">timir690@gmail.com</a></div></div>
+      </div>
+      <div class="ci-row">
+        <div class="ci-icon">&#9673;</div>
+        <div><div class="lbl">Hire on Fiverr</div><div class="val"><a href="https://www.fiverr.com/timir69" target="_blank" rel="noopener">fiverr.com/timir69</a></div></div>
+      </div>
+      <div class="ci-row">
+        <div class="ci-icon">&#9906;</div>
+        <div><div class="lbl">LinkedIn</div><div class="val"><a href="https://www.linkedin.com/in/timir69/" target="_blank" rel="noopener">linkedin.com/in/timir69</a></div></div>
+      </div>
+      <div class="ci-row">
+        <div class="ci-icon">&#9201;</div>
+        <div><div class="lbl">Response time</div><div class="val">Usually within 1 hour</div></div>
+      </div>
+    </div>
+
+    <div class="card contact-form">
+      <h2>Let's work <span>together.</span></h2>
+      <form action="https://formsubmit.co/timir690@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="New message from portfolio site">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="name" placeholder="Name *" required>
+        <input type="email" name="email" placeholder="Email *" required>
+        <input type="text" name="subject" placeholder="Your Subject *" required>
+        <textarea name="message" placeholder="Your Message *" required></textarea>
+        <button class="send-btn" type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER (all pages) ================= -->
+<footer>
+  <div class="logo">Timir<span style="color:var(--accent)">.</span></div>
+  <div class="flinks">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div>&copy; 2026 Timir. All rights reserved.</div>
+</footer>
+
+<!-- project view (Dribbble-style) -->
+<div class="lb" id="lb" role="dialog" aria-modal="true">
+  <button class="lb-close" onclick="closeLB()" aria-label="Close">&#10005;</button>
+  <div id="lb-content"></div>
+</div>
+
+<script>
+/* ---------- data: pulled from Timir's Fiverr portfolio ---------- */
+var CDN="https://fiverr-res.cloudinary.com";
+var PROJECTS=[
+ {k:"Lottie Animation",t:"Character Design & Animation",d:"Designed and animated a custom Lottie character - clean vector assets optimized for web and mobile apps. Character illustration, rigging, and multiple smooth animations while keeping the file lightweight and performance-friendly.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890916873/3D_Camera_Square_Animation_HD_6.gif","V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/050a03f416e229270a08d400255902bc-1783885659869/3D_Camera_Square_Animation_HD_6","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890928152/character%20animation%20in%20after%20effect%20preview_1.gif","V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890940452/character%20animation%20in%20after%20effect%20preview_1","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890962314/flyaway_rig.gif"]},
+ {k:"Rive Animation",t:"Rive Character Design & Animation",d:"Custom character for a mobile application using Rive - clean vector assets, rigging, and an interactive state machine with multiple animation states and smooth transitions, optimized for real-time performance.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890456236/Rive%20app%20animation.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890870631/SH-03_1.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889560566/Celebration_Victory.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889565987/Koala_Tired.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889584583/Koala_crying.gif","F|assets/rive-gig-01"]},
+ {k:"Product Animation",t:"Product Selection",d:"A set of product UI animations created for client applications - order flows, ticketing and dashboard micro-interactions.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/028d66b7673c68e7b0099f30e31c9a25-1644676084057/Kudo_1_.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199011427/ticket_sell.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048706/Comp_25.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048719/edite_slack_5.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048714/ticket_sell_1.gif"]},
+ {k:"App Animation",t:"App Explanation",d:"Lottie character animation for a sports and fitness app splash screen - each character designed, then animated.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495382163/Comp_54.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495143022/football_3.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495365225/busket_ball.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495354754/tennis.gif"]},
+ {k:"Web Animation",t:"Jamin K. Website Hero Animation",d:"Lottie animation for a website hero section, designed to capture attention with smooth, lightweight motion.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/1b0b50fdf3cd92618e081b2f4cdf4fd8-1742492409096/lil%20bit%20faster"]},
+ {k:"Splash Screen",t:"Geological Hazard Splash Screen",d:"Splash screen animation for a prototype MVP platform focused on geological hazards impacting critical infrastructure such as roads, pipelines and power lines.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/6fe2640061aa67f7e3e0918d6490ec3d-1740123198377/original-b00c3683fca9990752dd3ae2ac10548f"]},
+ {k:"UX Animation",t:"UX Animation for Web & App",d:"Animations aligned with the product's design language, built in collaboration with UX/UI designers - helping users understand the process easily.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/0d324c6ce5fa8d3bc4866493cf847564-1701725335433/Invoice_1.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/0d324c6ce5fa8d3bc4866493cf847564-1701725335434/Pricing_3.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3af0f79567db87c4044856135cc5abe3-1701725551572/application_3.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/2d1aa5237cab8aef699100607d3e19c0-1701118727320/Comp_7.gif"]},
+ {k:"Dashboard UI",t:"Kanban Dashboard Project",d:"Dashboard and kanban UI animation set - data, cards and workflow states in motion.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/b854db68000ab11a03de6d7056dc2c90-1644692757941/summi-t-final.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/b9c78ac85c002a2a3c31f185967ee4f2-1644768977485/67168-dashbarod.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c83448bb6b6188d08f681294647dcef6-1644906371822/01st.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/bbc52be3be4fb3f3bbcd1c08adb25cf5-1644906293415/chiroUP.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/8148447c56b531579b2fb4e704731a27-1644693145546/Untitled-3.gif"]},
+ {k:"UI Animation",t:"Fiscoclic",d:"UI animation set created for the Fiscoclic platform.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644691170880/04.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644691131803/01.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644692055395/firmaderecibos.gif"]},
+ {k:"3D Animation",t:"3D Product Modeling",d:"A 3D product shot blending Blender and After Effects - modeling, lighting, animation and compositing.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/f6868fe979ff99aa83ab8f0ea6e9c2f3-1739155145121/final_2","V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/4d446cf7040fc1ba281965885dffafdd-1739155143344/insta%20version%202"]},
+ {k:"Lottie Animation",t:"Random Lottie Animation",d:"Lottie animation set plus video editing with color correction and footage enhancement.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3a90892cd21ef8628f6d162c2d36d371-1645515887355/01_05.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3a90892cd21ef8628f6d162c2d36d371-1645515692779/6.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3a90892cd21ef8628f6d162c2d36d371-1645515800793/image_processing20201206-30959-bb3ajj.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3a90892cd21ef8628f6d162c2d36d371-1645515822606/image_processing20201201-28752-23p0ff.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3a90892cd21ef8628f6d162c2d36d371-1645516016177/2.gif"]},
+ {k:"2D Animation",t:"Short Lottie Animations",d:"Short 2D animations for explainer videos, social media, education and advertising.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/50d6d13b8f584cf9472b0240508608a4-1644769140060/66887-walking-with-dog.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/2c00cafe92f3d8eed9b79d55f26ba9c0-1644688337226/Comp_20.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/6969c70d69d2fed9e03bc1d7ded9131c-1644769008919/67182-logo-intro-animation.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/6969c70d69d2fed9e03bc1d7ded9131c-1644769020321/img.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/6969c70d69d2fed9e03bc1d7ded9131c-1644769008916/67180-skilr.gif"]},
+ {k:"Splash Screen",t:"Onboarding Splash Screens",d:"User-experience splash screen animations - guided steps showing users the real product.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/04222298e701b02ddd3b2641c7304677-1670014272294/image_processing20221130-13014-1nkzrtj.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/db20d80ca45963dfb27d25f9c1b36bc0-1646805906700/Scene_01_final.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/db20d80ca45963dfb27d25f9c1b36bc0-1646805971347/Scene_3_final.gif"]},
+ {k:"Explainer Video",t:"Explainer Video",d:"Custom illustrations tailored to the project's needs, turned into a clear 2D explainer.",m:["I|/video/upload/f_auto,q_auto,t_portfolio_project_large/mq3azzrs6v2ofhqaro9g.png"]},
+ {k:"Logo Animation",t:"Logo & Character Animation",d:"Logo animation in Lottie for Atlas agency, plus a supporting character animation set.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200522794/image_processing20201206-30959-bb3ajj.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/82fcd00311ac5d8377927544ebfb7bfc-1663674392518/final_1.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200522791/image_processing20201118-25153-ufj39f.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200631602/running_02.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200631597/cow_with_fire_1.gif"]},
+ {k:"Concept Animation",t:"AI Select App for Users",d:"From raw sketch to finished motion - clearly communicating the product's core concept to users.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/012e47eaebc2afe5e79775f47cc22a3a-1772497217719/All%20six_4"]},
+ {k:"Character Animation",t:"Emoji Interaction",d:"Original emoji character designs with expressive interaction animations.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/69b03e499e47caa205cbec0dfb4dc8f1-1664202405286/emoji.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3b472e0bc5628f91f1b47af990465604-1664202973889/Final%20Gif%20FyreCow.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/69b03e499e47caa205cbec0dfb4dc8f1-1664202633231/Mortar_and_Pestle__3.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3b472e0bc5628f91f1b47af990465604-1664202996462/65591-flower-blooming_1_.gif"]},
+ {k:"Character Animation",t:"Character Animation",d:"Lottie character animation used on web and app - a character jump plus supporting motion graphics.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/ad46e98c59e13cbe701d79fa1d374037-1649016105327/exemple_of_character_6%20(1).gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/934f103c519f85a1efe3f02b0321147b-1664203819706/Jocko_the_Jackal_Logo_Final_7.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/934f103c519f85a1efe3f02b0321147b-1664203819691/image_processing20201201-28752-23p0ff.gif"]},
+ {k:"UI Interaction",t:"PDF Download UI Interaction",d:"A micro-interaction showing how easily users can download a PDF.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/46b1879adc15a7f400d02bfd8c50d96e-1664377341277/UI_2.gif"]},
+ {k:"UI Interaction",t:"Website UI Interaction",d:"Website interactions that guide visitors to exactly what they need.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664200043377/final_all_1.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664200081146/traget_list.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664199976166/main_rchiaring_2%20(1).gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664200081150/traget_list_7.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664200025305/6mb-file.gif"]},
+ {k:"Video Editing",t:"Instagram Reel",d:"An Instagram reel cut from multiple clips and images into one polished output.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/de501be0c568d985bd2a2002afffdcae-1755215232856/transion%20rgb"]},
+ {k:"UI Interaction",t:"UI Interaction Webpages",d:"Visual task iterations that help users understand the product.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441402/corcodile.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441405/Onboarding_Performance_1.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441397/Work_that_is_complex_1%20(2).gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441391/Work_that_is_complex_3%20(1).gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441395/Component_255_Image_Guide_One%20(1).gif"]},
+ {k:"Logo Animation",t:"Aurenity Logo Motion",d:"Dynamic logo motion conveying the brand's identity by animating its core elements and values into a cohesive animation.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/5f172afadfb59c71ccd5e1ba7b879896-1721853370805/Comp_37.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/5f172afadfb59c71ccd5e1ba7b879896-1721853744237/Comp_39.gif"]},
+ {k:"Video Editing",t:"Headshot Video Editing",d:"Raw footage to polished final - color correction, smooth transitions, text animation and sound design, delivered on time.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/54b98b565fd4bcc8872a33018dcea5b2-1783879029385/AA_Final"]},
+ {k:"Lottie & Web Animation",t:"Spoon Micro-Animation",d:"\"Timir did an OUTSTANDING job on the Lottie & Web Animation project! His attention to detail and visual appeal were exceptional, truly exceeding my expectations.\" - Fiverr client",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/8e1166ae6ae7a423236ff08517c63f9a-1727457907/Only%20spoon%20move"]},
+ {k:"Lottie & Web Animation",t:"Splash Screen Animation",d:"Client splash screen animation delivered through Fiverr.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/9fc666d402eb6e85983bdf59b9cab6bc-1726325863/final%20splash%20screen%202_3"]},
+ {k:"Lottie & Web Animation",t:"Cre8 Logo Animation",d:"\"Timir was fantastic to work with. He maintained a high level of professionalism throughout the project, and the quality of his work exceeded our expectations.\" - Fiverr client",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/98a8844c7aff6d94865f6d463306a2f0-1722187487/Cre8_Logo_New"]},
+ {k:"Lottie & Web Animation",t:"Mike Character Animation",d:"Character update animation delivered for a client project.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/4603a4f91313d84a56f0e15a2819241d-1722669460/mike%20update%20%205"]},
+ {k:"Lottie & Web Animation",t:"Scene Opener Animation",d:"\"Working with Timir was awesome. He got back to us really fast and made sure everything was done right on time. The work he did was top-notch too!\" - Fiverr client",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/b6ded5a3fb21151e912aae8fae2b4294-1715792978/1st%20scene%2001%20%281%29"]},
+ {k:"Explainer Video",t:"Gora - Blockchain Oracle Explainer",d:"A 2D explainer video for Gora, the next-generation blockchain oracle - script-to-screen storytelling that turns a complex Web3 product into a clear, engaging narrative.",m:["F|assets/gora-explainer"]},
+ {k:"Motion Graphics",t:"TRACE",d:"TRACE - a motion graphics piece designed, animated and delivered in HD.",m:["F|assets/trace"]},
+ {k:"Music Video",t:"Prithibi Ghumak - Music Video",d:"Bangla music video 'Prithibi Ghumak' by Rafa feat. Topu (2021) - production and edit work with singer Topu.",m:["F|assets/prithibi-ghumak"]}
+];
+
+/* ---------- category sections ---------- */
+var GROUPS=[
+ {n:"Interactive Animation - Lottie & Rive",icon:"&#10070;",t:["Character Design & Animation","Rive Character Design & Animation","App Explanation","Jamin K. Website Hero Animation","Random Lottie Animation","Short Lottie Animations","AI Select App for Users","Emoji Interaction","Character Animation","Spoon Micro-Animation","Mike Character Animation","Scene Opener Animation"]},
+ {n:"UI / UX Animation",icon:"&#9673;",t:["Product Selection","UX Animation for Web & App","Kanban Dashboard Project","Fiscoclic","PDF Download UI Interaction","Website UI Interaction","UI Interaction Webpages"]},
+ {n:"Splash Screen Animation",icon:"&#10022;",t:["Geological Hazard Splash Screen","Onboarding Splash Screens","Splash Screen Animation"]},
+ {n:"Logo Animation",icon:"&#9650;",t:["Logo & Character Animation","Aurenity Logo Motion","Cre8 Logo Animation"]},
+ {n:"Video Editing & Motion Graphics",icon:"&#9654;",t:["Gora - Blockchain Oracle Explainer","TRACE","Prithibi Ghumak - Music Video","3D Product Modeling","Explainer Video","Instagram Reel","Headshot Video Editing"]},
+ {n:"Graphics Design",icon:"&#9998;",t:[]}
+];
+
+/* ---------- render grouped project grid ---------- */
+function thumbOf(p){
+  var first=p.m[0];
+  var kind=first.slice(0,1), path=first.slice(2);
+  if(kind==='I') return CDN+path;
+  if(kind==='F') return path+'.jpg';
+  return CDN+path.replace('/video/upload/t_fiverr_hd/','/video/upload/so_0,w_640,f_auto,q_auto/')+'.jpg';
+}
+function tileHtml(i){
+  var p=PROJECTS[i];
+  return '<div class="card pcard" onclick="openLB('+i+')" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\')openLB('+i+')">'
+    +'<div class="pthumb"><img loading="lazy" src="'+thumbOf(p)+'" alt="'+p.t.replace(/"/g,'&quot;')+'">'
+    +(p.m.length>1?'<span class="pcount">'+p.m.length+' files</span>':'')
+    +'</div>'
+    +'<div class="pkicker">'+p.k+'</div>'
+    +'<div class="pname">'+p.t+' <i>&#8599;</i></div>'
+    +'<div class="pdesc">'+p.d+'</div>'
+    +'</div>';
+}
+(function(){
+  var byTitle={};
+  for(var i=0;i<PROJECTS.length;i++)byTitle[PROJECTS[i].t]=i;
+  var html='';
+  for(var g=0;g<GROUPS.length;g++){
+    var gr=GROUPS[g], tiles='';
+    for(var j=0;j<gr.t.length;j++){
+      var idx=byTitle[gr.t[j]];
+      if(idx!==undefined)tiles+=tileHtml(idx);
+    }
+    if(tiles){
+      html+='<div class="ghead"><span class="gicon">'+gr.icon+'</span>'+gr.n+'<span class="gline"></span></div>'
+          +'<div class="pgrid">'+tiles+'</div>';
+    }
+  }
+  document.getElementById('pgroups').innerHTML=html;
+})();
+
+/* ---------- project view (Dribbble-style) ---------- */
+var AVATAR="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg";
+function openLB(i){
+  var p=PROJECTS[i];
+  var esc=p.t.replace(/"/g,'&quot;');
+  var html='<div class="shot-wrap">'
+    +'<h2 class="shot-title">'+p.t+'</h2>'
+    +'<div class="shot-author">'
+      +'<img src="'+AVATAR+'" alt="Timir">'
+      +'<div><div class="sa-name">Timir</div><div class="sa-sub"><span class="dot"></span>Motion Designer &middot; Available for work</div></div>'
+      +'<a class="btn-talk sa-cta" href="#contact" onclick="closeLB()">Get in touch</a>'
+    +'</div>';
+  for(var j=0;j<p.m.length;j++){
+    var kind=p.m[j].slice(0,1), path=p.m[j].slice(2);
+    if(kind==='I'){ html+='<img class="shot-media" loading="lazy" src="'+CDN+path+'" alt="'+esc+' - file '+(j+1)+'">'; }
+    else if(kind==='F'){ html+='<video class="shot-media" controls playsinline preload="none" poster="'+path+'.jpg" src="'+path+'.mp4"></video>'; }
+    else{
+      var poster=CDN+path.replace('/video/upload/t_fiverr_hd/','/video/upload/so_0,w_800,f_auto,q_auto/')+'.jpg';
+      html+='<video class="shot-media" controls playsinline preload="none" poster="'+poster+'" src="'+CDN+path+'.mp4"></video>';
+    }
+    if(j===0){ html+='<p class="shot-desc">'+p.d+'</p>'; }
+  }
+  html+='<div class="shot-tags"><span class="chip">'+p.k+'</span><span class="chip">'+p.m.length+(p.m.length===1?' file':' files')+'</span></div>'
+    +'<div class="shot-footer">'
+      +'<div class="sf-line"></div><img src="'+AVATAR+'" alt="Timir"><div class="sf-line"></div>'
+    +'</div>'
+    +'<div class="shot-hire">'
+      +'<h3>Timir</h3><p>Animations that captivate audiences and drive results.</p>'
+      +'<a class="btn-talk" href="#contact" onclick="closeLB()">Let\'s work together &#8599;</a>'
+    +'</div>'
+  +'</div>';
+  document.getElementById('lb-content').innerHTML=html;
+  document.getElementById('lb').classList.add('open');
+  document.getElementById('lb').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+function closeLB(){
+  document.getElementById('lb').classList.remove('open');
+  document.getElementById('lb-content').innerHTML='';
+  document.body.style.overflow='';
+}
+document.getElementById('lb').addEventListener('click',function(e){if(e.target===this)closeLB();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLB();});
+
+/* ---------- page router ---------- */
+var PAGES=['home','about','projects','contact'];
+function route(){
+  var h=(location.hash||'#home').slice(1);
+  if(PAGES.indexOf(h)===-1)h='home';
+  var pages=document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++){pages[i].classList.toggle('active',pages[i].id===h);}
+  var links=document.querySelectorAll('#navlinks a');
+  for(var j=0;j<links.length;j++){links[j].classList.toggle('active',links[j].getAttribute('data-page')===h);}
+  closeLB();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>
