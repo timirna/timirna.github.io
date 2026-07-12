@@ -578,7 +578,7 @@ var PROJECTS=[
  {k:"Lottie & Web Animation",t:"Scene Opener Animation",d:"\"Working with Timir was awesome. He got back to us really fast and made sure everything was done right on time. The work he did was top-notch too!\" - Fiverr client",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/b6ded5a3fb21151e912aae8fae2b4294-1715792978/1st%20scene%2001%20%281%29"]},
  {k:"Explainer Video",t:"Gora - Blockchain Oracle Explainer",d:"A 2D explainer video for Gora, the next-generation blockchain oracle - script-to-screen storytelling that turns a complex Web3 product into a clear, engaging narrative.",m:["F|assets/gora-explainer"]},
  {k:"Motion Graphics",t:"TRACE",d:"TRACE - a motion graphics piece designed, animated and delivered in HD.",m:["F|assets/trace"]},
- {k:"Music Video",t:"Prithibi Ghumak - Music Video",d:"Bangla music video 'Prithibi Ghumak' by Rafa feat. Topu (2021) - production and edit work with singer Topu.",m:["F|assets/prithibi-ghumak"]}
+ {k:"Music Video",t:"Prithibi Ghumak - Music Video",d:"Bangla music video 'Prithibi Ghumak' by Rafa feat. Topu (2021) - production and edit work with singer Topu.",m:["Y|A-IBxbPpxfs"]}
 ];
 
 /* ---------- category sections ---------- */
@@ -597,6 +597,7 @@ function thumbOf(p){
   var kind=first.slice(0,1), path=first.slice(2);
   if(kind==='I') return CDN+path;
   if(kind==='F') return path+'.jpg';
+  if(kind==='Y') return 'https://i.ytimg.com/vi/'+path+'/hqdefault.jpg';
   return CDN+path.replace('/video/upload/t_fiverr_hd/','/video/upload/so_0,w_640,f_auto,q_auto/')+'.jpg';
 }
 function tileHtml(i){
@@ -644,6 +645,7 @@ function openLB(i){
     var kind=p.m[j].slice(0,1), path=p.m[j].slice(2);
     if(kind==='I'){ html+='<img class="shot-media" loading="lazy" src="'+CDN+path+'" alt="'+esc+' - file '+(j+1)+'">'; }
     else if(kind==='F'){ html+='<video class="shot-media" controls playsinline preload="none" poster="'+path+'.jpg" src="'+path+'.mp4"></video>'; }
+    else if(kind==='Y'){ html+='<iframe class="shot-media" style="aspect-ratio:16/9;border:0" src="https://www.youtube-nocookie.com/embed/'+path+'" title="'+esc+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'; }
     else{
       var poster=CDN+path.replace('/video/upload/t_fiverr_hd/','/video/upload/so_0,w_800,f_auto,q_auto/')+'.jpg';
       html+='<video class="shot-media" controls playsinline preload="none" poster="'+poster+'" src="'+CDN+path+'.mp4"></video>';
