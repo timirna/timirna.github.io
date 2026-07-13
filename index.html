@@ -54,7 +54,7 @@ img{display:block;max-width:100%}
 nav{display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.5px}
 .logo span{color:var(--accent)}
-.nav-links{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+.nav-links{display:flex;gap:20px;font-size:13px;color:var(--muted);flex-wrap:wrap;justify-content:center}
 .nav-links a{position:relative;transition:color .25s}
 .nav-links a:hover{color:var(--text)}
 .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--accent);transition:width .25s}
@@ -315,7 +315,11 @@ footer .logo{font-size:20px;margin-bottom:4px}
     <div class="nav-links" id="navlinks">
       <a href="#home" data-page="home">Home</a>
       <a href="#about" data-page="about">About</a>
-      <a href="#projects" data-page="projects">Projects</a>
+      <a href="#interactive" data-page="interactive">Interactive Animation</a>
+      <a href="#explainer" data-page="explainer">Explainer Video</a>
+      <a href="#motion" data-page="motion">Motion Graphics</a>
+      <a href="#video" data-page="video">Video Editing</a>
+      <a href="#graphics" data-page="graphics">Graphics Design</a>
       <a href="#contact" data-page="contact">Contact</a>
     </div>
     <a class="btn-talk" href="#contact">Let's talk</a>
@@ -355,21 +359,21 @@ footer .logo{font-size:20px;margin-bottom:4px}
       <span class="arrow">&#8599;</span>
     </a>
 
-    <a class="card proj-card" href="#projects">
+    <a class="card proj-card" href="#interactive">
       <div class="proj-visual"><i></i><i></i><i></i></div>
       <div class="kicker">My portfolio</div>
       <div class="card-title">Projects</div>
       <span class="arrow">&#8599;</span>
     </a>
 
-    <a class="card shape-card" href="#projects">
+    <a class="card shape-card" href="#interactive">
       <div class="shapes"><span class="c1"></span><span class="c2"></span><span class="c3"></span></div>
       <div class="kicker">Lottie &amp; Rive</div>
       <div class="card-title">Animation</div>
       <span class="arrow">&#8599;</span>
     </a>
 
-    <a class="card services-card" href="#projects">
+    <a class="card services-card" href="#explainer">
       <div class="icons-row">
         <div class="icon-pill" title="Lottie & GIF animation">&#9673;</div>
         <div class="icon-pill" title="Rive animation">&#10070;</div>
@@ -463,10 +467,10 @@ footer .logo{font-size:20px;margin-bottom:4px}
   </div>
 </section>
 
-<!-- ================= PROJECTS ================= -->
-<section class="panel page" id="projects">
-  <h2 class="sec-head"><span class="star">&#10022;</span>All Projects<span class="star">&#10022;</span></h2>
-  <div id="pgroups"></div>
+<!-- ================= INTERACTIVE ANIMATION ================= -->
+<section class="panel page" id="interactive">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Interactive Animation<span class="star">&#10022;</span></h2>
+  <div id="pg-interactive"></div>
   <p style="text-align:center;margin-top:22px"><a class="btn-talk" href="https://www.fiverr.com/users/timir69/portfolio" target="_blank" rel="noopener">View portfolio on Fiverr &#8599;</a></p>
 
   <div style="height:14px"></div>
@@ -484,6 +488,36 @@ footer .logo{font-size:20px;margin-bottom:4px}
         <div class="who"><b>redmangostudio</b> - Canada</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ================= EXPLAINER VIDEO ================= -->
+<section class="panel page" id="explainer">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Explainer Video<span class="star">&#10022;</span></h2>
+  <p style="text-align:center;color:var(--muted);font-size:14px;margin:-14px 0 24px">SaaS &amp; product explainers - script to screen</p>
+  <div id="pg-explainer"></div>
+</section>
+
+<!-- ================= MOTION GRAPHICS ================= -->
+<section class="panel page" id="motion">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Motion Graphics<span class="star">&#10022;</span></h2>
+  <div id="pg-motion"></div>
+</section>
+
+<!-- ================= VIDEO EDITING ================= -->
+<section class="panel page" id="video">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Video Editing<span class="star">&#10022;</span></h2>
+  <div id="pg-video"></div>
+</section>
+
+<!-- ================= GRAPHICS DESIGN ================= -->
+<section class="panel page" id="graphics">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Graphics Design<span class="star">&#10022;</span></h2>
+  <div id="pg-graphics"></div>
+  <div class="card" id="graphics-soon" style="text-align:center;padding:60px 24px">
+    <div style="font-size:34px;margin-bottom:12px">&#9998;</div>
+    <div class="card-title" style="margin-bottom:8px">New work landing here soon</div>
+    <p style="font-size:13.5px;color:var(--muted)">Graphics design projects are being curated. Meanwhile, explore the animation work or <a href="#contact" style="color:var(--accent)">get in touch</a>.</p>
   </div>
 </section>
 
@@ -531,7 +565,11 @@ footer .logo{font-size:20px;margin-bottom:4px}
   <div class="flinks">
     <a href="#home">Home</a>
     <a href="#about">About</a>
-    <a href="#projects">Projects</a>
+    <a href="#interactive">Interactive</a>
+    <a href="#explainer">Explainer</a>
+    <a href="#motion">Motion</a>
+    <a href="#video">Video</a>
+    <a href="#graphics">Graphics</a>
     <a href="#contact">Contact</a>
   </div>
   <div>&copy; 2026 Timir. All rights reserved.</div>
@@ -574,22 +612,30 @@ var PROJECTS=[
  {k:"Lottie & Web Animation",t:"Spoon Micro-Animation",d:"\"Timir did an OUTSTANDING job on the Lottie & Web Animation project! His attention to detail and visual appeal were exceptional, truly exceeding my expectations.\" - Fiverr client",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/8e1166ae6ae7a423236ff08517c63f9a-1727457907/Only%20spoon%20move"]},
  {k:"Lottie & Web Animation",t:"Splash Screen Animation",d:"Client splash screen animation delivered through Fiverr.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/9fc666d402eb6e85983bdf59b9cab6bc-1726325863/final%20splash%20screen%202_3"]},
  {k:"Lottie & Web Animation",t:"Cre8 Logo Animation",d:"\"Timir was fantastic to work with. He maintained a high level of professionalism throughout the project, and the quality of his work exceeded our expectations.\" - Fiverr client",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/98a8844c7aff6d94865f6d463306a2f0-1722187487/Cre8_Logo_New"]},
- {k:"Lottie & Web Animation",t:"Mike Character Animation",d:"Character update animation delivered for a client project.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/4603a4f91313d84a56f0e15a2819241d-1722669460/mike%20update%20%205"]},
- {k:"Lottie & Web Animation",t:"Scene Opener Animation",d:"\"Working with Timir was awesome. He got back to us really fast and made sure everything was done right on time. The work he did was top-notch too!\" - Fiverr client",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/b6ded5a3fb21151e912aae8fae2b4294-1715792978/1st%20scene%2001%20%281%29"]},
  {k:"Explainer Video",t:"Gora - Blockchain Oracle Explainer",d:"A 2D explainer video for Gora, the next-generation blockchain oracle - script-to-screen storytelling that turns a complex Web3 product into a clear, engaging narrative.",m:["F|assets/gora-explainer"]},
  {k:"Motion Graphics",t:"TRACE",d:"TRACE - a motion graphics piece designed, animated and delivered in HD.",m:["F|assets/trace"]},
  {k:"Music Video",t:"Prithibi Ghumak - Music Video",d:"Bangla music video 'Prithibi Ghumak' by Rafa feat. Topu (2021) - production and edit work with singer Topu.",m:["Y|A-IBxbPpxfs"]}
 ];
 
-/* ---------- category sections ---------- */
-var GROUPS=[
- {n:"Interactive Animation - Lottie & Rive",icon:"&#10070;",t:["Character Design & Animation","Rive Character Design & Animation","App Explanation","Jamin K. Website Hero Animation","Random Lottie Animation","Short Lottie Animations","AI Select App for Users","Emoji Interaction","Character Animation","Spoon Micro-Animation","Mike Character Animation","Scene Opener Animation"]},
- {n:"UI / UX Animation",icon:"&#9673;",t:["Product Selection","UX Animation for Web & App","Kanban Dashboard Project","Fiscoclic","PDF Download UI Interaction","Website UI Interaction","UI Interaction Webpages"]},
- {n:"Splash Screen Animation",icon:"&#10022;",t:["Geological Hazard Splash Screen","Onboarding Splash Screens","Splash Screen Animation"]},
- {n:"Logo Animation",icon:"&#9650;",t:["Logo & Character Animation","Aurenity Logo Motion","Cre8 Logo Animation"]},
- {n:"Video Editing & Motion Graphics",icon:"&#9654;",t:["Gora - Blockchain Oracle Explainer","TRACE","Prithibi Ghumak - Music Video","3D Product Modeling","Explainer Video","Instagram Reel","Headshot Video Editing"]},
- {n:"Graphics Design",icon:"&#9998;",t:[]}
-];
+/* ---------- category pages ---------- */
+var PAGEGROUPS={
+ "pg-interactive":[
+  {n:"Lottie & Rive Animation",icon:"&#10070;",t:["Character Design & Animation","Rive Character Design & Animation","App Explanation","Jamin K. Website Hero Animation","Random Lottie Animation","Short Lottie Animations","AI Select App for Users","Emoji Interaction","Character Animation","Spoon Micro-Animation"]},
+  {n:"UI / UX Animation",icon:"&#9673;",t:["Product Selection","UX Animation for Web & App","Kanban Dashboard Project","Fiscoclic","PDF Download UI Interaction","Website UI Interaction","UI Interaction Webpages"]},
+  {n:"Splash Screen Animation",icon:"&#10022;",t:["Geological Hazard Splash Screen","Onboarding Splash Screens","Splash Screen Animation"]}
+ ],
+ "pg-explainer":[
+  {n:"",icon:"",t:["Gora - Blockchain Oracle Explainer","Explainer Video"]}
+ ],
+ "pg-motion":[
+  {n:"",icon:"",t:["TRACE","3D Product Modeling"]},
+  {n:"Logo Animation",icon:"&#9650;",t:["Logo & Character Animation","Aurenity Logo Motion","Cre8 Logo Animation"]}
+ ],
+ "pg-video":[
+  {n:"",icon:"",t:["Prithibi Ghumak - Music Video","Instagram Reel","Headshot Video Editing"]}
+ ],
+ "pg-graphics":[]
+};
 
 /* ---------- render grouped project grid ---------- */
 function thumbOf(p){
@@ -614,19 +660,23 @@ function tileHtml(i){
 (function(){
   var byTitle={};
   for(var i=0;i<PROJECTS.length;i++)byTitle[PROJECTS[i].t]=i;
-  var html='';
-  for(var g=0;g<GROUPS.length;g++){
-    var gr=GROUPS[g], tiles='';
-    for(var j=0;j<gr.t.length;j++){
-      var idx=byTitle[gr.t[j]];
-      if(idx!==undefined)tiles+=tileHtml(idx);
+  for(var pid in PAGEGROUPS){
+    var groups=PAGEGROUPS[pid], html='';
+    for(var g=0;g<groups.length;g++){
+      var gr=groups[g], tiles='';
+      for(var j=0;j<gr.t.length;j++){
+        var idx=byTitle[gr.t[j]];
+        if(idx!==undefined)tiles+=tileHtml(idx);
+      }
+      if(tiles){
+        if(gr.n)html+='<div class="ghead"><span class="gicon">'+gr.icon+'</span>'+gr.n+'<span class="gline"></span></div>';
+        html+='<div class="pgrid">'+tiles+'</div>';
+        if(!gr.n)html+='<div style="height:14px"></div>';
+      }
     }
-    if(tiles){
-      html+='<div class="ghead"><span class="gicon">'+gr.icon+'</span>'+gr.n+'<span class="gline"></span></div>'
-          +'<div class="pgrid">'+tiles+'</div>';
-    }
+    var el=document.getElementById(pid);
+    if(el)el.innerHTML=html;
   }
-  document.getElementById('pgroups').innerHTML=html;
 })();
 
 /* ---------- project view (Dribbble-style) ---------- */
@@ -675,7 +725,7 @@ document.getElementById('lb').addEventListener('click',function(e){if(e.target==
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLB();});
 
 /* ---------- page router ---------- */
-var PAGES=['home','about','projects','contact'];
+var PAGES=['home','about','interactive','explainer','motion','video','graphics','contact'];
 function route(){
   var h=(location.hash||'#home').slice(1);
   if(PAGES.indexOf(h)===-1)h='home';
