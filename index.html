@@ -315,8 +315,6 @@ footer .logo{font-size:20px;margin-bottom:4px}
     <div class="nav-links" id="navlinks">
       <a href="#home" data-page="home">Home</a>
       <a href="#about" data-page="about">About</a>
-      <a href="#interactive" data-page="interactive">Interactive Animation</a>
-      <a href="#explainer" data-page="explainer">Explainer Video</a>
       <a href="#motion" data-page="motion">Motion Graphics</a>
       <a href="#video" data-page="video">Video Editing</a>
       <a href="#graphics" data-page="graphics">Graphics Design</a>
@@ -359,21 +357,21 @@ footer .logo{font-size:20px;margin-bottom:4px}
       <span class="arrow">&#8599;</span>
     </a>
 
-    <a class="card proj-card" href="#interactive">
+    <a class="card proj-card" href="#motion">
       <div class="proj-visual"><i></i><i></i><i></i></div>
       <div class="kicker">My portfolio</div>
       <div class="card-title">Projects</div>
       <span class="arrow">&#8599;</span>
     </a>
 
-    <a class="card shape-card" href="#interactive">
+    <a class="card shape-card" href="#motion">
       <div class="shapes"><span class="c1"></span><span class="c2"></span><span class="c3"></span></div>
       <div class="kicker">Lottie &amp; Rive</div>
       <div class="card-title">Animation</div>
       <span class="arrow">&#8599;</span>
     </a>
 
-    <a class="card services-card" href="#explainer">
+    <a class="card services-card" href="#motion">
       <div class="icons-row">
         <div class="icon-pill" title="Lottie & GIF animation">&#9673;</div>
         <div class="icon-pill" title="Rive animation">&#10070;</div>
@@ -467,10 +465,10 @@ footer .logo{font-size:20px;margin-bottom:4px}
   </div>
 </section>
 
-<!-- ================= INTERACTIVE ANIMATION ================= -->
-<section class="panel page" id="interactive">
-  <h2 class="sec-head"><span class="star">&#10022;</span>Interactive Animation<span class="star">&#10022;</span></h2>
-  <div id="pg-interactive"></div>
+<!-- ================= MOTION GRAPHICS ================= -->
+<section class="panel page" id="motion">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Motion Graphics<span class="star">&#10022;</span></h2>
+  <div id="pg-motion"></div>
   <p style="text-align:center;margin-top:22px"><a class="btn-talk" href="https://www.fiverr.com/users/timir69/portfolio" target="_blank" rel="noopener">View portfolio on Fiverr &#8599;</a></p>
 
   <div style="height:14px"></div>
@@ -489,19 +487,6 @@ footer .logo{font-size:20px;margin-bottom:4px}
       </div>
     </div>
   </div>
-</section>
-
-<!-- ================= EXPLAINER VIDEO ================= -->
-<section class="panel page" id="explainer">
-  <h2 class="sec-head"><span class="star">&#10022;</span>Explainer Video<span class="star">&#10022;</span></h2>
-  <p style="text-align:center;color:var(--muted);font-size:14px;margin:-14px 0 24px">SaaS &amp; product explainers - script to screen</p>
-  <div id="pg-explainer"></div>
-</section>
-
-<!-- ================= MOTION GRAPHICS ================= -->
-<section class="panel page" id="motion">
-  <h2 class="sec-head"><span class="star">&#10022;</span>Motion Graphics<span class="star">&#10022;</span></h2>
-  <div id="pg-motion"></div>
 </section>
 
 <!-- ================= VIDEO EDITING ================= -->
@@ -565,11 +550,9 @@ footer .logo{font-size:20px;margin-bottom:4px}
   <div class="flinks">
     <a href="#home">Home</a>
     <a href="#about">About</a>
-    <a href="#interactive">Interactive</a>
-    <a href="#explainer">Explainer</a>
-    <a href="#motion">Motion</a>
-    <a href="#video">Video</a>
-    <a href="#graphics">Graphics</a>
+    <a href="#motion">Motion Graphics</a>
+    <a href="#video">Video Editing</a>
+    <a href="#graphics">Graphics Design</a>
     <a href="#contact">Contact</a>
   </div>
   <div>&copy; 2026 Timir. All rights reserved.</div>
@@ -618,16 +601,12 @@ var PROJECTS=[
 
 /* ---------- category pages ---------- */
 var PAGEGROUPS={
- "pg-interactive":[
-  {n:"Lottie & Rive Animation",icon:"&#10070;",t:["Character Design & Animation","Rive Character Design & Animation","App Explanation","Jamin K. Website Hero Animation","Random Lottie Animation","Short Lottie Animations","AI Select App for Users","Emoji Interaction","Character Animation","Spoon Micro-Animation"]},
-  {n:"UI / UX Animation",icon:"&#9673;",t:["Product Selection","UX Animation for Web & App","Kanban Dashboard Project","Fiscoclic","PDF Download UI Interaction","Website UI Interaction","UI Interaction Webpages"]},
-  {n:"Splash Screen Animation",icon:"&#10022;",t:["Geological Hazard Splash Screen","Onboarding Splash Screens","Splash Screen Animation"]}
- ],
- "pg-explainer":[
-  {n:"",icon:"",t:["Gora - Blockchain Oracle Explainer","TRACE","Explainer Video"]}
- ],
  "pg-motion":[
-  {n:"",icon:"",t:["3D Product Modeling"]},
+  {n:"Interactive Animation - Lottie & Rive",icon:"&#10070;",t:["Character Design & Animation","Rive Character Design & Animation","App Explanation","Jamin K. Website Hero Animation","Random Lottie Animation","Short Lottie Animations","AI Select App for Users","Emoji Interaction","Character Animation","Spoon Micro-Animation"]},
+  {n:"UI / UX Animation",icon:"&#9673;",t:["Product Selection","UX Animation for Web & App","Kanban Dashboard Project","Fiscoclic","PDF Download UI Interaction","Website UI Interaction","UI Interaction Webpages"]},
+  {n:"Splash Screen Animation",icon:"&#10022;",t:["Geological Hazard Splash Screen","Onboarding Splash Screens","Splash Screen Animation"]},
+  {n:"Explainer Video - SaaS & Product",icon:"&#9654;",t:["Gora - Blockchain Oracle Explainer","TRACE","Explainer Video"]},
+  {n:"Motion Graphics & 3D",icon:"&#10023;",t:["3D Product Modeling"]},
   {n:"Logo Animation",icon:"&#9650;",t:["Logo & Character Animation","Aurenity Logo Motion"]}
  ],
  "pg-video":[
@@ -724,7 +703,7 @@ document.getElementById('lb').addEventListener('click',function(e){if(e.target==
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLB();});
 
 /* ---------- page router ---------- */
-var PAGES=['home','about','interactive','explainer','motion','video','graphics','contact'];
+var PAGES=['home','about','motion','video','graphics','contact'];
 function route(){
   var h=(location.hash||'#home').slice(1);
   if(PAGES.indexOf(h)===-1)h='home';
