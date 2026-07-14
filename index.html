@@ -305,6 +305,19 @@ footer .logo{font-size:20px;margin-bottom:4px}
 .shot-hire h3{font-family:'Space Grotesk',sans-serif;font-size:22px;margin-bottom:6px}
 .shot-hire p{font-size:13.5px;color:var(--muted);margin-bottom:18px}
 
+/* ---------- CASE STUDY ---------- */
+.cs-wrap{max-width:800px;margin:0 auto;padding:18px 4px 30px}
+.cs-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,4.5vw,38px);line-height:1.15;letter-spacing:-.5px;text-align:center;margin-bottom:14px}
+.cs-meta{text-align:center;font-size:13.5px;color:var(--muted);margin-bottom:30px;line-height:1.7}
+.cs-wrap h2{font-family:'Space Grotesk',sans-serif;font-size:22px;margin:38px 0 12px}
+.cs-wrap p{font-size:15px;color:#c9c9c9;line-height:1.75;margin-bottom:14px}
+.cs-media{width:100%;border-radius:16px;margin:14px 0 6px;background:#f4f4f6;display:block}
+.cs-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0 6px}
+.cs-grid3 figure{margin:0;background:#f4f4f6;border-radius:14px;overflow:hidden;text-align:center}
+.cs-grid3 img{width:100%;display:block}
+.cs-grid3 figcaption{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#555;padding:8px 0;background:#ececef}
+@media(max-width:560px){.cs-grid3{grid-template-columns:1fr}}
+
 /* ---------- LOTTIE PLAYER ---------- */
 .lthumb{display:flex;align-items:center;justify-content:center;background:#f4f4f6}
 .lthumb .lottie-holder{width:100%;height:100%}
@@ -521,6 +534,57 @@ footer .logo{font-size:20px;margin-bottom:4px}
   </div>
 </section>
 
+<!-- ================= CASE STUDY: KOALA RIVE ================= -->
+<section class="panel page" id="case-rive">
+  <div class="cs-wrap">
+    <div class="kicker" style="text-align:center;margin-bottom:10px">Case Study</div>
+    <h1 class="cs-title">From One Reference to a Living Character: The Koala Sleep Tracker Mascot</h1>
+    <p class="cs-meta">Character Design &middot; Rigging &middot; Interactive Animation &mdash; built in Adobe Illustrator &amp; Rive<br>By Timir &mdash; Motion Designer &amp; 2D Animator</p>
+
+    <img class="cs-media" src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890456236/Rive%20app%20animation.gif" alt="Koala mascot interactive animation">
+
+    <h2>Overview</h2>
+    <p>Koala Sleep Tracker is a character-led sleep companion app for iOS. Instead of dry charts and numbers, the app expresses your sleep journey through a koala mascot that reacts to how you sleep &mdash; getting drowsy when it's time to wind down, celebrating when you hit your goals.</p>
+    <p>My job was to make that character exist: design it from scratch, rig it, and bring it to life as a real-time interactive animation that runs natively inside the app.</p>
+
+    <h2>The Challenge</h2>
+    <p>The developer came to me with a single reference image and a vision: the koala shouldn't be decoration &mdash; it should be <em>the app experience</em>. That meant the character needed a wide emotional range, smooth transitions between moods, and a file light enough to run in real time on mobile. Pre-rendered video was never an option; every state had to be interactive and instant.</p>
+
+    <h2>Design: One Reference, Full Master Illustration</h2>
+    <p>Working in Adobe Illustrator, I developed the single reference into a complete master illustration &mdash; a fully resolved character with personality, proportions, and appeal that could carry an entire app.</p>
+    <p>I designed the koala as clean flat vector from the start. This was a deliberate choice, not a style shortcut: flat vector keeps file sizes tiny, scales perfectly across screen sizes, and &mdash; most importantly &mdash; every shape was built with rigging in mind. Limbs, ears, eyelids, and facial features were constructed as separate, animation-ready pieces rather than a single flattened drawing.</p>
+    <img class="cs-media" loading="lazy" src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890870631/SH-03_1.gif" alt="Koala master illustration built as animation-ready vector">
+
+    <h2>Detailing in Rive: Shadow, Color, Depth</h2>
+    <p>Rather than baking shadows and highlights into the Illustrator file, I brought the flat vector into Rive and did the detailing there &mdash; shadows, color refinement, everything. Doing this inside Rive means the depth and shading move <em>with</em> the character during animation instead of sitting frozen on top of it. The result is a character that feels dimensional and alive while staying 100% vector and lightweight.</p>
+    <video class="cs-media" controls playsinline preload="none" poster="assets/rive-gig-01.jpg" src="assets/rive-gig-01.mp4"></video>
+
+    <h2>Rigging &amp; The Unified State Machine</h2>
+    <p>I rigged the character with bones and constraints for clean, reusable motion, then built nine animation states: <b>Idle, Talking, Sleepy, Tired, Sleeping, Wake Up, Celebration, Crying, and Pride</b>.</p>
+    <p>The hardest engineering problem came here. The states originally lived across multiple artboards &mdash; and I consolidated all of them into one unified state machine on a single artboard. One artboard, one brain: the koala now flows naturally between any mood the app calls for, with smooth transitions and no duplicated assets.</p>
+    <div class="cs-grid3">
+      <figure><img loading="lazy" src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889560566/Celebration_Victory.gif" alt="Celebration state"><figcaption>Celebration</figcaption></figure>
+      <figure><img loading="lazy" src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889565987/Koala_Tired.gif" alt="Tired state"><figcaption>Tired</figcaption></figure>
+      <figure><img loading="lazy" src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889584583/Koala_crying.gif" alt="Crying state"><figcaption>Crying</figcaption></figure>
+    </div>
+
+    <h2>Delivery</h2>
+    <p>The final deliverable was a single lightweight <b>.riv</b> file that the developer drops straight into the iOS app. It runs in real time, responds to app logic, and weighs a fraction of what video assets would &mdash; the entire app is just over 10&nbsp;MB.</p>
+
+    <h2>What I Learned</h2>
+    <p>Plan the state machine before you animate. Consolidating multiple artboards into a unified state machine after the fact is a puzzle you only want to solve once &mdash; designing the architecture first is what makes a nine-state character feel effortless instead of tangled.</p>
+
+    <h2>Results</h2>
+    <p>A complete character pipeline &mdash; from a single reference image to a shipped, interactive mascot &mdash; designed in Illustrator, detailed and rigged in Rive, and delivered as one production-ready file.</p>
+
+    <div class="shot-hire" style="margin-top:36px">
+      <h3>Need a character like this?</h3>
+      <p>Interactive mascots, rigged and delivered production-ready.</p>
+      <a class="btn-talk" href="#contact">Let's work together &#8599;</a>
+    </div>
+  </div>
+</section>
+
 <!-- ================= CONTACT ================= -->
 <section class="panel page" id="contact">
   <div class="contact-grid">
@@ -584,7 +648,7 @@ footer .logo{font-size:20px;margin-bottom:4px}
 var CDN="https://fiverr-res.cloudinary.com";
 var PROJECTS=[
  {k:"Lottie Animation",t:"Character Design & Animation",d:"Designed and animated a custom Lottie character - clean vector assets optimized for web and mobile apps. Character illustration, rigging, and multiple smooth animations while keeping the file lightweight and performance-friendly.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890916873/3D_Camera_Square_Animation_HD_6.gif","V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/050a03f416e229270a08d400255902bc-1783885659869/3D_Camera_Square_Animation_HD_6","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890928152/character%20animation%20in%20after%20effect%20preview_1.gif","V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890940452/character%20animation%20in%20after%20effect%20preview_1","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890962314/flyaway_rig.gif"]},
- {k:"Rive Animation",t:"Rive Character Design & Animation",d:"Custom character for a mobile application using Rive - clean vector assets, rigging, and an interactive state machine with multiple animation states and smooth transitions, optimized for real-time performance.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890456236/Rive%20app%20animation.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890870631/SH-03_1.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889560566/Celebration_Victory.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889565987/Koala_Tired.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889584583/Koala_crying.gif","F|assets/rive-gig-01"]},
+ {k:"Rive Animation",t:"Rive Character Design & Animation",cs:"case-rive",d:"Case study: from one reference image to a living koala mascot - designed in Illustrator, rigged in Rive with a nine-state unified state machine, delivered as one production-ready .riv file.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890456236/Rive%20app%20animation.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890870631/SH-03_1.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889560566/Celebration_Victory.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889565987/Koala_Tired.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889584583/Koala_crying.gif","F|assets/rive-gig-01"]},
  {k:"Product Animation",t:"Product Selection",d:"A set of product UI animations created for client applications - order flows, ticketing and dashboard micro-interactions.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/028d66b7673c68e7b0099f30e31c9a25-1644676084057/Kudo_1_.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199011427/ticket_sell.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048706/Comp_25.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048719/edite_slack_5.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048714/ticket_sell_1.gif"]},
  {k:"App Animation",t:"App Explanation",d:"Lottie character animation for a sports and fitness app splash screen - each character designed, then animated.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495382163/Comp_54.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495143022/football_3.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495365225/busket_ball.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495354754/tennis.gif"]},
  {k:"Web Animation",t:"Jamin K. Website Hero Animation",d:"Lottie animation for a website hero section, designed to capture attention with smooth, lightweight motion.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/1b0b50fdf3cd92618e081b2f4cdf4fd8-1742492409096/lil%20bit%20faster"]},
@@ -594,7 +658,6 @@ var PROJECTS=[
  {k:"UI Animation",t:"Fiscoclic",d:"UI animation set created for the Fiscoclic platform.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644691170880/04.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644691131803/01.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644692055395/firmaderecibos.gif"]},
  {k:"3D Animation",t:"3D Product Modeling",d:"A 3D product shot blending Blender and After Effects - modeling, lighting, animation and compositing.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/f6868fe979ff99aa83ab8f0ea6e9c2f3-1739155145121/final_2","V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/4d446cf7040fc1ba281965885dffafdd-1739155143344/insta%20version%202"]},
  {k:"Splash Screen",t:"Onboarding Splash Screens",d:"User-experience splash screen animations - guided steps showing users the real product.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/04222298e701b02ddd3b2641c7304677-1670014272294/image_processing20221130-13014-1nkzrtj.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/db20d80ca45963dfb27d25f9c1b36bc0-1646805906700/Scene_01_final.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/db20d80ca45963dfb27d25f9c1b36bc0-1646805971347/Scene_3_final.gif"]},
- {k:"Explainer Video",t:"Explainer Video",d:"Custom illustrations tailored to the project's needs, turned into a clear 2D explainer.",m:["V|/video/upload/t_fiverr_hd/mq3azzrs6v2ofhqaro9g"]},
  {k:"Logo Animation",t:"Logo & Character Animation",d:"Logo animation in Lottie for Atlas agency, plus a supporting character animation set.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200522794/image_processing20201206-30959-bb3ajj.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/82fcd00311ac5d8377927544ebfb7bfc-1663674392518/final_1.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200522791/image_processing20201118-25153-ufj39f.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200631602/running_02.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200631597/cow_with_fire_1.gif"]},
  {k:"Concept Animation",t:"AI Select App for Users",d:"From raw sketch to finished motion - clearly communicating the product's core concept to users.",m:["V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/012e47eaebc2afe5e79775f47cc22a3a-1772497217719/All%20six_4"]},
  {k:"Character Animation",t:"Emoji Interaction",d:"Original emoji character designs with expressive interaction animations.",m:["I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/69b03e499e47caa205cbec0dfb4dc8f1-1664202405286/emoji.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3b472e0bc5628f91f1b47af990465604-1664202973889/Final%20Gif%20FyreCow.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/69b03e499e47caa205cbec0dfb4dc8f1-1664202633231/Mortar_and_Pestle__3.gif","I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3b472e0bc5628f91f1b47af990465604-1664202996462/65591-flower-blooming_1_.gif"]},
@@ -636,7 +699,7 @@ var PAGEGROUPS={
   {n:"Interactive Animation - Lottie & Rive",icon:"&#10070;",t:["Interactive Character Animation","Interactive Micro Animations","Character Design & Animation","Rive Character Design & Animation","App Explanation","Jamin K. Website Hero Animation","AI Select App for Users","Emoji Interaction","Character Animation","Spoon Micro-Animation"]},
   {n:"UI / UX Animation",icon:"&#9673;",t:["UX Interactive Motion Design","Dhaka Metro Ticket Booking App","Product Web UI","Product Selection","UX Animation for Web & App","Kanban Dashboard Project","Fiscoclic","PDF Download UI Interaction","Website UI Interaction","UI Interaction Webpages"]},
   {n:"Splash Screen Animation",icon:"&#10022;",t:["App Splash Screen Animation","Geological Hazard Splash Screen","Onboarding Splash Screens","Splash Screen Animation"]},
-  {n:"Explainer Video - SaaS & Product",icon:"&#9654;",t:["Aura - SaaS Explainer Video","Gora - Blockchain Oracle Explainer","TRACE","Explainer Video"]},
+  {n:"Explainer Video - SaaS & Product",icon:"&#9654;",t:["Aura - SaaS Explainer Video","Gora - Blockchain Oracle Explainer","TRACE"]},
   {n:"Motion Graphics & 3D",icon:"&#10023;",t:["Ask Rosie Hero Animation","Blender 3D Rolling in Lottie","3D Illustration for Web & App","Gora Brand Animation","UI UX Animation Showcase","3D Product Modeling"]},
   {n:"Logo Animation",icon:"&#9650;",t:["Unicorn Logo Wink","Logo Lottie for App & Web","Bringing Logos to Life with Lottie","Develomark","Logo & Character Animation","Aurenity Logo Motion"]}
  ],
@@ -669,7 +732,7 @@ function tileHtml(i){
   }
   return '<div class="card pcard" onclick="openLB('+i+')" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\')openLB('+i+')">'
     +thumb
-    +(p.m.length>1?'<span class="pcount">'+p.m.length+' files</span>':'')
+    +(p.cs?'<span class="pcount" style="background:var(--accent);border-color:var(--accent);color:#fff">Case study</span>':(p.m.length>1?'<span class="pcount">'+p.m.length+' files</span>':''))
     +'</div>'
     +'<div class="pkicker">'+p.k+'</div>'
     +'<div class="pname">'+p.t+' <i>&#8599;</i></div>'
@@ -706,6 +769,7 @@ function tileHtml(i){
 var AVATAR="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg";
 function openLB(i){
   var p=PROJECTS[i];
+  if(p.cs){location.hash=p.cs;return;}
   var esc=p.t.replace(/"/g,'&quot;');
   var html='<div class="shot-wrap">'
     +'<h2 class="shot-title">'+p.t+'</h2>'
@@ -774,7 +838,7 @@ function initLotties(root){
 }
 
 /* ---------- page router ---------- */
-var PAGES=['home','about','motion','video','graphics','contact'];
+var PAGES=['home','about','motion','video','graphics','contact','case-rive'];
 function route(){
   var h=(location.hash||'#home').slice(1);
   if(PAGES.indexOf(h)===-1)h='home';
