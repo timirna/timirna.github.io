@@ -1,0 +1,524 @@
+{
+ "projects": [
+  {
+   "k": "Lottie Animation",
+   "t": "Character Design & Animation",
+   "d": "Designed and animated a custom Lottie character - clean vector assets optimized for web and mobile apps. Character illustration, rigging, and multiple smooth animations while keeping the file lightweight and performance-friendly.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890916873/3D_Camera_Square_Animation_HD_6.gif",
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/050a03f416e229270a08d400255902bc-1783885659869/3D_Camera_Square_Animation_HD_6",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890928152/character%20animation%20in%20after%20effect%20preview_1.gif",
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890940452/character%20animation%20in%20after%20effect%20preview_1",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c8d4a3787be1b03b90abec289dfb5baf-1783890962314/flyaway_rig.gif"
+   ]
+  },
+  {
+   "k": "Rive Animation",
+   "t": "Rive Character Design & Animation",
+   "cs": "case-rive",
+   "d": "Case study: from one reference image to a living koala mascot - designed in Illustrator, rigged in Rive with a nine-state unified state machine, delivered as one production-ready .riv file.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890456236/Rive%20app%20animation.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890870631/SH-03_1.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889560566/Celebration_Victory.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889565987/Koala_Tired.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889584583/Koala_crying.gif"
+   ]
+  },
+  {
+   "k": "Product Animation",
+   "t": "Product Selection",
+   "d": "A set of product UI animations created for client applications - order flows, ticketing and dashboard micro-interactions.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/028d66b7673c68e7b0099f30e31c9a25-1644676084057/Kudo_1_.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199011427/ticket_sell.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048706/Comp_25.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048719/edite_slack_5.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c3b1e74b1031720d77e6a7877c316bb2-1664199048714/ticket_sell_1.gif"
+   ]
+  },
+  {
+   "k": "App Animation",
+   "t": "App Explanation",
+   "d": "Lottie character animation for a sports and fitness app splash screen - each character designed, then animated.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495382163/Comp_54.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495143022/football_3.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495365225/busket_ball.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/29eb9d5e0e7dc1ac66be8f2e5f937642-1728495354754/tennis.gif"
+   ]
+  },
+  {
+   "k": "Web Animation",
+   "t": "Jamin K. Website Hero Animation",
+   "d": "Lottie animation for a website hero section, designed to capture attention with smooth, lightweight motion.",
+   "m": [
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/1b0b50fdf3cd92618e081b2f4cdf4fd8-1742492409096/lil%20bit%20faster"
+   ]
+  },
+  {
+   "k": "Splash Screen",
+   "t": "Geological Hazard Splash Screen",
+   "d": "Splash screen animation for a prototype MVP platform focused on geological hazards impacting critical infrastructure such as roads, pipelines and power lines.",
+   "m": [
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/6fe2640061aa67f7e3e0918d6490ec3d-1740123198377/original-b00c3683fca9990752dd3ae2ac10548f"
+   ]
+  },
+  {
+   "k": "UX Animation",
+   "t": "UX Animation for Web & App",
+   "d": "Animations aligned with the product's design language, built in collaboration with UX/UI designers - helping users understand the process easily.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/0d324c6ce5fa8d3bc4866493cf847564-1701725335433/Invoice_1.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/0d324c6ce5fa8d3bc4866493cf847564-1701725335434/Pricing_3.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3af0f79567db87c4044856135cc5abe3-1701725551572/application_3.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/2d1aa5237cab8aef699100607d3e19c0-1701118727320/Comp_7.gif"
+   ]
+  },
+  {
+   "k": "Dashboard UI",
+   "t": "Kanban Dashboard Project",
+   "d": "Dashboard and kanban UI animation set - data, cards and workflow states in motion.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/b854db68000ab11a03de6d7056dc2c90-1644692757941/summi-t-final.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/b9c78ac85c002a2a3c31f185967ee4f2-1644768977485/67168-dashbarod.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c83448bb6b6188d08f681294647dcef6-1644906371822/01st.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/bbc52be3be4fb3f3bbcd1c08adb25cf5-1644906293415/chiroUP.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/8148447c56b531579b2fb4e704731a27-1644693145546/Untitled-3.gif"
+   ]
+  },
+  {
+   "k": "UI Animation",
+   "t": "Fiscoclic",
+   "d": "UI animation set created for the Fiscoclic platform.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644691170880/04.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644691131803/01.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/c096379017fbbb8e865b7ea3d2d70b14-1644692055395/firmaderecibos.gif"
+   ]
+  },
+  {
+   "k": "3D Animation",
+   "t": "3D Product Modeling",
+   "d": "A 3D product shot blending Blender and After Effects - modeling, lighting, animation and compositing.",
+   "m": [
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/f6868fe979ff99aa83ab8f0ea6e9c2f3-1739155145121/final_2",
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/4d446cf7040fc1ba281965885dffafdd-1739155143344/insta%20version%202"
+   ]
+  },
+  {
+   "k": "Splash Screen",
+   "t": "Onboarding Splash Screens",
+   "d": "User-experience splash screen animations - guided steps showing users the real product.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/04222298e701b02ddd3b2641c7304677-1670014272294/image_processing20221130-13014-1nkzrtj.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/db20d80ca45963dfb27d25f9c1b36bc0-1646805906700/Scene_01_final.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/db20d80ca45963dfb27d25f9c1b36bc0-1646805971347/Scene_3_final.gif"
+   ]
+  },
+  {
+   "k": "Logo Animation",
+   "t": "Logo & Character Animation",
+   "d": "Logo animation in Lottie for Atlas agency, plus a supporting character animation set.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200522794/image_processing20201206-30959-bb3ajj.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/82fcd00311ac5d8377927544ebfb7bfc-1663674392518/final_1.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200522791/image_processing20201118-25153-ufj39f.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200631602/running_02.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/cfac623ccd78d375ca4c9cabdbce9f57-1664200631597/cow_with_fire_1.gif"
+   ]
+  },
+  {
+   "k": "Concept Animation",
+   "t": "AI Select App for Users",
+   "d": "From raw sketch to finished motion - clearly communicating the product's core concept to users.",
+   "m": [
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/012e47eaebc2afe5e79775f47cc22a3a-1772497217719/All%20six_4"
+   ]
+  },
+  {
+   "k": "Character Animation",
+   "t": "Emoji Interaction",
+   "d": "Original emoji character designs with expressive interaction animations.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/69b03e499e47caa205cbec0dfb4dc8f1-1664202405286/emoji.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3b472e0bc5628f91f1b47af990465604-1664202973889/Final%20Gif%20FyreCow.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/69b03e499e47caa205cbec0dfb4dc8f1-1664202633231/Mortar_and_Pestle__3.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3b472e0bc5628f91f1b47af990465604-1664202996462/65591-flower-blooming_1_.gif"
+   ]
+  },
+  {
+   "k": "Character Animation",
+   "t": "Character Animation",
+   "d": "Lottie character animation used on web and app - a character jump plus supporting motion graphics.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/ad46e98c59e13cbe701d79fa1d374037-1649016105327/exemple_of_character_6%20(1).gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/934f103c519f85a1efe3f02b0321147b-1664203819706/Jocko_the_Jackal_Logo_Final_7.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/934f103c519f85a1efe3f02b0321147b-1664203819691/image_processing20201201-28752-23p0ff.gif"
+   ]
+  },
+  {
+   "k": "UI Interaction",
+   "t": "PDF Download UI Interaction",
+   "d": "A micro-interaction showing how easily users can download a PDF.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/46b1879adc15a7f400d02bfd8c50d96e-1664377341277/UI_2.gif"
+   ]
+  },
+  {
+   "k": "UI Interaction",
+   "t": "Website UI Interaction",
+   "d": "Website interactions that guide visitors to exactly what they need.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664200043377/final_all_1.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664200081146/traget_list.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664199976166/main_rchiaring_2%20(1).gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664200081150/traget_list_7.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3f73d7dbda2f782c2dd9ca54dc37a426-1664200025305/6mb-file.gif"
+   ]
+  },
+  {
+   "k": "Video Editing",
+   "t": "Instagram Reel",
+   "d": "An Instagram reel cut from multiple clips and images into one polished output.",
+   "m": [
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/de501be0c568d985bd2a2002afffdcae-1755215232856/transion%20rgb"
+   ]
+  },
+  {
+   "k": "UI Interaction",
+   "t": "UI Interaction Webpages",
+   "d": "Visual task iterations that help users understand the product.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441402/corcodile.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441405/Onboarding_Performance_1.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441397/Work_that_is_complex_1%20(2).gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441391/Work_that_is_complex_3%20(1).gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/a8c67854bd726930753aa3bf72be82f9-1664200441395/Component_255_Image_Guide_One%20(1).gif"
+   ]
+  },
+  {
+   "k": "Logo Animation",
+   "t": "Aurenity Logo Motion",
+   "d": "Dynamic logo motion conveying the brand's identity by animating its core elements and values into a cohesive animation.",
+   "m": [
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/5f172afadfb59c71ccd5e1ba7b879896-1721853370805/Comp_37.gif",
+    "I|/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/5f172afadfb59c71ccd5e1ba7b879896-1721853744237/Comp_39.gif"
+   ]
+  },
+  {
+   "k": "Video Editing",
+   "t": "Headshot Video Editing",
+   "d": "Raw footage to polished final - color correction, smooth transitions, text animation and sound design, delivered on time.",
+   "m": [
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/project_item/attachment/54b98b565fd4bcc8872a33018dcea5b2-1783879029385/AA_Final"
+   ]
+  },
+  {
+   "k": "Lottie & Web Animation",
+   "t": "Spoon Micro-Animation",
+   "d": "\"Timir did an OUTSTANDING job on the Lottie & Web Animation project! His attention to detail and visual appeal were exceptional, truly exceeding my expectations.\" - Fiverr client",
+   "m": [
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/8e1166ae6ae7a423236ff08517c63f9a-1727457907/Only%20spoon%20move"
+   ]
+  },
+  {
+   "k": "Lottie & Web Animation",
+   "t": "Splash Screen Animation",
+   "d": "Client splash screen animation delivered through Fiverr.",
+   "m": [
+    "V|/video/upload/t_fiverr_hd/v1/video-attachments/delivery/asset/9fc666d402eb6e85983bdf59b9cab6bc-1726325863/final%20splash%20screen%202_3"
+   ]
+  },
+  {
+   "k": "Explainer Video",
+   "t": "Gora - Blockchain Oracle Explainer",
+   "d": "A 2D explainer video for Gora, the next-generation blockchain oracle - script-to-screen storytelling that turns a complex Web3 product into a clear, engaging narrative.",
+   "m": [
+    "F|assets/gora-explainer"
+   ]
+  },
+  {
+   "k": "Explainer Video",
+   "t": "TRACE",
+   "d": "TRACE - a SaaS product explainer designed, animated and delivered in HD.",
+   "m": [
+    "F|assets/trace"
+   ]
+  },
+  {
+   "k": "Music Video",
+   "t": "Prithibi Ghumak - Music Video",
+   "d": "Bangla music video 'Prithibi Ghumak' by Rafa feat. Topu (2021) - production and edit work with singer Topu.",
+   "m": [
+    "Y|A-IBxbPpxfs"
+   ]
+  },
+  {
+   "k": "Motion Graphics",
+   "t": "Ask Rosie Hero Animation",
+   "d": "Hero section animation for Ask Rosie Visual - smooth, attention-grabbing motion for the website's opening view.",
+   "m": [
+    "W|https://cdn.dribbble.com/userupload/21729180/file/large-a4feaaf401ae32b3789d09194bba6050.mp4|https://cdn.dribbble.com/userupload/21729180/file/still-1f816328dc30cd7ea2389d173f23e999.png"
+   ]
+  },
+  {
+   "k": "Brand Animation",
+   "t": "Gora Brand Animation",
+   "d": "Brand motion piece for Gora, the next-generation blockchain oracle.",
+   "m": [
+    "U|https://cdn.dribbble.com/userupload/11339073/file/original-0ec9f9b979f0fffe31f9756bab030b65.gif"
+   ]
+  },
+  {
+   "k": "Graphics Design",
+   "t": "Company Profile",
+   "d": "Company profile design - clean layout, typography and visual identity.",
+   "m": [
+    "U|https://cdn.dribbble.com/userupload/44614186/file/72fdf76d5ad7494eded70f15edd501ec.jpg",
+    "U|https://cdn.dribbble.com/userupload/44614185/file/d2f5548409279e93d40a298617fd988c.jpg",
+    "U|https://cdn.dribbble.com/userupload/44614187/file/4d71767daa6b65b160b64e03c803a8cb.jpg",
+    "U|https://cdn.dribbble.com/userupload/44622468/file/460044953282212b00730465d461493b.jpg"
+   ]
+  },
+  {
+   "k": "Logo Animation",
+   "t": "Bringing Logos to Life with Lottie",
+   "d": "Logo animations built in Lottie - lightweight, crisp motion that brings brand marks to life on web and app.",
+   "m": [
+    "W|https://cdn.dribbble.com/userupload/21697050/file/original-a7986f4449f322c59e3ba93bc79a3043.mp4|https://cdn.dribbble.com/userupload/21697050/file/still-a14249c1a6e3f17dc2994888637ce3f0.png"
+   ]
+  },
+  {
+   "k": "Logo Animation",
+   "t": "Develomark",
+   "d": "Logo animation for Develomark - a clean, energetic brand mark reveal.",
+   "m": [
+    "U|https://cdn.dribbble.com/userupload/11688362/file/original-22268a5a6538f446ae3cca42787732fc.gif"
+   ]
+  },
+  {
+   "k": "UI / UX Animation",
+   "t": "UI UX Animation Showcase",
+   "d": "UI and UX motion showcase - interface micro-interactions and transitions in action.",
+   "m": [
+    "W|https://cdn.dribbble.com/userupload/12031535/file/original-c9ad710b9e5f8433a0fc2448f88f919a.mp4|https://cdn.dribbble.com/userupload/12031534/file/still-a3c5f0ee12c77749b4086dec7596ef2a.png"
+   ]
+  },
+  {
+   "k": "Commercial Edit",
+   "t": "Bfour Real Estate Promo",
+   "d": "Promo film for Bfour's Jolshiri projects (Padatik Kunjo & Bfour Advent) - drone footage edited with title animations, pacing and a branded end card.",
+   "m": [
+    "F|assets/bfour-promo"
+   ]
+  },
+  {
+   "k": "SaaS Explainer",
+   "t": "Aura - SaaS Explainer Video",
+   "d": "Product explainer for Aura (English version) - turning the platform's value into a clear, engaging story from script to screen.",
+   "m": [
+    "F|assets/aura-explainer"
+   ]
+  },
+  {
+   "k": "Micro Animation",
+   "t": "Interactive Micro Animations",
+   "d": "A set of interactive Lottie micro-animations - staged onboarding and product motion delivered as lightweight, web-ready files.",
+   "m": [
+    "F|assets/stage-1",
+    "F|assets/stage-2",
+    "F|assets/stage-3",
+    "F|assets/stage-4",
+    "F|assets/stage-5"
+   ]
+  },
+  {
+   "k": "Character Animation",
+   "t": "Interactive Character Animation",
+   "d": "Interactive Lottie character set playing live on this page - idle, walk, hand wave, head movement, tail shake, blush, plus animated app screens (alarm, home, analytics). Real production Lottie files.",
+   "m": [
+    "L|assets/lottie/hand-wave.json",
+    "L|assets/lottie/idle.json",
+    "L|assets/lottie/walk.json",
+    "L|assets/lottie/head-movement.json",
+    "L|assets/lottie/shake-tail.json",
+    "L|assets/lottie/annoyed-blush.json",
+    "L|assets/lottie/alarm-screen.json",
+    "L|assets/lottie/home-screen.json",
+    "L|assets/lottie/analytics-screen.json"
+   ]
+  },
+  {
+   "k": "3D Animation",
+   "t": "Blender 3D Rolling in Lottie",
+   "d": "A Blender-made 3D roll exported to Lottie - real 3D depth with Lottie's lightweight delivery for web and app.",
+   "m": [
+    "W|https://cdn.dribbble.com/userupload/21761570/file/large-df5f955563b3427e3bdf7ffd557bd0a2.mp4|https://cdn.dribbble.com/userupload/21761569/file/original-79dc1930ffb141f55ab181a1847596f5.jpg"
+   ]
+  },
+  {
+   "k": "3D Illustration",
+   "t": "3D Illustration for Web & App",
+   "d": "3D illustration set crafted for web and app interfaces.",
+   "m": [
+    "U|https://cdn.dribbble.com/userupload/43562818/file/original-449df1549c5df5048dbb5490a51c73d7.gif",
+    "U|https://cdn.dribbble.com/userupload/43562816/file/original-1c16e4f2fe579de9675594367211b5d6.png",
+    "U|https://cdn.dribbble.com/userupload/43562817/file/original-5602a75a3ec2051dcb52d24bcffec669.png"
+   ]
+  },
+  {
+   "k": "UI / UX Design",
+   "t": "Dhaka Metro Ticket Booking App",
+   "d": "UI/UX concept for a Dhaka Metro ticket booking app - clean flows from search to seat.",
+   "m": [
+    "U|https://cdn.dribbble.com/userupload/44493640/file/d95a2d45a704f45f407fec76a86d6038.jpg",
+    "U|https://cdn.dribbble.com/userupload/44493810/file/7b100da1343c274ff5acb2c2ccaab90b.jpg"
+   ]
+  },
+  {
+   "k": "UI / UX Design",
+   "t": "Product Web UI",
+   "d": "Product web UI design - structured layout and clear visual hierarchy.",
+   "m": [
+    "U|https://cdn.dribbble.com/userupload/11625125/file/original-485efe098ca59e5536b965f8ec93a3ed.jpg",
+    "U|https://cdn.dribbble.com/userupload/11625126/file/original-0b90e76404815fcfb23435324a68eea4.jpg"
+   ]
+  },
+  {
+   "k": "UX Motion",
+   "t": "UX Interactive Motion Design",
+   "d": "Interactive UX motion design - interface responses that guide and delight users.",
+   "m": [
+    "U|https://cdn.dribbble.com/userupload/21761572/file/original-5835d00e0c12adda76e35568ec62abb4.gif",
+    "U|https://cdn.dribbble.com/userupload/21761571/file/original-2f89e8afd40fbe4d850d28cf5dbf3c5e.jpg"
+   ]
+  },
+  {
+   "k": "Splash Screen",
+   "t": "App Splash Screen Animation",
+   "d": "Lottie splash screen animations for mobile apps - fast, branded first impressions.",
+   "m": [
+    "W|https://cdn.dribbble.com/userupload/21729462/file/large-ea28925a506dd149dfa98a0362bddf6d.mp4|https://cdn.dribbble.com/userupload/21729440/file/still-c9b3be6312d16226f7f0cec9528f1c73.png",
+    "W|https://cdn.dribbble.com/userupload/21729463/file/large-642ab8cbad2fe3be17cddbba8a177040.mp4|https://cdn.dribbble.com/userupload/21729440/file/still-c9b3be6312d16226f7f0cec9528f1c73.png"
+   ]
+  },
+  {
+   "k": "Logo Animation",
+   "t": "Logo Lottie for App & Web",
+   "d": "Logo animations delivered as Lottie for app and web - crisp motion at any size.",
+   "m": [
+    "W|https://cdn.dribbble.com/userupload/21761533/file/large-5b47d3d97681e04f3ee060d9e1708d35.mp4|https://cdn.dribbble.com/userupload/21761532/file/original-854c42236bb6d18807cdc64dbc4c9024.jpg",
+    "W|https://cdn.dribbble.com/userupload/21761534/file/large-3dc93779373a7e5a84282ee0091b2186.mp4|https://cdn.dribbble.com/userupload/21761532/file/original-854c42236bb6d18807cdc64dbc4c9024.jpg"
+   ]
+  },
+  {
+   "k": "Logo Animation",
+   "t": "Unicorn Logo Wink",
+   "d": "A subtle, charming logo moment in Lottie - the unicorn gives a soft wink, the smile curves wider, and the head dips in a small bashful nod before smoothly resetting. Clean, polished easing in about 1.5 seconds. Playing live on this page.",
+   "m": [
+    "L|assets/lottie/unicorn-wink.json"
+   ]
+  }
+ ],
+ "groups": {
+  "pg-motion": [
+   {
+    "n": "Interactive Animation - Lottie & Rive",
+    "icon": "&#10070;",
+    "t": [
+     "Interactive Character Animation",
+     "Interactive Micro Animations",
+     "Character Design & Animation",
+     "Rive Character Design & Animation",
+     "App Explanation",
+     "Jamin K. Website Hero Animation",
+     "AI Select App for Users",
+     "Emoji Interaction",
+     "Character Animation",
+     "Spoon Micro-Animation"
+    ]
+   },
+   {
+    "n": "UI / UX Animation",
+    "icon": "&#9673;",
+    "t": [
+     "UX Interactive Motion Design",
+     "Dhaka Metro Ticket Booking App",
+     "Product Web UI",
+     "Product Selection",
+     "UX Animation for Web & App",
+     "Kanban Dashboard Project",
+     "Fiscoclic",
+     "PDF Download UI Interaction",
+     "Website UI Interaction",
+     "UI Interaction Webpages"
+    ]
+   },
+   {
+    "n": "Splash Screen Animation",
+    "icon": "&#10022;",
+    "t": [
+     "App Splash Screen Animation",
+     "Geological Hazard Splash Screen",
+     "Onboarding Splash Screens",
+     "Splash Screen Animation"
+    ]
+   },
+   {
+    "n": "Explainer Video - SaaS & Product",
+    "icon": "&#9654;",
+    "t": [
+     "Aura - SaaS Explainer Video",
+     "Gora - Blockchain Oracle Explainer",
+     "TRACE"
+    ]
+   },
+   {
+    "n": "Motion Graphics & 3D",
+    "icon": "&#10023;",
+    "t": [
+     "Ask Rosie Hero Animation",
+     "Blender 3D Rolling in Lottie",
+     "3D Illustration for Web & App",
+     "Gora Brand Animation",
+     "UI UX Animation Showcase",
+     "3D Product Modeling"
+    ]
+   },
+   {
+    "n": "Logo Animation",
+    "icon": "&#9650;",
+    "t": [
+     "Unicorn Logo Wink",
+     "Logo Lottie for App & Web",
+     "Bringing Logos to Life with Lottie",
+     "Develomark",
+     "Logo & Character Animation",
+     "Aurenity Logo Motion"
+    ]
+   }
+  ],
+  "pg-video": [
+   {
+    "n": "",
+    "icon": "",
+    "t": [
+     "Bfour Real Estate Promo",
+     "Prithibi Ghumak - Music Video",
+     "Instagram Reel",
+     "Headshot Video Editing"
+    ]
+   }
+  ],
+  "pg-graphics": [
+   {
+    "n": "",
+    "icon": "",
+    "t": [
+     "Company Profile"
+    ]
+   }
+  ]
+ }
+}

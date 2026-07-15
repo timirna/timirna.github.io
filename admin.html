@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Timir Portfolio</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--panel:#0d0d0d;--card:#141414;--card2:#181818;--line:#232323;--text:#f2f2f2;--muted:#9a9a9a;--accent:#4c6fff;--green:#3ddc84;--red:#e5533d}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.5;padding:20px}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-family:'Space Grotesk',sans-serif;font-size:26px;margin-bottom:4px}
+h1 span{color:var(--green)}
+.sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+.bar{position:sticky;top:0;z-index:50;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.bar input{flex:1;min-width:200px;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:var(--text);font-family:inherit}
+button{background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px 14px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+button:hover{border-color:#444}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.green{background:var(--green);border-color:var(--green);color:#062}
+button.danger{color:var(--red)}
+button.small{padding:5px 9px;font-size:12px;font-weight:500}
+.msg{font-size:13px;padding:9px 12px;border-radius:8px;display:none;margin-bottom:16px}
+.msg.ok{display:block;background:#0d2417;color:var(--green)}
+.msg.err{display:block;background:#2a100c;color:#ff9b8a}
+.help{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:20px;font-size:12.5px;color:var(--muted)}
+.help b{color:var(--text)}
+.help code{background:var(--card2);padding:1px 6px;border-radius:5px;color:#9db3ff;font-size:12px}
+details.page{background:var(--panel);border:1px solid var(--line);border-radius:16px;margin-bottom:14px}
+details.page>summary{cursor:pointer;padding:14px 18px;font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.page>summary::after{content:'▾';color:var(--muted)}
+.gwrap{padding:0 14px 14px}
+.ghead{display:flex;align-items:center;gap:8px;margin:14px 4px 8px;font-weight:600;font-size:14px}
+.ghead .count{color:var(--muted);font-weight:400;font-size:12px}
+.proj{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;gap:12px}
+.proj img.thumb{width:86px;height:64px;object-fit:cover;border-radius:8px;background:var(--card2);flex-shrink:0}
+.proj .fields{flex:1;min-width:0}
+.proj input,.proj textarea,.proj select{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:7px 10px;color:var(--text);font-family:inherit;font-size:13px;margin-bottom:6px}
+.proj textarea{min-height:52px;resize:vertical}
+.proj textarea.media{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;min-height:44px;color:#9db3ff}
+.row2{display:flex;gap:6px}
+.row2>*{flex:1}
+.btns{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+label{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.addbtn{margin:4px}
+@media(max-width:640px){.proj{flex-direction:column}.btns{flex-direction:row;flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Portfolio Admin<span>.</span></h1>
+  <p class="sub">Edit your projects, then hit <b>Publish</b>. Changes go live on timirna.github.io in about a minute.</p>
+
+  <div class="bar">
+    <input type="password" id="token" placeholder="GitHub token (saved only in this browser)">
+    <button class="green" onclick="publish()">&#128640; Publish to site</button>
+    <button onclick="download()">Download data.json</button>
+    <button onclick="location.reload()">Discard changes</button>
+  </div>
+  <div class="msg" id="msg"></div>
+
+  <div class="help">
+    <b>How media lines work</b> — one file per line in each project's "Media" box:<br>
+    <code>U|https://...image-or-gif</code> image/GIF by full URL &nbsp;&middot;&nbsp;
+    <code>W|https://...video.mp4|https://...poster.jpg</code> video by URL &nbsp;&middot;&nbsp;
+    <code>F|assets/name</code> video uploaded to your repo's assets folder (needs name.mp4 + name.jpg) &nbsp;&middot;&nbsp;
+    <code>L|assets/lottie/file.json</code> live Lottie &nbsp;&middot;&nbsp;
+    <code>Y|VIDEOID</code> YouTube &nbsp;&middot;&nbsp;
+    <code>I|/image/upload/...</code> Fiverr CDN image.
+    The first line is the tile thumbnail. <b>Token:</b> GitHub &rarr; Settings &rarr; Developer settings &rarr; Fine-grained tokens &rarr; New: only repo <i>timirna.github.io</i>, permission Contents &rarr; Read and write.
+  </div>
+
+  <div id="pages"></div>
+</div>
+
+<script>
+var PAGE_NAMES={"pg-motion":"Motion Graphics page","pg-video":"Video Editing page","pg-graphics":"Graphics Design page"};
+var DATA=null;
+
+fetch('data.json?t='+Date.now()).then(function(r){return r.json();}).then(function(d){DATA=d;render();});
+document.getElementById('token').value=localStorage.getItem('gh_token')||'';
+
+function findProject(title){for(var i=0;i<DATA.projects.length;i++)if(DATA.projects[i].t===title)return DATA.projects[i];return null;}
+function thumbOf(p){
+  if(!p.m||!p.m.length)return '';
+  var first=p.m[0],kind=first.slice(0,1),path=first.slice(2);
+  if(kind==='I')return 'https://fiverr-res.cloudinary.com'+path;
+  if(kind==='F')return path+'.jpg';
+  if(kind==='Y')return 'https://i.ytimg.com/vi/'+path+'/hqdefault.jpg';
+  if(kind==='U')return path;
+  if(kind==='W')return path.split('|')[1]||'';
+  if(kind==='L')return '';
+  return 'https://fiverr-res.cloudinary.com'+path.replace('/video/upload/t_fiverr_hd/','/video/upload/so_0,w_200,f_auto,q_auto/')+'.jpg';
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+
+function render(){
+  var out='';
+  for(var pid in DATA.groups){
+    out+='<details class="page" open><summary>'+ (PAGE_NAMES[pid]||pid) +'</summary><div class="gwrap">';
+    DATA.groups[pid].forEach(function(gr,gi){
+      out+='<div class="ghead">'+(gr.n||'(no section header)')+' <span class="count">'+gr.t.length+' projects</span> <button class="small" onclick="renameGroup(\''+pid+'\','+gi+')">rename</button></div>';
+      gr.t.forEach(function(title,ti){
+        var p=findProject(title); if(!p)return;
+        var th=thumbOf(p);
+        out+='<div class="proj">'
+          +(th?'<img class="thumb" loading="lazy" src="'+esc(th)+'">':'<div class="thumb" style="width:86px;height:64px;border-radius:8px;background:var(--card2);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:10px">Lottie</div>')
+          +'<div class="fields">'
+          +'<div class="row2"><div><label>Title</label><input value="'+esc(p.t)+'" onchange="editTitle(\''+esc(title)+'\',this.value)"></div>'
+          +'<div><label>Category label</label><input value="'+esc(p.k)+'" onchange="findProject(\''+esc(p.t)+'\').k=this.value"></div></div>'
+          +'<label>Description</label><textarea onchange="findProject(\''+esc(p.t)+'\').d=this.value">'+esc(p.d)+'</textarea>'
+          +'<label>Media (one per line, first = thumbnail)</label><textarea class="media" onchange="findProject(\''+esc(p.t)+'\').m=this.value.split(\'\\n\').map(function(x){return x.trim()}).filter(Boolean)">'+esc((p.m||[]).join('\n'))+'</textarea>'
+          +'</div>'
+          +'<div class="btns">'
+          +'<button class="small" title="Move up" onclick="move(\''+pid+'\','+gi+','+ti+',-1)">&#8593;</button>'
+          +'<button class="small" title="Move down" onclick="move(\''+pid+'\','+gi+','+ti+',1)">&#8595;</button>'
+          +'<button class="small danger" onclick="del(\''+pid+'\','+gi+','+ti+')">delete</button>'
+          +'</div></div>';
+      });
+      out+='<button class="small addbtn" onclick="addProject(\''+pid+'\','+gi+')">+ Add project here</button>';
+    });
+    out+='</div></details>';
+  }
+  document.getElementById('pages').innerHTML=out;
+}
+
+function editTitle(oldT,newT){
+  newT=newT.trim(); if(!newT)return;
+  var p=findProject(oldT); if(p)p.t=newT;
+  for(var pid in DATA.groups)DATA.groups[pid].forEach(function(gr){gr.t=gr.t.map(function(t){return t===oldT?newT:t;});});
+  render();
+}
+function move(pid,gi,ti,dir){
+  var arr=DATA.groups[pid][gi].t, j=ti+dir;
+  if(j<0||j>=arr.length)return;
+  var tmp=arr[ti];arr[ti]=arr[j];arr[j]=tmp;render();
+}
+function del(pid,gi,ti){
+  var title=DATA.groups[pid][gi].t[ti];
+  if(!confirm('Delete "'+title+'" from the site?'))return;
+  DATA.groups[pid][gi].t.splice(ti,1);
+  var used=false;
+  for(var q in DATA.groups)DATA.groups[q].forEach(function(gr){if(gr.t.indexOf(title)>-1)used=true;});
+  if(!used)DATA.projects=DATA.projects.filter(function(p){return p.t!==title;});
+  render();
+}
+function addProject(pid,gi){
+  var title=prompt('New project title:'); if(!title)return;
+  if(findProject(title)){alert('A project with that title already exists.');return;}
+  DATA.projects.push({k:'New Work',t:title,d:'Description...',m:[]});
+  DATA.groups[pid][gi].t.unshift(title);
+  render();
+}
+function renameGroup(pid,gi){
+  var n=prompt('Section header name (empty = no header):',DATA.groups[pid][gi].n);
+  if(n===null)return; DATA.groups[pid][gi].n=n; render();
+}
+
+function download(){
+  var blob=new Blob([JSON.stringify(DATA,null,1)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='data.json';a.click();
+  say('data.json downloaded. Upload it to your GitHub repo (Add file → Upload files) to go live.','ok');
+}
+function say(text,cls){var m=document.getElementById('msg');m.textContent=text;m.className='msg '+cls;}
+
+function publish(){
+  var token=document.getElementById('token').value.trim();
+  if(!token){say('Paste your GitHub token first (see the help box for how to create one).','err');return;}
+  localStorage.setItem('gh_token',token);
+  say('Publishing...','ok');
+  var api='https://api.github.com/repos/timirna/timirna.github.io/contents/data.json';
+  var headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'};
+  fetch(api,{headers:headers}).then(function(r){return r.json();}).then(function(cur){
+    var body={message:'Update projects via admin',content:btoa(unescape(encodeURIComponent(JSON.stringify(DATA,null,1))))};
+    if(cur&&cur.sha)body.sha=cur.sha;
+    return fetch(api,{method:'PUT',headers:headers,body:JSON.stringify(body)});
+  }).then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});}).then(function(res){
+    if(res.ok)say('Published! The site updates in about a minute.','ok');
+    else say('GitHub said: '+(res.j.message||'error')+'. Check that your token has Contents read/write on timirna.github.io.','err');
+  }).catch(function(e){say('Network error: '+e.message,'err');});
+}
+</script>
+</body>
+</html>
