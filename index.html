@@ -728,7 +728,8 @@ function renderFree(){
     var f=FREE[i];
     var thumb;
     if(f.p&&f.p.slice(0,1)==='L'){thumb='<div class="pthumb lthumb"><div class="lottie-holder" data-lottie="'+f.p.slice(2)+'"></div></div>';}
-    else{thumb='<div class="pthumb"><img loading="lazy" src="'+thumbOf({m:[f.p||'U|']})+'" alt="'+(f.t||'').replace(/"/g,'&quot;')+'"></div>';}
+    else if(f.p){thumb='<div class="pthumb"><img loading="lazy" src="'+thumbOf({m:[f.p]})+'" alt="'+(f.t||'').replace(/"/g,'&quot;')+'"></div>';}
+    else{thumb='<div class="pthumb" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(150deg,#191b2e,#101018)"><span style="font-size:30px">&#129513;</span><span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--faint)">After Effects</span></div>';}
     html+='<div class="card pcard" style="cursor:default">'
       +thumb
       +'<div class="pkicker">'+(f.k||'Freebie')+'</div>'

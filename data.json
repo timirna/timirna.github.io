@@ -521,5 +521,55 @@
    }
   ]
  },
- "free": []
+ "free": [
+  {
+   "k": "AE Script Panel",
+   "t": "Motion Curve (Beta)",
+   "d": "Flow-style easing panel with 25 Penner-inspired cubic-bezier presets - one click for cleaner, snappier motion.",
+   "file": "assets/free/motion-curve.zip",
+   "p": ""
+  },
+  {
+   "k": "AE Script Panel",
+   "t": "Lottie Friendly Rig",
+   "d": "Null-based character controls that are safer for Lottie export than expression-heavy IK rigs - FK chains, anchor centering and more.",
+   "file": "assets/free/lottie-friendly-rig.zip",
+   "p": ""
+  },
+  {
+   "k": "AE Script Panel",
+   "t": "AE Shape to Illustrator",
+   "d": "Dockable panel that exports selected shape layers as SVG and opens them straight in Adobe Illustrator.",
+   "file": "assets/free/shape-to-illustrator.zip",
+   "p": ""
+  },
+  {
+   "k": "AE Extension",
+   "t": "Lottie Toolkit v2",
+   "d": "CEP panel with everyday helpers for Lottie-ready After Effects projects.",
+   "file": "assets/free/lottie-toolkit.zip",
+   "p": ""
+  },
+  {
+   "k": "AE Extension",
+   "t": "Motion Tools Classic",
+   "d": "The classic motion toolkit as a CEP panel - quick tools for everyday animation work.",
+   "file": "assets/free/motion-tools-classic.zip",
+   "p": ""
+  },
+  {
+   "k": "AE Extension",
+   "t": "Aura Energy Flow",
+   "d": "CEP extension for creating flowing aura and energy effects around your layers.",
+   "file": "assets/free/aura-energy-flow.zip",
+   "p": ""
+  },
+  {
+   "k": "AE Extension",
+   "t": "Number Countdown",
+   "d": "Animated number counters and countdowns without wrestling expressions.",
+   "file": "assets/free/number-countdown.zip",
+   "p": ""
+  }
+ ]
 }
