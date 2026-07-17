@@ -235,6 +235,8 @@ nav{display:flex;align-items:center;justify-content:space-between}
 .pcard .pname i{font-style:normal;width:26px;height:26px;flex-shrink:0;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);transition:background .25s,color .25s,transform .25s}
 .pcard:hover .pname i{background:var(--accent);color:#fff;border-color:var(--accent);transform:rotate(-45deg)}
 .pcard .pdesc{font-size:12px;color:var(--muted);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dl-btn{display:block;text-align:center;margin-top:12px;background:var(--accent);color:#fff;font-size:13px;font-weight:600;padding:10px;border-radius:10px;transition:filter .25s,transform .2s}
+.dl-btn:hover{filter:brightness(1.15);transform:translateY(-1px)}
 @media(max-width:880px){.pgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.pgrid{grid-template-columns:1fr}}
 
@@ -344,6 +346,7 @@ footer .logo{font-size:20px;margin-bottom:4px}
       <a href="#motion" data-page="motion">Motion Graphics</a>
       <a href="#video" data-page="video">Video Editing</a>
       <a href="#graphics" data-page="graphics">Graphics Design</a>
+      <a href="#free" data-page="free">Free Download</a>
       <a href="#contact" data-page="contact">Contact</a>
     </div>
     <a class="btn-talk" href="#contact">Let's talk</a>
@@ -534,6 +537,18 @@ footer .logo{font-size:20px;margin-bottom:4px}
   </div>
 </section>
 
+<!-- ================= FREE DOWNLOAD ================= -->
+<section class="panel page" id="free">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Free Download<span class="star">&#10022;</span></h2>
+  <p style="text-align:center;color:var(--muted);font-size:14px;margin:-14px 0 24px">Free After Effects plugins, scripts &amp; motion assets - made by Timir, free for your projects</p>
+  <div class="pgrid" id="freegrid"></div>
+  <div class="card" id="free-soon" style="text-align:center;padding:60px 24px">
+    <div style="font-size:34px;margin-bottom:12px">&#127873;</div>
+    <div class="card-title" style="margin-bottom:8px">First freebies dropping soon</div>
+    <p style="font-size:13.5px;color:var(--muted)">After Effects plugins and motion assets are on the way. Meanwhile, <a href="#motion" style="color:var(--accent)">explore the work</a> or <a href="#contact" style="color:var(--accent)">get in touch</a>.</p>
+  </div>
+</section>
+
 <!-- ================= CASE STUDY: KOALA RIVE ================= -->
 <section class="panel page" id="case-rive">
   <div class="cs-wrap">
@@ -631,6 +646,7 @@ footer .logo{font-size:20px;margin-bottom:4px}
     <a href="#motion">Motion Graphics</a>
     <a href="#video">Video Editing</a>
     <a href="#graphics">Graphics Design</a>
+    <a href="#free">Free Download</a>
     <a href="#contact">Contact</a>
   </div>
   <div>&copy; 2026 Timir. All rights reserved.</div>
@@ -703,7 +719,30 @@ function renderProjects(){
   if(gs&&gp&&gp.innerHTML.trim())gs.style.display='none';
   initLotties(document.body);
 }
-fetch('data.json?t='+Date.now()).then(function(r){return r.json();}).then(function(d){PROJECTS=d.projects;PAGEGROUPS=d.groups;renderProjects();});
+var FREE=[];
+function renderFree(){
+  var grid=document.getElementById('freegrid');
+  if(!grid)return;
+  var html='';
+  for(var i=0;i<FREE.length;i++){
+    var f=FREE[i];
+    var thumb;
+    if(f.p&&f.p.slice(0,1)==='L'){thumb='<div class="pthumb lthumb"><div class="lottie-holder" data-lottie="'+f.p.slice(2)+'"></div></div>';}
+    else{thumb='<div class="pthumb"><img loading="lazy" src="'+thumbOf({m:[f.p||'U|']})+'" alt="'+(f.t||'').replace(/"/g,'&quot;')+'"></div>';}
+    html+='<div class="card pcard" style="cursor:default">'
+      +thumb
+      +'<div class="pkicker">'+(f.k||'Freebie')+'</div>'
+      +'<div class="pname">'+f.t+'</div>'
+      +'<div class="pdesc">'+(f.d||'')+'</div>'
+      +'<a class="dl-btn" href="'+f.file+'" download>&#8595; Free download</a>'
+      +'</div>';
+  }
+  grid.innerHTML=html;
+  var soon=document.getElementById('free-soon');
+  if(soon&&html)soon.style.display='none';
+  initLotties(grid);
+}
+fetch('data.json?t='+Date.now()).then(function(r){return r.json();}).then(function(d){PROJECTS=d.projects;PAGEGROUPS=d.groups;FREE=d.free||[];renderProjects();renderFree();});
 
 /* ---------- project view (Dribbble-style) ---------- */
 var AVATAR="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg";
@@ -778,7 +817,7 @@ function initLotties(root){
 }
 
 /* ---------- page router ---------- */
-var PAGES=['home','about','motion','video','graphics','contact','case-rive'];
+var PAGES=['home','about','motion','video','graphics','free','contact','case-rive'];
 function route(){
   var h=(location.hash||'#home').slice(1);
   if(PAGES.indexOf(h)===-1)h='home';

@@ -98,6 +98,20 @@ function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 
 function render(){
   var out='';
+  // Free downloads editor
+  out+='<details class="page" open><summary>Free Download page</summary><div class="gwrap">';
+  (DATA.free=DATA.free||[]).forEach(function(f,fi){
+    out+='<div class="proj"><div class="fields">'
+      +'<div class="row2"><div><label>Title</label><input value="'+esc(f.t)+'" onchange="DATA.free['+fi+'].t=this.value"></div>'
+      +'<div><label>Category label</label><input value="'+esc(f.k||'Freebie')+'" onchange="DATA.free['+fi+'].k=this.value"></div></div>'
+      +'<label>Description</label><textarea onchange="DATA.free['+fi+'].d=this.value">'+esc(f.d)+'</textarea>'
+      +'<div class="row2"><div><label>Download file (e.g. assets/free/my-plugin.zip)</label><input value="'+esc(f.file)+'" onchange="DATA.free['+fi+'].file=this.value"></div>'
+      +'<div><label>Preview (media line, e.g. U|https://...gif)</label><input value="'+esc(f.p||'')+'" onchange="DATA.free['+fi+'].p=this.value"></div></div>'
+      +'</div><div class="btns"><button class="small danger" onclick="if(confirm(\'Delete this freebie?\')){DATA.free.splice('+fi+',1);render();}">delete</button></div></div>';
+  });
+  out+='<button class="small addbtn" onclick="DATA.free.push({t:\'New freebie\',k:\'AE Plugin\',d:\'\',file:\'assets/free/\',p:\'\'});render()">+ Add freebie</button>'
+    +'<p style="font-size:11.5px;color:var(--muted);margin:6px 4px">Upload the actual file to the repo first: GitHub &rarr; assets &rarr; Add file &rarr; Upload files (create a <b>free</b> folder by uploading at assets/free). Then put its path here.</p>'
+    +'</div></details>';
   for(var pid in DATA.groups){
     out+='<details class="page" open><summary>'+ (PAGE_NAMES[pid]||pid) +'</summary><div class="gwrap">';
     DATA.groups[pid].forEach(function(gr,gi){
