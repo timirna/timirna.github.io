@@ -38,7 +38,7 @@ const todayKey = () => {
 };
 const monthKey = () => todayKey().slice(0, 7);
 const uid = () => Math.random().toString(36).slice(2, 9);
-const usd = (n) => "$" + Number(n || 0).toLocaleString();
+const usd = (n) => "৳" + Number(n || 0).toLocaleString();
 const bdt = (n) => "৳" + Number(n || 0).toLocaleString();
 const hrs = (sec) => {
   const h = Math.floor(sec / 3600);
@@ -231,7 +231,7 @@ function EditModal({ modal, setModal, upd, today }) {
           </Field>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Earnings ($)"><input type="number" style={inputStyle} value={form.earnings || ""} onChange={set("earnings")} /></Field>
+          <Field label="Earnings (৳)"><input type="number" style={inputStyle} value={form.earnings || ""} onChange={set("earnings")} /></Field>
           <Field label="Due date"><input type="date" style={inputStyle} value={form.due || ""} onChange={set("due")} /></Field>
         </div>
         <Field label="Notes"><textarea style={{ ...inputStyle, minHeight: 60 }} value={form.notes || ""} onChange={set("notes")} /></Field>
@@ -252,7 +252,7 @@ function EditModal({ modal, setModal, upd, today }) {
     income: (
       <>
         <Field label="Source"><input style={inputStyle} value={form.source || ""} onChange={set("source")} autoFocus placeholder="Fiverr, Upwork, direct…" /></Field>
-        <Field label="Amount ($)"><input type="number" style={inputStyle} value={form.amount || ""} onChange={set("amount")} /></Field>
+        <Field label="Amount (৳)"><input type="number" style={inputStyle} value={form.amount || ""} onChange={set("amount")} /></Field>
         <Field label="Date"><input type="date" style={inputStyle} value={form.date || today} onChange={set("date")} /></Field>
         <Btn variant="primary" className="w-full" onClick={() => form.source && form.amount && save("income", { date: today })}>Save income</Btn>
       </>
@@ -264,8 +264,8 @@ function EditModal({ modal, setModal, upd, today }) {
           <input type="range" min="0" max="100" className="w-full" value={form.progress ?? 0} onChange={set("progress")} style={{ accentColor: "#a78bfa" }} />
         </Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Budget ($)"><input type="number" style={inputStyle} value={form.budget || ""} onChange={set("budget")} /></Field>
-          <Field label="Received ($)"><input type="number" style={inputStyle} value={form.received || ""} onChange={set("received")} /></Field>
+          <Field label="Budget (৳)"><input type="number" style={inputStyle} value={form.budget || ""} onChange={set("budget")} /></Field>
+          <Field label="Received (৳)"><input type="number" style={inputStyle} value={form.received || ""} onChange={set("received")} /></Field>
         </div>
         <Field label="Deadline"><input type="date" style={inputStyle} value={form.deadline || ""} onChange={set("deadline")} /></Field>
         <Btn variant="primary" className="w-full" onClick={() => form.name && save("projects", { progress: 0, budget: 0, received: 0 })}>Save project</Btn>
@@ -442,7 +442,7 @@ function MotionDesk() {
     ["dashboard", "◈", "Desk"],
     ["work", "▸", "Work"],
     ["expenses", "৳", "Expenses"],
-    ["income", "$", "Income"],
+    ["income", "৳", "Income"],
     ["projects", "▦", "Projects"],
     ["clients", "☎", "Clients"],
     ["ideas", "✦", "Ideas"],
@@ -805,7 +805,7 @@ function MotionDesk() {
         <StatCard label="Expenses this month" value={bdt(monthExpenses)} accent="#f5b544" />
         <StatCard label="Productivity score" value={`${productivity}`} sub="goals + tasks + hours" accent={productivity >= 70 ? "#5eead4" : productivity >= 40 ? "#f5b544" : "#f87171"} />
         <StatCard label="Tasks completed" value={`${doneTasks.length}/${data.tasks.length}`} />
-        <StatCard label="Avg hourly rate" value={doneHours > 0 ? `$${avgRate}/h` : "—"} sub={doneHours > 0 ? `${doneHours.toFixed(1)}h billed` : "complete tasks with tracked time"} />
+        <StatCard label="Avg hourly rate" value={doneHours > 0 ? `৳${avgRate}/h` : "—"} sub={doneHours > 0 ? `${doneHours.toFixed(1)}h billed` : "complete tasks with tracked time"} />
       </div>
       <Card className="p-4">
         <h3 className="font-semibold mb-2">Work rhythm — last 7 days</h3>
