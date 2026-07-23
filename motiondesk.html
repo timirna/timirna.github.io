@@ -97,6 +97,27 @@ const SEED = {
 };
 const STORE_KEY = "motiondesk-v1";
 
+/* ---------- cloud sync (Supabase) ---------- */
+const SB_URL = "https://bnbtokbcvwtzixyzmaij.supabase.co";
+const SB_KEY = "sb_publishable_jrvKrOn8XnDHSIi39g-hCw_sHWdRLD_";
+const ROW_ID = "main";
+const PASSCODE = "timir2026";
+const sbHeaders = { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY, "Content-Type": "application/json" };
+const cloudLoad = async () => {
+  const res = await fetch(`${SB_URL}/rest/v1/kv?id=eq.${ROW_ID}&select=data`, { headers: sbHeaders });
+  if (!res.ok) throw new Error("load failed");
+  const rows = await res.json();
+  return rows[0] ? rows[0].data : null;
+};
+const cloudSave = async (data) => {
+  const res = await fetch(`${SB_URL}/rest/v1/kv`, {
+    method: "POST",
+    headers: { ...sbHeaders, Prefer: "resolution=merge-duplicates,return=minimal" },
+    body: JSON.stringify([{ id: ROW_ID, data, updated_at: new Date().toISOString() }]),
+  });
+  if (!res.ok) throw new Error("save failed");
+};
+
 /* ---------- tiny UI atoms ---------- */
 const Diamond = ({ status, size = 10 }) => {
   const s = STATUS[status] || STATUS.pending;
@@ -303,8 +324,33 @@ function EditModal({ modal, setModal, upd, today }) {
   return <Modal title={titles[type]} onClose={() => setModal(null)}>{forms[type]}</Modal>;
 }
 
+function PasscodeGate({ onUnlock }) {
+  const [pin, setPin] = useState("");
+  const [err, setErr] = useState(false);
+  const submit = () => {
+    if (pin === PASSCODE) { try { localStorage.setItem("motiondesk-unlocked", "1"); } catch {} onUnlock(); }
+    else { setErr(true); setPin(""); }
+  };
+  return (
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: "radial-gradient(1200px 600px at 80% -10%, rgba(167,139,250,0.10), transparent), #0b0e16", color: "#e6e8f0", fontFamily: "'Inter', system-ui, sans-serif" }}>
+      <div style={{ width: "100%", maxWidth: 320, textAlign: "center" }}>
+        <div style={{ width: 44, height: 44, margin: "0 auto 18px", transform: "rotate(45deg)", background: "linear-gradient(135deg,#a78bfa,#5eead4)", borderRadius: 8 }} />
+        <h1 style={{ fontFamily: "'Space Grotesk', system-ui", fontSize: 22, fontWeight: 700, marginBottom: 4 }}>MotionDesk</h1>
+        <p style={{ color: "#8b93a7", fontSize: 14, marginBottom: 20 }}>Enter your passcode</p>
+        <input type="password" value={pin} autoFocus
+          onChange={(e) => { setPin(e.target.value); setErr(false); }}
+          onKeyDown={(e) => e.key === "Enter" && submit()}
+          style={{ ...inputStyle, textAlign: "center", letterSpacing: 4, marginBottom: 12, borderColor: err ? "#f87171" : "rgba(255,255,255,0.1)" }} />
+        {err && <div style={{ color: "#f87171", fontSize: 13, marginBottom: 12 }}>Wrong passcode</div>}
+        <button onClick={submit} className="w-full" style={{ background: "#a78bfa", color: "#0c0e16", fontWeight: 600, padding: "10px", borderRadius: 10, border: "none", cursor: "pointer" }}>Unlock</button>
+      </div>
+    </div>
+  );
+}
+
 /* ---------- main app ---------- */
 function MotionDesk() {
+  const [unlocked, setUnlocked] = useState(() => { try { return localStorage.getItem("motiondesk-unlocked") === "1"; } catch { return false; } });
   const [data, setData] = useState(null);
   const [tab, setTab] = useState("dashboard");
   const [modal, setModal] = useState(null);
@@ -314,12 +360,15 @@ function MotionDesk() {
   const firstSave = useRef(true);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORE_KEY);
-      setData(raw ? { ...SEED, ...JSON.parse(raw) } : SEED);
-    } catch {
-      setData(SEED);
-    }
+    (async () => {
+      let local = null;
+      try { const raw = localStorage.getItem(STORE_KEY); if (raw) local = JSON.parse(raw); } catch {}
+      try {
+        const cloud = await cloudLoad();
+        if (cloud) { setData({ ...SEED, ...cloud }); localStorage.setItem(STORE_KEY, JSON.stringify(cloud)); return; }
+      } catch {}
+      setData(local ? { ...SEED, ...local } : SEED);
+    })();
   }, []);
 
   useEffect(() => {
@@ -327,9 +376,10 @@ function MotionDesk() {
     if (firstSave.current) { firstSave.current = false; return; }
     setSaveState("saving");
     clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(() => {
+    saveTimer.current = setTimeout(async () => {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch {}
       try {
-        localStorage.setItem(STORE_KEY, JSON.stringify(data));
+        await cloudSave(data);
         setSaveState("saved");
         setTimeout(() => setSaveState("idle"), 1500);
       } catch {
@@ -360,6 +410,8 @@ function MotionDesk() {
   }, [tab]);
 
   const upd = (fn) => setData((d) => fn(structuredClone(d)));
+
+  if (!unlocked) return <PasscodeGate onUnlock={() => setUnlocked(true)} />;
 
   if (!data) {
     return (
