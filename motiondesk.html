@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>MotionDesk</title>
+<meta name="theme-color" content="#0b0e16" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="MotionDesk" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230b0e16'/%3E%3Crect x='66' y='66' width='48' height='48' rx='8' transform='rotate(45 90 90)' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23a78bfa'/%3E%3Cstop offset='1' stop-color='%235eead4'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='9' y='9' width='14' height='14' rx='3' transform='rotate(45 16 16)' fill='%23a78bfa'/%3E%3C/svg%3E" />
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22MotionDesk%22%2C%22short_name%22%3A%22MotionDesk%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b0e16%22%2C%22theme_color%22%3A%22%230b0e16%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2527%2520viewBox%253D%25270%25200%2520180%2520180%2527%253E%253Crect%2520width%253D%2527180%2527%2520height%253D%2527180%2527%2520rx%253D%252740%2527%2520fill%253D%2527%25230b0e16%2527%252F%253E%253Crect%2520x%253D%252766%2527%2520y%253D%252766%2527%2520width%253D%252748%2527%2520height%253D%252748%2527%2520rx%253D%25278%2527%2520transform%253D%2527rotate%252845%252090%252090%2529%2527%2520fill%253D%2527%2523a78bfa%2527%252F%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html, body, #root { height: 100%; margin: 0; background: #0b0e16; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useMemo } = React;
+const {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  AreaChart, Area, PieChart, Pie, Cell, CartesianGrid,
+} = Recharts;
+
+/* ---------- helpers ---------- */
+const todayKey = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+const monthKey = () => todayKey().slice(0, 7);
+const uid = () => Math.random().toString(36).slice(2, 9);
+const usd = (n) => "$" + Number(n || 0).toLocaleString();
+const bdt = (n) => "৳" + Number(n || 0).toLocaleString();
+const hrs = (sec) => {
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+};
+const clock = (sec) => {
+  const h = String(Math.floor(sec / 3600)).padStart(2, "0");
+  const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
+  const s = String(Math.floor(sec % 60)).padStart(2, "0");
+  return `${h}:${m}:${s}`;
+};
+const daysLeft = (dateStr) => {
+  if (!dateStr) return null;
+  const diff = Math.ceil((new Date(dateStr) - new Date(todayKey())) / 86400000);
+  return diff;
+};
+const STATUS = {
+  pending: { label: "Pending", color: "#8b93a7", fill: false },
+  progress: { label: "In progress", color: "#f5b544", fill: true },
+  done: { label: "Done", color: "#a78bfa", fill: true },
+};
+const DEFAULT_GOALS = ["Gym", "Read 30 mins", "Drink 3L water", "Upload to Dribbble", "Apply to 5 jobs", "Learn Figma"];
+const SEED = {
+  tasks: [
+    { id: uid(), name: "Fox mascot animation", client: "Vamsi", status: "progress", seconds: 2 * 3600, earnings: 350, priority: "high", due: "", notes: "More expressive poses for v2", date: todayKey() },
+    { id: uid(), name: "Landing page animation", client: "Fiverr", status: "done", seconds: 4 * 3600, earnings: 150, priority: "med", due: "", notes: "", date: todayKey() },
+    { id: uid(), name: "Storyboard draft", client: "YouTube", status: "pending", seconds: 0, earnings: 80, priority: "low", due: "", notes: "", date: todayKey() },
+  ],
+  expenses: [
+    { id: uid(), date: todayKey(), label: "Coffee", emoji: "☕", amount: 60 },
+    { id: uid(), date: todayKey(), label: "Lunch", emoji: "🍔", amount: 180 },
+    { id: uid(), date: todayKey(), label: "Uber", emoji: "🚕", amount: 220 },
+    { id: uid(), date: todayKey(), label: "Internet", emoji: "💻", amount: 100 },
+  ],
+  income: [
+    { id: uid(), date: todayKey(), source: "Fiverr", amount: 850 },
+    { id: uid(), date: todayKey(), source: "Upwork", amount: 420 },
+    { id: uid(), date: todayKey(), source: "Direct client", amount: 1200 },
+    { id: uid(), date: todayKey(), source: "Salary", amount: 600 },
+  ],
+  projects: [
+    { id: uid(), name: "Migrantbhai", progress: 80, deadline: "2026-07-30", budget: 1200, received: 600 },
+  ],
+  clients: [
+    { id: uid(), name: "Vamsi", company: "Unleagued", email: "", whatsapp: "", lastMsg: "Wants livelier fox poses", followUp: "", status: "active" },
+  ],
+  ideas: [
+    { id: uid(), text: "New Fiverr gig: Rive interactive mascots", tag: "Gig" },
+    { id: uid(), text: "YouTube short: 10s logo sting breakdown", tag: "YouTube" },
+  ],
+  goalsList: DEFAULT_GOALS,
+  goalsDone: {},
+  workLog: {},
+  timer: null,
+};
+const STORE_KEY = "motiondesk-v1";
+
+/* ---------- tiny UI atoms ---------- */
+const Diamond = ({ status, size = 10 }) => {
+  const s = STATUS[status] || STATUS.pending;
+  return (
+    <span
+      style={{
+        display: "inline-block", width: size, height: size,
+        transform: "rotate(45deg)", borderRadius: 2,
+        background: s.fill ? s.color : "transparent",
+        border: `1.5px solid ${s.color}`,
+        boxShadow: s.fill ? `0 0 8px ${s.color}55` : "none",
+        flexShrink: 0,
+      }}
+    />
+  );
+};
+const Card = ({ children, className = "", style = {} }) => (
+  <div
+    className={`rounded-2xl ${className}`}
+    style={{
+      background: "rgba(255,255,255,0.035)",
+      border: "1px solid rgba(255,255,255,0.07)",
+      backdropFilter: "blur(14px)",
+      WebkitBackdropFilter: "blur(14px)",
+      ...style,
+    }}
+  >
+    {children}
+  </div>
+);
+const Btn = ({ children, onClick, variant = "ghost", className = "", title }) => {
+  const styles = {
+    primary: { background: "#a78bfa", color: "#0c0e16", fontWeight: 600 },
+    ghost: { background: "rgba(255,255,255,0.06)", color: "#e6e8f0", border: "1px solid rgba(255,255,255,0.08)" },
+    danger: { background: "rgba(255,80,80,0.12)", color: "#ff9d9d", border: "1px solid rgba(255,80,80,0.2)" },
+  };
+  return (
+    <button title={title} onClick={onClick} className={`px-3 py-1.5 rounded-lg text-sm transition-transform active:scale-95 ${className}`} style={styles[variant]}>
+      {children}
+    </button>
+  );
+};
+const Field = ({ label, children }) => (
+  <label className="block mb-3">
+    <span className="block text-xs uppercase tracking-wider mb-1" style={{ color: "#8b93a7" }}>{label}</span>
+    {children}
+  </label>
+);
+const inputStyle = {
+  width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+  borderRadius: 10, padding: "8px 12px", color: "#e6e8f0", fontSize: 14, outline: "none",
+};
+const Modal = ({ title, onClose, children }) => (
+  <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6" style={{ background: "rgba(5,6,10,0.7)", backdropFilter: "blur(4px)" }} onClick={onClose}>
+    <div
+      className="w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl p-5 max-h-[85vh] overflow-y-auto"
+      style={{ background: "#141826", border: "1px solid rgba(255,255,255,0.1)" }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold" style={{ fontFamily: "'Space Grotesk', system-ui" }}>{title}</h3>
+        <button onClick={onClose} className="text-xl px-2" style={{ color: "#8b93a7" }}>×</button>
+      </div>
+      {children}
+    </div>
+  </div>
+);
+const Section = ({ title, onAdd, addLabel, children }) => (
+  <div>
+    <div className="flex items-center justify-between mb-4">
+      <h1 className="text-xl sm:text-2xl font-bold" style={{ fontFamily: "'Space Grotesk', system-ui" }}>{title}</h1>
+      {onAdd && <Btn variant="primary" onClick={onAdd}>+ {addLabel || "Add"}</Btn>}
+    </div>
+    {children}
+  </div>
+);
+const Empty = ({ text }) => (
+  <Card className="p-6 text-center text-sm mb-3" style={{ color: "#8b93a7" }}>{text}</Card>
+);
+const StatCard = ({ label, value, sub, accent }) => (
+  <Card className="p-4">
+    <div className="text-xs uppercase tracking-wider mb-1" style={{ color: "#8b93a7" }}>{label}</div>
+    <div className="text-2xl font-semibold" style={{ fontFamily: "'Space Grotesk', system-ui", color: accent || "#e6e8f0", fontVariantNumeric: "tabular-nums" }}>{value}</div>
+    {sub && <div className="text-xs mt-1" style={{ color: "#8b93a7" }}>{sub}</div>}
+  </Card>
+);
+
+function GoalsModal({ data, upd, setModal }) {
+  const [text, setText] = useState(data.goalsList.join("\n"));
+  return (
+    <Modal title="Edit goals list" onClose={() => setModal(null)}>
+      <Field label="One goal per line">
+        <textarea style={{ ...inputStyle, minHeight: 160 }} value={text} onChange={(e) => setText(e.target.value)} />
+      </Field>
+      <Btn variant="primary" className="w-full" onClick={() => { upd((d) => { d.goalsList = text.split("\n").map((s) => s.trim()).filter(Boolean); return d; }); setModal(null); }}>Save goals</Btn>
+    </Modal>
+  );
+}
+
+function EditModal({ modal, setModal, upd, today }) {
+  const { type, item } = modal;
+  const [form, setForm] = useState(item ? { ...item } : {});
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const save = (list, defaults) => {
+    upd((d) => {
+      const record = { ...defaults, ...form };
+      if (item) {
+        const idx = d[list].findIndex((x) => x.id === item.id);
+        d[list][idx] = { ...d[list][idx], ...record };
+      } else {
+        d[list].push({ id: uid(), ...record });
+      }
+      return d;
+    });
+    setModal(null);
+  };
+  const forms = {
+    task: (
+      <>
+        <Field label="Task name"><input style={inputStyle} value={form.name || ""} onChange={set("name")} autoFocus /></Field>
+        <Field label="Client"><input style={inputStyle} value={form.client || ""} onChange={set("client")} /></Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Status">
+            <select style={inputStyle} value={form.status || "pending"} onChange={set("status")}>
+              <option value="pending">Pending</option><option value="progress">In progress</option><option value="done">Done</option>
+            </select>
+          </Field>
+          <Field label="Priority">
+            <select style={inputStyle} value={form.priority || "med"} onChange={set("priority")}>
+              <option value="low">Low</option><option value="med">Medium</option><option value="high">High</option>
+            </select>
+          </Field>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Earnings ($)"><input type="number" style={inputStyle} value={form.earnings || ""} onChange={set("earnings")} /></Field>
+          <Field label="Due date"><input type="date" style={inputStyle} value={form.due || ""} onChange={set("due")} /></Field>
+        </div>
+        <Field label="Notes"><textarea style={{ ...inputStyle, minHeight: 60 }} value={form.notes || ""} onChange={set("notes")} /></Field>
+        <Btn variant="primary" className="w-full" onClick={() => form.name && save("tasks", { status: "pending", seconds: 0, date: today, priority: "med" })}>Save task</Btn>
+      </>
+    ),
+    expense: (
+      <>
+        <Field label="What was it?"><input style={inputStyle} value={form.label || ""} onChange={set("label")} autoFocus placeholder="Lunch, Uber, internet…" /></Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Amount (৳)"><input type="number" style={inputStyle} value={form.amount || ""} onChange={set("amount")} /></Field>
+          <Field label="Emoji"><input style={inputStyle} value={form.emoji || ""} onChange={set("emoji")} placeholder="🍔" /></Field>
+        </div>
+        <Field label="Date"><input type="date" style={inputStyle} value={form.date || today} onChange={set("date")} /></Field>
+        <Btn variant="primary" className="w-full" onClick={() => form.label && form.amount && save("expenses", { date: today, emoji: "💸" })}>Save expense</Btn>
+      </>
+    ),
+    income: (
+      <>
+        <Field label="Source"><input style={inputStyle} value={form.source || ""} onChange={set("source")} autoFocus placeholder="Fiverr, Upwork, direct…" /></Field>
+        <Field label="Amount ($)"><input type="number" style={inputStyle} value={form.amount || ""} onChange={set("amount")} /></Field>
+        <Field label="Date"><input type="date" style={inputStyle} value={form.date || today} onChange={set("date")} /></Field>
+        <Btn variant="primary" className="w-full" onClick={() => form.source && form.amount && save("income", { date: today })}>Save income</Btn>
+      </>
+    ),
+    project: (
+      <>
+        <Field label="Project name"><input style={inputStyle} value={form.name || ""} onChange={set("name")} autoFocus /></Field>
+        <Field label={`Progress: ${form.progress ?? 0}%`}>
+          <input type="range" min="0" max="100" className="w-full" value={form.progress ?? 0} onChange={set("progress")} style={{ accentColor: "#a78bfa" }} />
+        </Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Budget ($)"><input type="number" style={inputStyle} value={form.budget || ""} onChange={set("budget")} /></Field>
+          <Field label="Received ($)"><input type="number" style={inputStyle} value={form.received || ""} onChange={set("received")} /></Field>
+        </div>
+        <Field label="Deadline"><input type="date" style={inputStyle} value={form.deadline || ""} onChange={set("deadline")} /></Field>
+        <Btn variant="primary" className="w-full" onClick={() => form.name && save("projects", { progress: 0, budget: 0, received: 0 })}>Save project</Btn>
+      </>
+    ),
+    client: (
+      <>
+        <Field label="Name"><input style={inputStyle} value={form.name || ""} onChange={set("name")} autoFocus /></Field>
+        <Field label="Company"><input style={inputStyle} value={form.company || ""} onChange={set("company")} /></Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Email"><input style={inputStyle} value={form.email || ""} onChange={set("email")} /></Field>
+          <Field label="WhatsApp"><input style={inputStyle} value={form.whatsapp || ""} onChange={set("whatsapp")} /></Field>
+        </div>
+        <Field label="Last message"><input style={inputStyle} value={form.lastMsg || ""} onChange={set("lastMsg")} /></Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Next follow-up"><input type="date" style={inputStyle} value={form.followUp || ""} onChange={set("followUp")} /></Field>
+          <Field label="Status">
+            <select style={inputStyle} value={form.status || "active"} onChange={set("status")}>
+              <option value="lead">Lead</option><option value="active">Active</option><option value="waiting">Waiting</option><option value="closed">Closed</option>
+            </select>
+          </Field>
+        </div>
+        <Btn variant="primary" className="w-full" onClick={() => form.name && save("clients", { status: "active" })}>Save client</Btn>
+      </>
+    ),
+    idea: (
+      <>
+        <Field label="Idea"><textarea style={{ ...inputStyle, minHeight: 80 }} value={form.text || ""} onChange={set("text")} autoFocus /></Field>
+        <Field label="Tag (optional)"><input style={inputStyle} value={form.tag || ""} onChange={set("tag")} placeholder="Gig, YouTube, UI…" /></Field>
+        <Btn variant="primary" className="w-full" onClick={() => form.text && save("ideas", {})}>Save idea</Btn>
+      </>
+    ),
+  };
+  const titles = { task: item ? "Edit task" : "New task", expense: "Add expense", income: "Add income", project: item ? "Edit project" : "New project", client: item ? "Edit client" : "Add client", idea: item ? "Edit idea" : "New idea" };
+  return <Modal title={titles[type]} onClose={() => setModal(null)}>{forms[type]}</Modal>;
+}
+
+/* ---------- main app ---------- */
+function MotionDesk() {
+  const [data, setData] = useState(null);
+  const [tab, setTab] = useState("dashboard");
+  const [modal, setModal] = useState(null);
+  const [tick, setTick] = useState(0);
+  const [saveState, setSaveState] = useState("idle");
+  const saveTimer = useRef(null);
+  const firstSave = useRef(true);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      setData(raw ? { ...SEED, ...JSON.parse(raw) } : SEED);
+    } catch {
+      setData(SEED);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!data) return;
+    if (firstSave.current) { firstSave.current = false; return; }
+    setSaveState("saving");
+    clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => {
+      try {
+        localStorage.setItem(STORE_KEY, JSON.stringify(data));
+        setSaveState("saved");
+        setTimeout(() => setSaveState("idle"), 1500);
+      } catch {
+        setSaveState("error");
+      }
+    }, 600);
+  }, [data]);
+
+  const timerRunning = !!(data && data.timer);
+  useEffect(() => {
+    if (!timerRunning) return;
+    const t = setInterval(() => setTick((x) => x + 1), 1000);
+    return () => clearInterval(t);
+  }, [timerRunning]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
+      const order = ["dashboard", "work", "expenses", "income", "projects", "clients", "ideas", "goals", "analytics"];
+      if (e.key >= "1" && e.key <= "9") setTab(order[+e.key - 1]);
+      if (e.key.toLowerCase() === "n") {
+        const map = { work: "task", expenses: "expense", income: "income", projects: "project", clients: "client", ideas: "idea" };
+        if (map[tab]) setModal({ type: map[tab] });
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [tab]);
+
+  const upd = (fn) => setData((d) => fn(structuredClone(d)));
+
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0b0e16", color: "#8b93a7" }}>
+        <div className="flex items-center gap-3">
+          <span style={{ display: "inline-block", width: 12, height: 12, transform: "rotate(45deg)", background: "#a78bfa", borderRadius: 2, animation: "pulse 1s infinite" }} />
+          Loading your desk…
+        </div>
+      </div>
+    );
+  }
+
+  const today = todayKey();
+  const month = monthKey();
+  const activeTimer = data.timer;
+  const timerElapsed = activeTimer ? Math.floor((Date.now() - activeTimer.startedAt) / 1000) : 0;
+  const taskSeconds = (t) => t.seconds + (activeTimer && activeTimer.taskId === t.id ? timerElapsed : 0);
+  const todayTasks = data.tasks.filter((t) => t.date === today || t.status !== "done");
+  const todayEarnings = data.tasks.filter((t) => t.status === "done" && t.date === today).reduce((s, t) => s + Number(t.earnings || 0), 0);
+  const todayExpenses = data.expenses.filter((e) => e.date === today).reduce((s, e) => s + Number(e.amount), 0);
+  const todayWorkSec = (data.workLog[today] || 0) + (activeTimer ? timerElapsed : 0);
+  const pendingClients = data.clients.filter((c) => c.status !== "closed").length;
+  const monthIncome = data.income.filter((i) => (i.date || "").startsWith(month)).reduce((s, i) => s + Number(i.amount), 0);
+  const monthExpenses = data.expenses.filter((e) => e.date.startsWith(month)).reduce((s, e) => s + Number(e.amount), 0);
+  const goalsToday = data.goalsDone[today] || [];
+  const goalPct = data.goalsList.length ? Math.round((goalsToday.length / data.goalsList.length) * 100) : 0;
+
+  const last7 = [...Array(7)].map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    return {
+      key,
+      day: d.toLocaleDateString("en", { weekday: "short" }),
+      expense: data.expenses.filter((e) => e.date === key).reduce((s, e) => s + Number(e.amount), 0),
+      hours: +(((data.workLog[key] || 0) + (activeTimer && key === today ? timerElapsed : 0)) / 3600).toFixed(1),
+    };
+  });
+  const weekHours = last7.reduce((s, d) => s + d.hours, 0).toFixed(1);
+  const incomeBySource = Object.entries(
+    data.income.filter((i) => (i.date || "").startsWith(month)).reduce((acc, i) => {
+      acc[i.source] = (acc[i.source] || 0) + Number(i.amount);
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+  const PIE_COLORS = ["#a78bfa", "#f5b544", "#5eead4", "#f472b6", "#93c5fd", "#fca5a5"];
+  const doneTasks = data.tasks.filter((t) => t.status === "done");
+  const doneHours = doneTasks.reduce((s, t) => s + t.seconds, 0) / 3600;
+  const avgRate = doneHours > 0 ? (doneTasks.reduce((s, t) => s + Number(t.earnings || 0), 0) / doneHours).toFixed(0) : 0;
+  const taskPct = data.tasks.length ? Math.round((doneTasks.length / data.tasks.length) * 100) : 0;
+  const productivity = Math.round(goalPct * 0.4 + taskPct * 0.4 + Math.min(todayWorkSec / (6 * 3600), 1) * 100 * 0.2);
+
+  const startTimer = (taskId) => upd((d) => {
+    if (d.timer) {
+      const el = Math.floor((Date.now() - d.timer.startedAt) / 1000);
+      const t = d.tasks.find((x) => x.id === d.timer.taskId);
+      if (t) t.seconds += el;
+      d.workLog[today] = (d.workLog[today] || 0) + el;
+    }
+    d.timer = { taskId, startedAt: Date.now() };
+    return d;
+  });
+  const stopTimer = () => upd((d) => {
+    if (!d.timer) return d;
+    const el = Math.floor((Date.now() - d.timer.startedAt) / 1000);
+    const t = d.tasks.find((x) => x.id === d.timer.taskId);
+    if (t) t.seconds += el;
+    d.workLog[today] = (d.workLog[today] || 0) + el;
+    d.timer = null;
+    return d;
+  });
+  const toggleGoal = (idx) => upd((d) => {
+    const arr = d.goalsDone[today] || [];
+    d.goalsDone[today] = arr.includes(idx) ? arr.filter((i) => i !== idx) : [...arr, idx];
+    return d;
+  });
+  const del = (list, id) => upd((d) => { d[list] = d[list].filter((x) => x.id !== id); if (d.timer && d.timer.taskId === id) d.timer = null; return d; });
+
+  const tabs = [
+    ["dashboard", "◈", "Desk"],
+    ["work", "▸", "Work"],
+    ["expenses", "৳", "Expenses"],
+    ["income", "$", "Income"],
+    ["projects", "▦", "Projects"],
+    ["clients", "☎", "Clients"],
+    ["ideas", "✦", "Ideas"],
+    ["goals", "◎", "Goals"],
+    ["analytics", "∿", "Analytics"],
+  ];
+  const greeting = () => {
+    const h = new Date().getHours();
+    return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+  };
+
+  const Dashboard = () => (
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: "'Space Grotesk', system-ui" }}>
+          {greeting()}, Timir <span className="inline-block" style={{ animation: "wave 2s ease-in-out infinite", transformOrigin: "70% 70%" }}>👋</span>
+        </h1>
+        <p className="text-sm mt-1" style={{ color: "#8b93a7" }}>
+          {new Date().toLocaleDateString("en", { weekday: "long", day: "numeric", month: "long" })}
+        </p>
+      </div>
+      {activeTimer && (
+        <Card className="p-4 flex items-center justify-between" style={{ borderColor: "#a78bfa66", background: "rgba(167,139,250,0.08)" }}>
+          <div className="flex items-center gap-3">
+            <Diamond status="progress" size={12} />
+            <div>
+              <div className="text-sm font-medium">{data.tasks.find((t) => t.id === activeTimer.taskId)?.name || "Working"}</div>
+              <div className="text-xl font-semibold" style={{ fontVariantNumeric: "tabular-nums", color: "#a78bfa", fontFamily: "'Space Grotesk', system-ui" }}>{clock(timerElapsed)}</div>
+            </div>
+          </div>
+          <Btn variant="primary" onClick={stopTimer}>Stop</Btn>
+        </Card>
+      )}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatCard label="Today's earnings" value={usd(todayEarnings)} accent="#5eead4" />
+        <StatCard label="Today's expenses" value={bdt(todayExpenses)} accent="#f5b544" />
+        <StatCard label="Working time" value={hrs(todayWorkSec)} accent="#a78bfa" />
+        <StatCard label="Active clients" value={pendingClients} />
+      </div>
+      <div className="grid lg:grid-cols-2 gap-4">
+        <Card className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold" style={{ fontFamily: "'Space Grotesk', system-ui" }}>Today's focus</h2>
+            <Btn onClick={() => setTab("work")}>All work →</Btn>
+          </div>
+          {todayTasks.length === 0 && <p className="text-sm" style={{ color: "#8b93a7" }}>Nothing on the timeline yet. Press N in the Work tab to add a task.</p>}
+          <div className="space-y-2">
+            {todayTasks.slice(0, 5).map((t) => (
+              <div key={t.id} className="flex items-center gap-3 py-2 border-b last:border-0" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+                <Diamond status={t.status} />
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm truncate" style={{ textDecoration: t.status === "done" ? "line-through" : "none", opacity: t.status === "done" ? 0.5 : 1 }}>{t.name}</div>
+                  <div className="text-xs" style={{ color: "#8b93a7" }}>{t.client}</div>
+                </div>
+                <span className="text-xs" style={{ color: "#8b93a7", fontVariantNumeric: "tabular-nums" }}>{hrs(taskSeconds(t))}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+        <Card className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold" style={{ fontFamily: "'Space Grotesk', system-ui" }}>Daily goals</h2>
+            <span className="text-sm" style={{ color: "#a78bfa" }}>{goalPct}%</span>
+          </div>
+          <div className="h-1.5 rounded-full mb-3" style={{ background: "rgba(255,255,255,0.07)" }}>
+            <div className="h-full rounded-full transition-all" style={{ width: `${goalPct}%`, background: "linear-gradient(90deg,#a78bfa,#5eead4)" }} />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+            {data.goalsList.map((g, i) => (
+              <button key={i} onClick={() => toggleGoal(i)} className="flex items-center gap-2 py-1.5 text-left text-sm">
+                <span style={{
+                  width: 16, height: 16, borderRadius: 5, flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  border: goalsToday.includes(i) ? "none" : "1.5px solid #8b93a7",
+                  background: goalsToday.includes(i) ? "#a78bfa" : "transparent", color: "#0c0e16", fontSize: 11, fontWeight: 700,
+                }}>{goalsToday.includes(i) ? "✓" : ""}</span>
+                <span style={{ opacity: goalsToday.includes(i) ? 0.5 : 1 }}>{g}</span>
+              </button>
+            ))}
+          </div>
+        </Card>
+      </div>
+      <div className="grid lg:grid-cols-2 gap-4">
+        <Card className="p-4">
+          <h2 className="font-semibold mb-2" style={{ fontFamily: "'Space Grotesk', system-ui" }}>Hours this week</h2>
+          <ResponsiveContainer width="100%" height={160}>
+            <BarChart data={last7}>
+              <XAxis dataKey="day" stroke="#8b93a7" fontSize={11} tickLine={false} axisLine={false} />
+              <Tooltip cursor={{ fill: "rgba(255,255,255,0.04)" }} contentStyle={{ background: "#141826", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, fontSize: 12 }} />
+              <Bar dataKey="hours" fill="#a78bfa" radius={[4, 4, 0, 0]} isAnimationActive={false} />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+        <Card className="p-4">
+          <h2 className="font-semibold mb-2" style={{ fontFamily: "'Space Grotesk', system-ui" }}>Projects on deadline</h2>
+          {data.projects.length === 0 && <p className="text-sm" style={{ color: "#8b93a7" }}>No active projects.</p>}
+          <div className="space-y-3">
+            {data.projects.map((p) => {
+              const dl = daysLeft(p.deadline);
+              return (
+                <div key={p.id}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span>{p.name}</span>
+                    <span style={{ color: dl !== null && dl <= 3 ? "#f87171" : "#8b93a7" }}>
+                      {dl === null ? "" : dl < 0 ? `${-dl}d overdue` : `${dl}d left`}
+                    </span>
+                  </div>
+                  <div className="h-1.5 rounded-full" style={{ background: "rgba(255,255,255,0.07)" }}>
+                    <div className="h-full rounded-full" style={{ width: `${p.progress}%`, background: "#5eead4" }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+
+  const Work = () => (
+    <Section title="Daily work tracker" onAdd={() => setModal({ type: "task" })} addLabel="New task (N)">
+      {data.tasks.length === 0 && <Empty text="No tasks yet — add your first one." />}
+      <div className="space-y-2">
+        {data.tasks.map((t) => {
+          const running = activeTimer && activeTimer.taskId === t.id;
+          return (
+            <Card key={t.id} className="p-3 sm:p-4" style={running ? { borderColor: "#a78bfa66" } : {}}>
+              <div className="flex items-start gap-3">
+                <button onClick={() => upd((d) => { const x = d.tasks.find((y) => y.id === t.id); x.status = x.status === "done" ? "pending" : "done"; if (x.status === "done") x.date = today; return d; })} className="mt-1.5">
+                  <Diamond status={t.status} size={12} />
+                </button>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-medium" style={{ textDecoration: t.status === "done" ? "line-through" : "none", opacity: t.status === "done" ? 0.55 : 1 }}>{t.name}</span>
+                    {t.priority === "high" && <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "rgba(248,113,113,0.15)", color: "#f87171" }}>High</span>}
+                    {t.due && <span className="text-xs" style={{ color: "#8b93a7" }}>due {t.due}</span>}
+                  </div>
+                  <div className="text-xs mt-0.5" style={{ color: "#8b93a7" }}>
+                    {t.client} · {hrs(taskSeconds(t))} · {usd(t.earnings)}
+                    {t.notes && <span> · {t.notes}</span>}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {running ? (
+                    <Btn variant="primary" onClick={stopTimer} title="Stop timer">{clock(timerElapsed)} ■</Btn>
+                  ) : (
+                    t.status !== "done" && <Btn onClick={() => startTimer(t.id)} title="Start timer">▶</Btn>
+                  )}
+                  <Btn onClick={() => setModal({ type: "task", item: t })} title="Edit">✎</Btn>
+                  <Btn variant="danger" onClick={() => del("tasks", t.id)} title="Delete">✕</Btn>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    </Section>
+  );
+
+  const Expenses = () => {
+    const byDay = data.expenses.filter((e) => e.date === today);
+    return (
+      <Section title="Expense tracker" onAdd={() => setModal({ type: "expense" })} addLabel="Add expense (N)">
+        <div className="grid lg:grid-cols-2 gap-4">
+          <Card className="p-4">
+            <div className="flex justify-between items-baseline mb-3">
+              <h3 className="font-semibold">Today</h3>
+              <span className="text-xl font-semibold" style={{ color: "#f5b544", fontVariantNumeric: "tabular-nums" }}>{bdt(todayExpenses)}</span>
+            </div>
+            {byDay.length === 0 && <Empty text="Nothing spent today. Nice." />}
+            {byDay.map((e) => (
+              <div key={e.id} className="flex items-center gap-3 py-2 border-b last:border-0" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+                <span className="text-lg">{e.emoji}</span>
+                <span className="flex-1 text-sm">{e.label}</span>
+                <span className="text-sm" style={{ fontVariantNumeric: "tabular-nums" }}>{bdt(e.amount)}</span>
+                <Btn variant="danger" onClick={() => del("expenses", e.id)}>✕</Btn>
+              </div>
+            ))}
+            <div className="mt-3 text-xs" style={{ color: "#8b93a7" }}>This month: {bdt(monthExpenses)}</div>
+          </Card>
+          <Card className="p-4">
+            <h3 className="font-semibold mb-2">Last 7 days</h3>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={last7}>
+                <XAxis dataKey="day" stroke="#8b93a7" fontSize={11} tickLine={false} axisLine={false} />
+                <Tooltip cursor={{ fill: "rgba(255,255,255,0.04)" }} contentStyle={{ background: "#141826", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, fontSize: 12 }} formatter={(v) => bdt(v)} />
+                <Bar dataKey="expense" fill="#f5b544" radius={[4, 4, 0, 0]} isAnimationActive={false} />
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+        </div>
+      </Section>
+    );
+  };
+
+  const Income = () => (
+    <Section title="Income tracker" onAdd={() => setModal({ type: "income" })} addLabel="Add income (N)">
+      <div className="grid lg:grid-cols-2 gap-4">
+        <Card className="p-4">
+          <div className="flex justify-between items-baseline mb-3">
+            <h3 className="font-semibold">{new Date().toLocaleDateString("en", { month: "long" })}</h3>
+            <span className="text-xl font-semibold" style={{ color: "#5eead4", fontVariantNumeric: "tabular-nums" }}>{usd(monthIncome)}</span>
+          </div>
+          {data.income.filter((i) => (i.date || "").startsWith(month)).map((i) => (
+            <div key={i.id} className="flex items-center gap-3 py-2 border-b last:border-0" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+              <span className="flex-1 text-sm">{i.source}</span>
+              <span className="text-xs" style={{ color: "#8b93a7" }}>{i.date}</span>
+              <span className="text-sm" style={{ fontVariantNumeric: "tabular-nums" }}>{usd(i.amount)}</span>
+              <Btn variant="danger" onClick={() => del("income", i.id)}>✕</Btn>
+            </div>
+          ))}
+        </Card>
+        <Card className="p-4">
+          <h3 className="font-semibold mb-2">By source</h3>
+          {incomeBySource.length === 0 ? <Empty text="No income logged this month yet." /> : (
+            <ResponsiveContainer width="100%" height={220}>
+              <PieChart>
+                <Pie data={incomeBySource} dataKey="value" nameKey="name" innerRadius={55} outerRadius={85} paddingAngle={3} isAnimationActive={false}>
+                  {incomeBySource.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} stroke="none" />)}
+                </Pie>
+                <Tooltip contentStyle={{ background: "#141826", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, fontSize: 12 }} formatter={(v) => usd(v)} />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
+          <div className="flex flex-wrap gap-3 justify-center text-xs mt-1">
+            {incomeBySource.map((s, i) => (
+              <span key={s.name} className="flex items-center gap-1.5">
+                <span style={{ width: 8, height: 8, borderRadius: 2, background: PIE_COLORS[i % PIE_COLORS.length] }} />
+                {s.name}
+              </span>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </Section>
+  );
+
+  const Projects = () => (
+    <Section title="Project tracker" onAdd={() => setModal({ type: "project" })} addLabel="New project (N)">
+      {data.projects.length === 0 && <Empty text="No projects yet." />}
+      <div className="grid sm:grid-cols-2 gap-4">
+        {data.projects.map((p) => {
+          const dl = daysLeft(p.deadline);
+          const remaining = Number(p.budget) - Number(p.received);
+          return (
+            <Card key={p.id} className="p-4">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="font-semibold" style={{ fontFamily: "'Space Grotesk', system-ui" }}>{p.name}</h3>
+                <div className="flex gap-1">
+                  <Btn onClick={() => setModal({ type: "project", item: p })}>✎</Btn>
+                  <Btn variant="danger" onClick={() => del("projects", p.id)}>✕</Btn>
+                </div>
+              </div>
+              <div className="flex justify-between text-xs mb-1" style={{ color: "#8b93a7" }}>
+                <span>Progress</span><span>{p.progress}%</span>
+              </div>
+              <div className="h-2 rounded-full mb-3" style={{ background: "rgba(255,255,255,0.07)" }}>
+                <div className="h-full rounded-full transition-all" style={{ width: `${p.progress}%`, background: "linear-gradient(90deg,#a78bfa,#5eead4)" }} />
+              </div>
+              <div className="grid grid-cols-2 gap-y-1 text-sm">
+                <span style={{ color: "#8b93a7" }}>Deadline</span>
+                <span className="text-right" style={{ color: dl !== null && dl <= 3 ? "#f87171" : "#e6e8f0" }}>{p.deadline || "—"}{dl !== null && dl >= 0 ? ` (${dl}d)` : ""}</span>
+                <span style={{ color: "#8b93a7" }}>Budget</span><span className="text-right">{usd(p.budget)}</span>
+                <span style={{ color: "#8b93a7" }}>Received</span><span className="text-right" style={{ color: "#5eead4" }}>{usd(p.received)}</span>
+                <span style={{ color: "#8b93a7" }}>Remaining</span><span className="text-right" style={{ color: "#f5b544" }}>{usd(remaining)}</span>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    </Section>
+  );
+
+  const Clients = () => (
+    <Section title="Client CRM" onAdd={() => setModal({ type: "client" })} addLabel="Add client (N)">
+      {data.clients.length === 0 && <Empty text="No clients yet — add the first one." />}
+      <div className="grid sm:grid-cols-2 gap-3">
+        {data.clients.map((c) => {
+          const fu = daysLeft(c.followUp);
+          return (
+            <Card key={c.id} className="p-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="font-semibold">{c.name}</div>
+                  <div className="text-xs" style={{ color: "#8b93a7" }}>{c.company}</div>
+                </div>
+                <span className="text-xs px-2 py-0.5 rounded-full capitalize" style={{
+                  background: c.status === "active" ? "rgba(94,234,212,0.12)" : "rgba(139,147,167,0.15)",
+                  color: c.status === "active" ? "#5eead4" : "#8b93a7",
+                }}>{c.status}</span>
+              </div>
+              <div className="mt-2 space-y-1 text-sm">
+                {c.email && <div style={{ color: "#8b93a7" }}>✉ {c.email}</div>}
+                {c.whatsapp && <div style={{ color: "#8b93a7" }}>☎ {c.whatsapp}</div>}
+                {c.lastMsg && <div className="text-xs italic" style={{ color: "#8b93a7" }}>"{c.lastMsg}"</div>}
+                {c.followUp && (
+                  <div className="text-xs" style={{ color: fu !== null && fu <= 1 ? "#f5b544" : "#8b93a7" }}>
+                    Follow up: {c.followUp}{fu === 0 ? " (today!)" : ""}
+                  </div>
+                )}
+              </div>
+              <div className="flex gap-1 mt-3">
+                <Btn onClick={() => setModal({ type: "client", item: c })}>✎</Btn>
+                <Btn variant="danger" onClick={() => del("clients", c.id)}>✕</Btn>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    </Section>
+  );
+
+  const Ideas = () => (
+    <Section title="Ideas board" onAdd={() => setModal({ type: "idea" })} addLabel="New idea (N)">
+      {data.ideas.length === 0 && <Empty text="Blank canvas. Capture the next gig idea." />}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {data.ideas.map((i) => (
+          <Card key={i.id} className="p-4 flex flex-col">
+            {i.tag && <span className="text-xs mb-2 self-start px-2 py-0.5 rounded-full" style={{ background: "rgba(167,139,250,0.15)", color: "#a78bfa" }}>{i.tag}</span>}
+            <p className="text-sm flex-1">{i.text}</p>
+            <div className="flex gap-1 mt-3">
+              <Btn onClick={() => setModal({ type: "idea", item: i })}>✎</Btn>
+              <Btn variant="danger" onClick={() => del("ideas", i.id)}>✕</Btn>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  );
+
+  const Goals = () => (
+    <Section title="Daily goals" onAdd={() => setModal({ type: "goal" })} addLabel="Edit list">
+      <Card className="p-4 max-w-lg">
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-sm" style={{ color: "#8b93a7" }}>{goalsToday.length} of {data.goalsList.length} done today</span>
+          <span className="font-semibold" style={{ color: "#a78bfa" }}>{goalPct}%</span>
+        </div>
+        <div className="h-2 rounded-full mb-4" style={{ background: "rgba(255,255,255,0.07)" }}>
+          <div className="h-full rounded-full transition-all" style={{ width: `${goalPct}%`, background: "linear-gradient(90deg,#a78bfa,#5eead4)" }} />
+        </div>
+        {data.goalsList.map((g, i) => (
+          <button key={i} onClick={() => toggleGoal(i)} className="flex items-center gap-3 py-2.5 w-full text-left border-b last:border-0" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+            <span style={{
+              width: 18, height: 18, borderRadius: 6, flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center",
+              border: goalsToday.includes(i) ? "none" : "1.5px solid #8b93a7",
+              background: goalsToday.includes(i) ? "#a78bfa" : "transparent", color: "#0c0e16", fontSize: 12, fontWeight: 700,
+            }}>{goalsToday.includes(i) ? "✓" : ""}</span>
+            <span style={{ opacity: goalsToday.includes(i) ? 0.5 : 1, textDecoration: goalsToday.includes(i) ? "line-through" : "none" }}>{g}</span>
+          </button>
+        ))}
+        <p className="text-xs mt-3" style={{ color: "#8b93a7" }}>Resets every day automatically.</p>
+      </Card>
+    </Section>
+  );
+
+  const Analytics = () => (
+    <Section title="Analytics">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+        <StatCard label="Hours this week" value={`${weekHours}h`} accent="#a78bfa" />
+        <StatCard label="Income this month" value={usd(monthIncome)} accent="#5eead4" />
+        <StatCard label="Expenses this month" value={bdt(monthExpenses)} accent="#f5b544" />
+        <StatCard label="Productivity score" value={`${productivity}`} sub="goals + tasks + hours" accent={productivity >= 70 ? "#5eead4" : productivity >= 40 ? "#f5b544" : "#f87171"} />
+        <StatCard label="Tasks completed" value={`${doneTasks.length}/${data.tasks.length}`} />
+        <StatCard label="Avg hourly rate" value={doneHours > 0 ? `$${avgRate}/h` : "—"} sub={doneHours > 0 ? `${doneHours.toFixed(1)}h billed` : "complete tasks with tracked time"} />
+      </div>
+      <Card className="p-4">
+        <h3 className="font-semibold mb-2">Work rhythm — last 7 days</h3>
+        <ResponsiveContainer width="100%" height={200}>
+          <AreaChart data={last7}>
+            <defs>
+              <linearGradient id="hoursGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#a78bfa" stopOpacity={0.5} />
+                <stop offset="100%" stopColor="#a78bfa" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
+            <XAxis dataKey="day" stroke="#8b93a7" fontSize={11} tickLine={false} axisLine={false} />
+            <YAxis stroke="#8b93a7" fontSize={11} tickLine={false} axisLine={false} width={28} />
+            <Tooltip contentStyle={{ background: "#141826", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, fontSize: 12 }} />
+            <Area type="monotone" dataKey="hours" stroke="#a78bfa" strokeWidth={2} fill="url(#hoursGrad)" isAnimationActive={false} />
+          </AreaChart>
+        </ResponsiveContainer>
+      </Card>
+    </Section>
+  );
+
+  const views = { dashboard: Dashboard, work: Work, expenses: Expenses, income: Income, projects: Projects, clients: Clients, ideas: Ideas, goals: Goals, analytics: Analytics };
+  const View = views[tab];
+
+  return (
+    <div className="min-h-screen" style={{
+      background: "radial-gradient(1200px 600px at 80% -10%, rgba(167,139,250,0.10), transparent), radial-gradient(900px 500px at -10% 100%, rgba(94,234,212,0.06), transparent), #0b0e16",
+      color: "#e6e8f0", fontFamily: "'Inter', system-ui, sans-serif",
+    }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap');
+        @keyframes wave { 0%,100% { transform: rotate(0deg);} 25% { transform: rotate(16deg);} 75% { transform: rotate(-8deg);} }
+        @keyframes pulse { 0%,100% { opacity: 1;} 50% { opacity: 0.3;} }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+        input:focus, textarea:focus, select:focus { border-color: #a78bfa !important; }
+        @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+      `}</style>
+      <div className="flex">
+        <nav className="hidden lg:flex flex-col w-52 min-h-screen p-4 sticky top-0 self-start" style={{ borderRight: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="flex items-center gap-2 mb-8 px-2">
+            <span style={{ width: 12, height: 12, transform: "rotate(45deg)", background: "linear-gradient(135deg,#a78bfa,#5eead4)", borderRadius: 3, display: "inline-block" }} />
+            <span className="font-bold text-lg" style={{ fontFamily: "'Space Grotesk', system-ui" }}>MotionDesk</span>
+          </div>
+          {tabs.map(([id, icon, label], i) => (
+            <button key={id} onClick={() => setTab(id)}
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm mb-1 text-left transition-colors"
+              style={{ background: tab === id ? "rgba(167,139,250,0.14)" : "transparent", color: tab === id ? "#c9b8fd" : "#8b93a7" }}>
+              <span className="w-4 text-center">{icon}</span>{label}
+              <span className="ml-auto text-xs opacity-40">{i + 1}</span>
+            </button>
+          ))}
+          <div className="mt-auto px-3 text-xs" style={{ color: "#5a6175" }}>
+            {saveState === "saving" ? "Saving…" : saveState === "saved" ? "✓ Saved" : saveState === "error" ? "⚠ Save failed" : ""}
+            <div className="mt-1">Keys: 1–9 tabs · N new</div>
+          </div>
+        </nav>
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-40" style={{ background: "rgba(11,14,22,0.85)", backdropFilter: "blur(14px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="flex items-center gap-2 px-4 pt-3 pb-2">
+            <span style={{ width: 10, height: 10, transform: "rotate(45deg)", background: "linear-gradient(135deg,#a78bfa,#5eead4)", borderRadius: 2, display: "inline-block" }} />
+            <span className="font-bold" style={{ fontFamily: "'Space Grotesk', system-ui" }}>MotionDesk</span>
+            <span className="ml-auto text-xs" style={{ color: "#5a6175" }}>{saveState === "saving" ? "Saving…" : saveState === "saved" ? "✓" : ""}</span>
+          </div>
+          <div className="flex gap-1 overflow-x-auto px-3 pb-2" style={{ scrollbarWidth: "none" }}>
+            {tabs.map(([id, icon, label]) => (
+              <button key={id} onClick={() => setTab(id)} className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs"
+                style={{ background: tab === id ? "rgba(167,139,250,0.18)" : "rgba(255,255,255,0.05)", color: tab === id ? "#c9b8fd" : "#8b93a7" }}>
+                {icon} {label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-24 lg:pt-8 max-w-5xl mx-auto w-full">
+          {View()}
+        </main>
+      </div>
+      {modal && (modal.type === "goal"
+        ? <GoalsModal data={data} upd={upd} setModal={setModal} />
+        : <EditModal key={modal.type + (modal.item ? modal.item.id : "new")} modal={modal} setModal={setModal} upd={upd} today={today} />)}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<MotionDesk />);
+</script>
+</body>
+</html>
