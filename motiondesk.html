@@ -661,6 +661,11 @@ function MotionDesk() {
     const byDay = data.expenses.filter((e) => e.date === today);
     return (
       <Section title="Expense tracker" onAdd={() => setModal({ type: "expense" })} addLabel="Add expense (N)">
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          <StatCard label="Total expenses" value={bdt(totalExpensesAll)} accent="#f5b544" />
+          <StatCard label="Total income" value={bdt(totalIncome)} accent="#5eead4" />
+          <StatCard label="Remaining balance" value={bdt(balance)} accent={balance >= 0 ? "#5eead4" : "#f87171"} />
+        </div>
         <div className="grid lg:grid-cols-2 gap-4">
           <Card className="p-4">
             <div className="flex justify-between items-baseline mb-3">
