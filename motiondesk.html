@@ -436,6 +436,9 @@ function MotionDesk() {
   const pendingClients = data.clients.filter((c) => c.status !== "closed").length;
   const monthIncome = data.income.filter((i) => (i.date || "").startsWith(month)).reduce((s, i) => s + Number(i.amount), 0);
   const monthExpenses = data.expenses.filter((e) => e.date.startsWith(month)).reduce((s, e) => s + Number(e.amount), 0);
+  const totalIncome = data.income.reduce((s, i) => s + Number(i.amount), 0);
+  const totalExpensesAll = data.expenses.reduce((s, e) => s + Number(e.amount), 0);
+  const balance = totalIncome - totalExpensesAll;
   const goalsToday = data.goalsDone[today] || [];
   const goalPct = data.goalsList.length ? Math.round((goalsToday.length / data.goalsList.length) * 100) : 0;
 
@@ -528,8 +531,9 @@ function MotionDesk() {
           <Btn variant="primary" onClick={stopTimer}>Stop</Btn>
         </Card>
       )}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatCard label="Today's earnings" value={usd(todayEarnings)} accent="#5eead4" />
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        <StatCard label="Balance" value={bdt(balance)} sub={`in ${bdt(totalIncome)} · out ${bdt(totalExpensesAll)}`} accent={balance >= 0 ? "#5eead4" : "#f87171"} />
+        <StatCard label="Today's earnings" value={bdt(todayEarnings)} accent="#5eead4" />
         <StatCard label="Today's expenses" value={bdt(todayExpenses)} accent="#f5b544" />
         <StatCard label="Working time" value={hrs(todayWorkSec)} accent="#a78bfa" />
         <StatCard label="Active clients" value={pendingClients} />
@@ -691,6 +695,11 @@ function MotionDesk() {
 
   const Income = () => (
     <Section title="Income tracker" onAdd={() => setModal({ type: "income" })} addLabel="Add income (N)">
+      <div className="grid grid-cols-3 gap-3 mb-4">
+        <StatCard label="Total income" value={bdt(totalIncome)} accent="#5eead4" />
+        <StatCard label="Total expenses" value={bdt(totalExpensesAll)} accent="#f5b544" />
+        <StatCard label="Remaining balance" value={bdt(balance)} accent={balance >= 0 ? "#5eead4" : "#f87171"} />
+      </div>
       <div className="grid lg:grid-cols-2 gap-4">
         <Card className="p-4">
           <div className="flex justify-between items-baseline mb-3">
