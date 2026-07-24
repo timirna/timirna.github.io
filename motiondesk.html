@@ -694,6 +694,22 @@ function MotionDesk() {
             </ResponsiveContainer>
           </Card>
         </div>
+        <Card className="p-4 mt-4">
+          <div className="flex justify-between items-baseline mb-3">
+            <h3 className="font-semibold">All expenses</h3>
+            <span className="text-sm" style={{ color: "#8b93a7" }}>{data.expenses.length} items · {bdt(totalExpensesAll)}</span>
+          </div>
+          {data.expenses.length === 0 && <Empty text="No expenses logged yet." />}
+          {[...data.expenses].sort((a, b) => (b.date || "").localeCompare(a.date || "")).map((e) => (
+            <div key={e.id} className="flex items-center gap-3 py-2 border-b last:border-0" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+              <span className="text-lg">{e.emoji}</span>
+              <span className="flex-1 text-sm">{e.label}</span>
+              <span className="text-xs" style={{ color: "#8b93a7" }}>{e.date}</span>
+              <span className="text-sm" style={{ fontVariantNumeric: "tabular-nums" }}>{bdt(e.amount)}</span>
+              <Btn variant="danger" onClick={() => del("expenses", e.id)}>✕</Btn>
+            </div>
+          ))}
+        </Card>
       </Section>
     );
   };
