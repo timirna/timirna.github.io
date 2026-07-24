@@ -419,6 +419,19 @@
    "m": [
     "L|assets/lottie/unicorn-wink.json"
    ]
+  },
+  {
+   "k": "Graphics Design",
+   "t": "Social Media Post Designs",
+   "d": "A set of social media post designs - clean layouts, bold type and on-brand visuals built to stop the scroll.",
+   "m": [
+    "U|https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/e1a9f2125026051.6110f80c6f43d.jpg",
+    "U|https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/0142ae125026051.6110f80c6e95b.jpg",
+    "U|https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/0a8cad125026051.6110f80c6ef2d.jpg",
+    "U|https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/e181b0125026051.6110f80c6fefa.jpg",
+    "U|https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/67d072125026051.6110f80c7039e.jpg",
+    "U|https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/99091d125026051.6110f80c6fa28.jpg"
+   ]
   }
  ],
  "groups": {
@@ -516,6 +529,7 @@
     "n": "",
     "icon": "",
     "t": [
+     "Social Media Post Designs",
      "Company Profile"
     ]
    }
