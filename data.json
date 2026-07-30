@@ -432,6 +432,22 @@
     "U|https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/67d072125026051.6110f80c7039e.jpg",
     "U|https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/99091d125026051.6110f80c6fa28.jpg"
    ]
+  },
+  {
+   "k": "Travel Reel",
+   "t": "Istanbul Travel Reel",
+   "d": "A fast-cut vertical travel reel of Istanbul - punchy transitions, rhythmic edits synced to the beat, and colour grading built for full-screen mobile viewing.",
+   "m": [
+    "F|assets/istanbul-reel"
+   ]
+  },
+  {
+   "k": "Food Short",
+   "t": "Sucuk Food Short",
+   "d": "A vertical food short built for social - appetite-driving close-ups, snappy pacing and clean English captions that keep viewers watching to the end.",
+   "m": [
+    "F|assets/sucuk-short"
+   ]
   }
  ],
  "groups": {
@@ -517,6 +533,8 @@
     "n": "",
     "icon": "",
     "t": [
+     "Sucuk Food Short",
+     "Istanbul Travel Reel",
      "Bfour Real Estate Promo",
      "Prithibi Ghumak - Music Video",
      "Instagram Reel",
