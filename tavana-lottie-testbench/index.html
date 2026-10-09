@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    color-scheme: light;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Tavana Lottie Test Bench</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+/* Layout: single column instrument panel - stage on top, live readout beneath, controls below. */
+:root{
+  --bg:#FBF7EF; --surface:#FFFDF8; --surface-2:#F4EFE3;
+  --fg:#2A2722; --muted:#7A7060; --line:#E4DDCE;
+  --accent:#18512F; --accent-soft:#E6EEE7;
+  --good:#18512F; --warn:#9C6B14; --bad:#A33A2A;
+  --stage:#FFFDF8;
+
+  --serif:"EB Garamond",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#141612; --surface:#1C1F19; --surface-2:#242821;
+    --fg:#EFEADF; --muted:#A49C8B; --line:#2F342B;
+    --accent:#7CBE97; --accent-soft:#1E2A22;
+    --good:#7CBE97; --warn:#D9AC56; --bad:#E28872;
+    --stage:#F7F4EC;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141612; --surface:#1C1F19; --surface-2:#242821;
+  --fg:#EFEADF; --muted:#A49C8B; --line:#2F342B;
+  --accent:#7CBE97; --accent-soft:#1E2A22;
+  --good:#7CBE97; --warn:#D9AC56; --bad:#E28872;
+  --stage:#F7F4EC;
+  color-scheme:dark;
+}
+
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.55;}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;}
+
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(1.7rem,5vw,2.3rem);
+   line-height:1.15;margin:0 0 .3em;color:var(--accent);text-wrap:balance;}
+.lede{color:var(--muted);margin:0 0 1.4rem;font-size:.97rem;max-width:58ch;}
+h2{font-family:var(--sans);font-size:.74rem;font-weight:600;letter-spacing:.11em;
+   text-transform:uppercase;color:var(--muted);margin:2rem 0 .7rem;}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;}
+
+/* stage */
+.stage{background:var(--stage);border:1px solid var(--line);border-radius:10px;
+       overflow:hidden;position:relative;aspect-ratio:16/9;max-width:100%;}
+#anim{position:absolute;inset:0;}
+.stage-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+           font-family:var(--mono);font-size:.8rem;color:#7A7060;text-align:center;padding:16px;}
+
+/* live readout */
+.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+         border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:14px;}
+.cell{background:var(--surface);padding:11px 8px;min-width:0;text-align:center;}
+.cell .k{font-size:.63rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+         display:block;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cell .v{font-family:var(--mono);font-size:1.22rem;font-weight:600;
+         font-variant-numeric:tabular-nums;display:block;line-height:1.1;}
+.v.good{color:var(--good)} .v.warn{color:var(--warn)} .v.bad{color:var(--bad)}
+
+canvas#spark{display:block;width:100%;height:54px;margin-top:10px;
+             border:1px solid var(--line);border-radius:8px;background:var(--surface);}
+.sparklab{display:flex;justify-content:space-between;font-family:var(--mono);
+          font-size:.63rem;color:var(--muted);margin-top:4px;}
+
+/* controls */
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+button{font-family:var(--sans);font-size:.87rem;font-weight:500;padding:9px 15px;
+       border-radius:7px;border:1px solid var(--line);background:var(--surface);
+       color:var(--fg);cursor:pointer;min-width:0;}
+button:hover{border-color:var(--accent);}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+button.primary{background:var(--accent);border-color:var(--accent);
+               color:var(--surface);font-weight:600;}
+:root[data-theme="dark"] button.primary,
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.primary{color:#141612}}
+button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);
+                            color:var(--accent);font-weight:600;}
+button:disabled{opacity:.45;cursor:default;}
+
+.seg{display:flex;gap:0;border:1px solid var(--line);border-radius:7px;overflow:hidden;}
+.seg button{border:0;border-radius:0;flex:1;}
+.seg button + button{border-left:1px solid var(--line);}
+
+/* file list */
+.files{display:grid;gap:8px;}
+.file{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;
+      padding:11px 13px;border:1px solid var(--line);border-radius:9px;
+      background:var(--surface);cursor:pointer;text-align:left;width:100%;font-family:var(--sans);}
+.file[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);}
+.file .nm{font-weight:600;font-size:.92rem;color:var(--fg);}
+.file[aria-pressed="true"] .nm{color:var(--accent);}
+.file .pg{font-size:.76rem;color:var(--muted);grid-column:1;}
+.file .wt{font-family:var(--mono);font-size:.74rem;color:var(--muted);
+          grid-row:1/3;grid-column:2;text-align:right;font-variant-numeric:tabular-nums;
+          white-space:nowrap;}
+
+/* results */
+table{width:100%;border-collapse:collapse;font-size:.83rem;}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);}
+th{font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;}
+.empty{padding:20px 14px;color:var(--muted);font-size:.86rem;text-align:center;}
+
+.note{background:var(--surface-2);border-left:3px solid var(--accent);
+      border-radius:0 8px 8px 0;padding:13px 15px;font-size:.88rem;color:var(--fg);margin-top:10px;}
+.note strong{color:var(--accent);}
+
+dl.dev{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;margin:0;
+       font-size:.82rem;padding:13px 15px;}
+dl.dev dt{color:var(--muted);}
+dl.dev dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
+          overflow-wrap:anywhere;}
+
+footer{margin-top:2.6rem;padding-top:1.1rem;border-top:1px solid var(--line);
+       font-size:.8rem;color:var(--muted);}
+
+@media (max-width:430px){
+  .readout{grid-template-columns:repeat(2,1fr);}
+  .cell .v{font-size:1.1rem;}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Tavana Lottie Test Bench</h1>
+  <p class="lede">The four animation files currently on your site, running here so you can measure
+  them on a real phone. Nothing on tavana.co.uk is touched &mdash; this is a separate page.
+  Open it on the device that stutters, press Play, and watch the frame rate.</p>
+
+  <div class="stage">
+    <div id="anim"></div>
+    <div class="stage-msg" id="stageMsg">Choose a version below, then press Play.</div>
+  </div>
+
+  <div class="readout">
+    <div class="cell"><span class="k">Frames / sec</span><span class="v" id="mFps">&ndash;</span></div>
+    <div class="cell"><span class="k">Average</span><span class="v" id="mAvg">&ndash;</span></div>
+    <div class="cell"><span class="k">Worst</span><span class="v" id="mMin">&ndash;</span></div>
+    <div class="cell"><span class="k">Stutters</span><span class="v" id="mDrop">&ndash;</span></div>
+  </div>
+
+  <canvas id="spark" width="1400" height="108" aria-label="Frame rate over time"></canvas>
+  <div class="sparklab"><span>0 fps</span><span id="sparkNow">waiting</span><span>60 fps</span></div>
+
+  <div class="ctl">
+    <button id="btnPlay" class="primary">Play</button>
+    <button id="btnStop">Stop</button>
+    <button id="btnBench">Run 20s test</button>
+    <button id="btnReset">Clear results</button>
+  </div>
+
+  <h2>Which version</h2>
+  <div class="files" id="fileList"></div>
+
+  <h2>Renderer</h2>
+  <div class="seg" role="group" aria-label="Renderer">
+    <button id="rSvg" aria-pressed="true">SVG <span style="opacity:.6">(current)</span></button>
+    <button id="rCanvas" aria-pressed="false">Canvas</button>
+  </div>
+  <div class="note"><strong>Worth trying.</strong> Your site uses the SVG renderer, which draws every
+  shape as a separate element in the page. Canvas paints them all into one surface and is usually
+  much faster on phones for artwork this detailed. If Canvas is noticeably smoother here, that is a
+  small change to the site rather than a change to the animation.</div>
+
+  <h2>Results</h2>
+  <div class="tblwrap">
+    <table>
+      <thead><tr>
+        <th>Version</th><th>Renderer</th>
+        <th class="num">Avg</th><th class="num">Worst</th><th class="num">Stutters</th>
+      </tr></thead>
+      <tbody id="results"><tr><td colspan="5" class="empty">No tests run yet.</td></tr></tbody>
+    </table>
+  </div>
+
+  <h2>This device</h2>
+  <div class="card"><dl class="dev" id="devInfo"></dl></div>
+
+  <h2>How to read it</h2>
+  <div class="note">
+    <strong>Average above 50</strong> is smooth. <strong>30 to 50</strong> is visibly uneven.
+    <strong>Below 30</strong> is the stutter you have been seeing.
+    &ldquo;Stutters&rdquo; counts frames that took longer than 1/30th of a second &mdash; those are
+    the ones the eye catches. The full versions get heavier about halfway through, so let a test run
+    the whole twenty seconds rather than judging the opening.
+  </div>
+
+  <footer id="foot">Prepared for Tavana Health Group. Measurements are taken on your own device, so
+  results differ between phones &mdash; that is the point.</footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var FILES = [
+    { id:"en-full",  nm:"English — full",  pg:"Homepage • 55s",
+      path:"animations/en-full.json",  kb:1031, pts:13020, peak:8317 },
+    { id:"en-short", nm:"English — short", pg:"Our Approach • 27.5s",
+      path:"animations/en-short.json", kb:667,  pts:8371,  peak:8317 },
+    { id:"fa-full",  nm:"Farsi — full",    pg:"Homepage • 60s",
+      path:"animations/fa-full.json",  kb:1150, pts:15928, peak:12059 },
+    { id:"fa-short", nm:"Farsi — short",   pg:"Our Approach • 27.5s",
+      path:"animations/fa-short.json", kb:835,  pts:12113, peak:12059 }
+  ];
+
+  var current = FILES[0];
+  var renderer = "svg";
+  var anim = null;
+  var rafId = null;
+  var results = [];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var stage = $("anim"), stageMsg = $("stageMsg");
+
+  // ---------- file list ----------
+  function buildFiles(){
+    var host = $("fileList");
+    host.innerHTML = "";
+    for (var i=0;i<FILES.length;i++){
+      (function(f){
+        var b = document.createElement("button");
+        b.className = "file";
+        b.setAttribute("aria-pressed", f.id === current.id ? "true" : "false");
+        b.innerHTML = '<span class="nm"></span><span class="wt"></span><span class="pg"></span>';
+        b.querySelector(".nm").textContent = f.nm;
+        b.querySelector(".pg").textContent = f.pg;
+        b.querySelector(".wt").textContent = f.kb + " KB\n" + f.pts.toLocaleString() + " pts";
+        b.querySelector(".wt").style.whiteSpace = "pre";
+        b.onclick = function(){
+          current = f;
+          var all = host.querySelectorAll(".file");
+          for (var j=0;j<all.length;j++) all[j].setAttribute("aria-pressed","false");
+          b.setAttribute("aria-pressed","true");
+          stop();
+          stageMsg.textContent = f.nm + " ready. Press Play.";
+          stageMsg.hidden = false;
+        };
+        host.appendChild(b);
+      })(FILES[i]);
+    }
+  }
+
+  // ---------- meter ----------
+  var meter = {
+    running:false, frames:0, start:0, last:0,
+    worst:0, drops:0, samples:[], recent:[]
+  };
+
+  function resetMeter(){
+    meter.running=false; meter.frames=0; meter.start=0; meter.last=0;
+    meter.worst=0; meter.drops=0; meter.samples=[]; meter.recent=[];
+    $("mFps").textContent="–"; $("mAvg").textContent="–";
+    $("mMin").textContent="–"; $("mDrop").textContent="–";
+    $("mFps").className="v"; $("mAvg").className="v"; $("mMin").className="v";
+    $("sparkNow").textContent="waiting";
+    drawSpark();
+  }
+
+  function cls(fps){ return fps>=50 ? "v good" : (fps>=30 ? "v warn" : "v bad"); }
+
+  function tick(now){
+    if (!meter.running) return;
+    if (meter.last){
+      var dt = now - meter.last;
+      if (dt > 0 && dt < 2000){
+        meter.frames++;
+        var fps = 1000/dt;
+        meter.samples.push(fps);
+        meter.recent.push(fps);
+        if (meter.recent.length > 8) meter.recent.shift();
+        if (dt > 33.34) meter.drops++;
+        if (dt > meter.worst) meter.worst = dt;
+
+        if (meter.frames % 5 === 0){
+          var sm = 0;
+          for (var i=0;i<meter.recent.length;i++) sm += meter.recent[i];
+          sm = sm/meter.recent.length;
+
+          var el = meter.samples.length;
+          var tot = 0;
+          for (var j=0;j<el;j++) tot += meter.samples[j];
+          var avg = tot/el;
+          var wst = 1000/meter.worst;
+
+          $("mFps").textContent = Math.round(sm);
+          $("mFps").className = cls(sm);
+          $("mAvg").textContent = avg.toFixed(1);
+          $("mAvg").className = cls(avg);
+          $("mMin").textContent = wst.toFixed(1);
+          $("mMin").className = cls(wst);
+          $("mDrop").textContent = meter.drops;
+          $("sparkNow").textContent =
+            ((now - meter.start)/1000).toFixed(1) + "s · " + meter.frames + " frames";
+          drawSpark();
+        }
+      }
+    }
+    meter.last = now;
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function startMeter(){
+    resetMeter();
+    meter.running = true;
+    meter.start = performance.now();
+    rafId = requestAnimationFrame(function(t){ meter.last = t; rafId = requestAnimationFrame(tick); });
+  }
+
+  function stopMeter(){
+    meter.running = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+
+  // ---------- sparkline ----------
+  function drawSpark(){
+    var c = $("spark"), ctx = c.getContext("2d");
+    var W = c.width, H = c.height;
+    var css = getComputedStyle(document.documentElement);
+    var line = css.getPropertyValue("--line").trim() || "#ddd";
+    var acc  = css.getPropertyValue("--accent").trim() || "#18512F";
+    var bad  = css.getPropertyValue("--bad").trim() || "#A33A2A";
+
+    ctx.clearRect(0,0,W,H);
+    // 30fps guide
+    ctx.strokeStyle = line; ctx.lineWidth = 2; ctx.setLineDash([6,6]);
+    var y30 = H - (30/60)*H;
+    ctx.beginPath(); ctx.moveTo(0,y30); ctx.lineTo(W,y30); ctx.stroke();
+    ctx.setLineDash([]);
+
+    var s = meter.samples;
+    if (!s.length) return;
+    var n = Math.min(s.length, 420);
+    var from = s.length - n;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (var i=0;i<n;i++){
+      var v = Math.min(s[from+i], 60);
+      var x = (i/(n-1||1))*W;
+      var y = H - (v/60)*H;
+      if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    var tail = s[s.length-1];
+    ctx.strokeStyle = tail < 30 ? bad : acc;
+    ctx.stroke();
+  }
+
+  // ---------- playback ----------
+  function destroy(){
+    if (anim){ try{ anim.destroy(); }catch(e){} anim = null; }
+    stage.innerHTML = "";
+  }
+
+  function stop(){
+    stopMeter();
+    destroy();
+    stageMsg.textContent = "Stopped. Press Play to run again.";
+    stageMsg.hidden = false;
+  }
+
+  function play(onDone){
+    destroy();
+    stageMsg.textContent = "Loading " + current.nm + "…";
+    stageMsg.hidden = false;
+
+    try{
+      anim = lottie.loadAnimation({
+        container: stage,
+        renderer: renderer,
+        loop: true,
+        autoplay: true,
+        path: current.path,
+        rendererSettings: { preserveAspectRatio: "xMidYMid meet", progressiveLoad: false }
+      });
+    }catch(err){
+      stageMsg.textContent = "Could not start the player: " + err;
+      return;
+    }
+
+    anim.addEventListener("DOMLoaded", function(){
+      stageMsg.hidden = true;
+      startMeter();
+      if (onDone) onDone();
+    });
+    anim.addEventListener("data_failed", function(){
+      stageMsg.textContent = "Could not load " + current.nm + ". Check your connection and retry.";
+    });
+  }
+
+  // ---------- benchmark ----------
+  var benching = false;
+  function bench(){
+    if (benching) return;
+    benching = true;
+    var btn = $("btnBench");
+    btn.disabled = true;
+
+    play(function(){
+      var secs = 20;
+      btn.textContent = "Measuring " + secs + "s…";
+      var iv = setInterval(function(){
+        secs--;
+        btn.textContent = secs > 0 ? "Measuring " + secs + "s…" : "Finishing…";
+      }, 1000);
+
+      setTimeout(function(){
+        clearInterval(iv);
+        var s = meter.samples, tot = 0;
+        for (var i=0;i<s.length;i++) tot += s[i];
+        var avg = s.length ? tot/s.length : 0;
+        var wst = meter.worst ? 1000/meter.worst : 0;
+
+        results.unshift({
+          nm: current.nm, r: renderer === "svg" ? "SVG" : "Canvas",
+          avg: avg, worst: wst, drops: meter.drops
+        });
+        renderResults();
+        stopMeter();
+        btn.disabled = false;
+        btn.textContent = "Run 20s test";
+        benching = false;
+      }, 20000);
+    });
+  }
+
+  function renderResults(){
+    var tb = $("results");
+    if (!results.length){
+      tb.innerHTML = '<tr><td colspan="5" class="empty">No tests run yet.</td></tr>';
+      return;
+    }
+    tb.innerHTML = "";
+    for (var i=0;i<results.length;i++){
+      var r = results[i];
+      var tr = document.createElement("tr");
+      var k = r.avg >= 50 ? "good" : (r.avg >= 30 ? "warn" : "bad");
+      tr.innerHTML =
+        "<td></td><td></td>" +
+        '<td class="num"></td><td class="num"></td><td class="num"></td>';
+      var td = tr.children;
+      td[0].textContent = r.nm;
+      td[1].textContent = r.r;
+      td[2].textContent = r.avg.toFixed(1);
+      td[2].style.color = "var(--" + k + ")";
+      td[2].style.fontWeight = "600";
+      td[3].textContent = r.worst.toFixed(1);
+      td[4].textContent = r.drops;
+      tb.appendChild(tr);
+    }
+  }
+
+  // ---------- device info ----------
+  function devInfo(){
+    var d = $("devInfo");
+    var rows = [
+      ["Screen", window.screen.width + " × " + window.screen.height + " pt"],
+      ["Viewport", window.innerWidth + " × " + window.innerHeight + " px"],
+      ["Pixel ratio", (window.devicePixelRatio || 1).toFixed(2) + "×"],
+      ["Cores", (navigator.hardwareConcurrency || "unknown")],
+      ["Touch", ("ontouchstart" in window) ? "yes" : "no"]
+    ];
+    if (navigator.deviceMemory) rows.push(["Memory", navigator.deviceMemory + " GB"]);
+    rows.push(["Browser", (navigator.userAgent || "").slice(0,110)]);
+
+    d.innerHTML = "";
+    for (var i=0;i<rows.length;i++){
+      var dt = document.createElement("dt"); dt.textContent = rows[i][0];
+      var dd = document.createElement("dd"); dd.textContent = rows[i][1];
+      d.appendChild(dt); d.appendChild(dd);
+    }
+  }
+
+  // ---------- wiring ----------
+  $("btnPlay").onclick  = function(){ play(); };
+  $("btnStop").onclick  = function(){ stop(); };
+  $("btnBench").onclick = function(){ bench(); };
+  $("btnReset").onclick = function(){ results = []; renderResults(); resetMeter(); };
+
+  $("rSvg").onclick = function(){
+    renderer = "svg";
+    $("rSvg").setAttribute("aria-pressed","true");
+    $("rCanvas").setAttribute("aria-pressed","false");
+    stop();
+  };
+  $("rCanvas").onclick = function(){
+    renderer = "canvas";
+    $("rCanvas").setAttribute("aria-pressed","true");
+    $("rSvg").setAttribute("aria-pressed","false");
+    stop();
+  };
+
+  window.addEventListener("resize", drawSpark);
+
+  buildFiles();
+  devInfo();
+  renderResults();
+  resetMeter();
+})();
+</script>
+
+</body>
+</html>
