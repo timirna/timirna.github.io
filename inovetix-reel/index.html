@@ -212,10 +212,10 @@
   .detail h3 { margin: 0; font: 600 22px/1.2 var(--sans); }
   .detail .dref { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
   .dfacts { margin: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-  .dfacts div { padding: 10px 12px; min-width: 0; }
+  .dfacts div { padding: 10px 10px; min-width: 0; }
   .dfacts div + div { border-left: 1px solid var(--line); }
   .dfacts dt { font-size: 11px; color: var(--muted); }
-  .dfacts dd { margin: 2px 0 0; font: 500 14px var(--sans); font-variant-numeric: tabular-nums; }
+  .dfacts dd { margin: 2px 0 0; font: 500 13px var(--sans); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   @media (max-width: 560px) { .dfacts { grid-template-columns: repeat(3, minmax(0, 1fr)); } .dfacts div:nth-child(4) { border-left: 0; } .dfacts div:nth-child(n+4) { border-top: 1px solid var(--line); } }
   .dbtns { display: flex; flex-wrap: wrap; gap: 10px; }
   .dbtns .btn-main { font-size: 15px; padding: 12px 20px; }
