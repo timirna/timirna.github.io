@@ -70,18 +70,18 @@
   .script ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
   .script li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; }
   .script time { font: 500 14px/1.75 var(--sans); color: var(--red); font-variant-numeric: tabular-nums; }
-  .files { padding-top: 48px; margin-top: 56px; border-top: 1px solid var(--line); }
+  .files { padding-top: 32px; margin-top: 48px; border-top: 1px solid var(--line); }
   .files-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
-  .files-head h2 { font: 300 clamp(28px, 4vw, 36px)/1.1 var(--sans); letter-spacing: -0.01em; margin: 0; }
-  .file-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-  .file { display: flex; flex-direction: column; gap: 14px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; min-width: 0; }
-  .thumb { aspect-ratio: 16 / 10; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #F2EFEB; }
-  .thumb img { max-width: 78%; max-height: 78%; object-fit: contain; }
+  .files-head h2 { font: 300 24px/1.1 var(--sans); letter-spacing: -0.01em; margin: 0; }
+  .file-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .file { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
+  .thumb { width: 72px; height: 48px; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #F2EFEB; }
+  .thumb img { max-width: 84%; max-height: 84%; object-fit: contain; }
   .thumb.cover img { max-width: 100%; max-height: 100%; width: 100%; height: 100%; object-fit: cover; }
-  .file h3 { margin: 0; font: 500 17px var(--sans); }
-  .file p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
-  .btn-file { margin-top: auto; align-self: flex-start; padding: 10px 18px; font-size: 16px; font-weight: 600; color: var(--ink); border: 1.5px solid var(--ink); }
-  .btn-file:hover { background: var(--ink); color: var(--bg); }
+  .file h3 { margin: 0; font: 500 15px/1.3 var(--sans); }
+  .file p { margin: 2px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+  .btn-file { padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--ink); border: 1.5px solid var(--line); gap: 6px; }
+  .btn-file:hover { border-color: var(--ink); }
   footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
   @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 </style>
@@ -181,18 +181,18 @@
     <div class="file-list">
       <article class="file">
         <div class="thumb cover"><img src="brand/guide_cover.png" alt="Cover of the Inovetix brand guidelines"></div>
-        <div><h3>Brand Guidelines</h3><p>PDF · 29 pages · 630 KB. Logo, type, colours, collateral.</p></div>
-        <a class="btn btn-file" href="brand/Inovetix_Brand_Guidelines.pdf" download="Inovetix_Brand_Guidelines.pdf">Download PDF</a>
+        <div><h3>Brand Guidelines</h3><p>PDF · 29 pages · 630 KB</p></div>
+        <a class="btn btn-file" href="brand/Inovetix_Brand_Guidelines.pdf" download="Inovetix_Brand_Guidelines.pdf">PDF ↓</a>
       </article>
       <article class="file">
         <div class="thumb"><img src="brand/Inovetix_Logo.svg" alt="Inovetix logo, horizontal"></div>
-        <div><h3>Logo, horizontal</h3><p>SVG · 140 × 31 vector · gradient mark + #2D294B wordmark.</p></div>
-        <a class="btn btn-file" href="brand/Inovetix_Logo.svg" download="Inovetix_Logo.svg">Download SVG</a>
+        <div><h3>Logo, horizontal</h3><p>SVG · vector</p></div>
+        <a class="btn btn-file" href="brand/Inovetix_Logo.svg" download="Inovetix_Logo.svg">SVG ↓</a>
       </article>
       <article class="file">
         <div class="thumb"><img src="brand/Inovetix_Logo_Vertical_1080x1920.svg" alt="Inovetix logo on a 1080 by 1920 canvas"></div>
-        <div><h3>Logo on 1080 × 1920</h3><p>SVG · logo placed on a vertical Reels-size canvas.</p></div>
-        <a class="btn btn-file" href="brand/Inovetix_Logo_Vertical_1080x1920.svg" download="Inovetix_Logo_Vertical_1080x1920.svg">Download SVG</a>
+        <div><h3>Logo on 1080 × 1920</h3><p>SVG · vertical canvas</p></div>
+        <a class="btn btn-file" href="brand/Inovetix_Logo_Vertical_1080x1920.svg" download="Inovetix_Logo_Vertical_1080x1920.svg">SVG ↓</a>
       </article>
     </div>
   </section>
