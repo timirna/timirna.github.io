@@ -73,7 +73,8 @@
   .files { padding-top: 32px; margin-top: 48px; border-top: 1px solid var(--line); }
   .files-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
   .files-head h2 { font: 300 24px/1.1 var(--sans); letter-spacing: -0.01em; margin: 0; }
-  .file-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .file-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 860px) { .file-list { grid-template-columns: minmax(0, 1fr); } }
   .file { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
   .thumb { width: 72px; height: 48px; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #F2EFEB; }
   .thumb img { max-width: 84%; max-height: 84%; object-fit: contain; }
