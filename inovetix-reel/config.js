@@ -1,2 +1,2 @@
-/* Feedback backend: paste the Google Apps Script web app URL (ends in /exec) between the quotes. Empty = feedback off. */
-window.FEEDBACK_URL = "";
+/* Feedback backend: Google Apps Script web app (writes to the "Inovetix Workspace Feedback" Sheet). Empty = feedback off. */
+window.FEEDBACK_URL = "https://script.google.com/macros/s/AKfycbx2xagIO6CgXkTD7iBgzWsCVrNsStX1rq4xAWDF86M8CDYZDigdTrhmRpvoxAmZsH9aqQ/exec";
