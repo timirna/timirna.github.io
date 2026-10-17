@@ -290,5 +290,20 @@
     tu.innerHTML = open ? 'Show less <span aria-hidden="true">↑</span>' : 'Show all <span aria-hidden="true">↓</span>';
   });
 
+  // hero stats count up once on load
+  if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      var end = Number(el.getAttribute('data-count')), t0 = null, dur = 900;
+      el.textContent = '0';
+      function step(t) {
+        if (t0 === null) t0 = t + 450;
+        var p = Math.min(1, Math.max(0, (t - t0) / dur)), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = String(Math.round(end * e));
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
   fromHash();
 })();
