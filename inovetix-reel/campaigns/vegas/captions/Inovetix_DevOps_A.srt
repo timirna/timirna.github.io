@@ -1,0 +1,15 @@
+1
+00:00:00,200 --> 00:00:02,092
+Still deploying at two in the morning?
+
+2
+00:00:03,200 --> 00:00:06,628
+Manual steps, late-night rollbacks, a tired team.
+
+3
+00:00:07,150 --> 00:00:10,626
+We automate your pipeline, so releases ship in daylight.
+
+4
+00:00:11,650 --> 00:00:15,078
+Book a free infrastructure review at inovetix.com.

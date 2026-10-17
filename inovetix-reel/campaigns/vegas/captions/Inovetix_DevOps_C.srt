@@ -1,0 +1,15 @@
+1
+00:00:00,200 --> 00:00:02,404
+Day eighty-seven. Still hiring.
+
+2
+00:00:03,200 --> 00:00:05,164
+Meanwhile, the pipeline waits.
+
+3
+00:00:07,150 --> 00:00:09,570
+Work with a senior DevOps team from day one.
+
+4
+00:00:11,650 --> 00:00:15,078
+Book a free infrastructure review at inovetix.com.

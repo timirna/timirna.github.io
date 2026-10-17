@@ -107,7 +107,7 @@
   function card(v, sel) {
     var n = fbFor(v.id).length;
     return '<button class="card' + (sel ? ' sel' : '') + '" data-pick="' + esc(v.id) + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' +
-      '<div class="cthumb"><img src="' + esc(v.poster) + '" alt="" loading="lazy"><span class="dur">' + esc(v.length) + '</span></div>' +
+      '<div class="cthumb' + (v.aspect ? ' fit' : '') + '"><img src="' + esc(v.poster) + '" alt="" loading="lazy"><span class="dur">' + esc(v.length) + '</span></div>' +
       '<div class="cbody"><div class="ctitle"><h3>' + esc(v.title) + '</h3>' + pill(v.status, STATUS_CLASS) + '</div>' +
       '<p class="cdesc">' + esc(v.short) + '</p>' +
       '<div class="cmeta"><span>' + I.video + 'MP4 · ' + esc(v.size) + '</span><span>' + I.cal + esc(v.date) + '</span>' +
@@ -146,7 +146,7 @@
     }).join('');
     box.innerHTML =
       '<div class="dtop"><span class="eyebrow">' + esc(DATA.teams[team]) + ' &nbsp;/&nbsp; ' + esc(v.kind) + '</span>' + pill(v.status, STATUS_CLASS) + '</div>' +
-      '<video controls playsinline preload="metadata" poster="' + esc(v.poster) + '"><source src="' + esc(v.file) + '" type="video/mp4"></video>' +
+      '<video' + (v.aspect ? ' class="tall" style="aspect-ratio:' + esc(v.aspect) + '"' : '') + ' controls playsinline preload="metadata" poster="' + esc(v.poster) + '"><source src="' + esc(v.file) + '" type="video/mp4"></video>' +
       '<div><h3>' + esc(v.title) + '</h3><p class="dref">' + esc(v.ref) + '</p></div>' +
       '<dl class="dfacts"><div><dt>Format</dt><dd>' + esc(v.format) + '</dd></div><div><dt>Length</dt><dd>' + esc(v.length) + '</dd></div>' +
       '<div><dt>File size</dt><dd>' + esc(v.size) + '</dd></div><div><dt>Version</dt><dd>' + esc(v.version) + '</dd></div><div><dt>Updated</dt><dd>' + esc(v.date) + '</dd></div></dl>' +
@@ -174,7 +174,11 @@
       return '<div class="assets"><article class="file"><div class="thumb cover"><img src="' + esc(v.poster) + '" alt=""></div><div><h4>' + esc(fname) +
         '</h4><p>MP4 · ' + esc(v.size) + ' · ' + esc(v.format) + '</p></div><a class="btn btn-file" href="' + esc(v.file) + '" download="' + esc(fname) + '">MP4 ↓</a></article>' +
         '<article class="file"><div class="thumb cover"><img src="' + esc(v.poster) + '" alt=""></div><div><h4>Poster frame</h4><p>JPG · cover image</p></div>' +
-        '<a class="btn btn-file" href="' + esc(v.poster) + '" download="' + esc(v.id) + '-poster.jpg">JPG ↓</a></article></div>';
+        '<a class="btn btn-file" href="' + esc(v.poster) + '" download="' + esc(v.id) + '-poster.jpg">JPG ↓</a></article>' +
+        (v.extras || []).map(function (x) {
+          return '<article class="file"><div class="thumb"><span style="font:600 12px var(--sans);color:#2D294B">' + esc(x.btn.split(' ')[0]) + '</span></div><div><h4>' + esc(x.label) + '</h4><p>' + esc(x.meta) +
+            '</p></div><a class="btn btn-file" href="' + esc(x.href) + '" download="' + esc(x.href.split('/').pop()) + '">' + esc(x.btn) + '</a></article>';
+        }).join('') + '</div>';
     }
     var list;
     if (fbState === 'off') list = '<div class="note">Feedback isn’t switched on yet. Comments will appear here once it’s connected.</div>';
