@@ -282,5 +282,13 @@
     }).catch(function () { fbState = 'error'; rerenderOpen(); });
   }
 
+  var tu = document.getElementById('toggle-updates');
+  if (tu) tu.addEventListener('click', function () {
+    var list = tu.closest('div').parentNode.querySelector('.list');
+    var open = list.classList.toggle('all');
+    tu.setAttribute('aria-expanded', open ? 'true' : 'false');
+    tu.innerHTML = open ? 'Show less <span aria-hidden="true">↑</span>' : 'Show all <span aria-hidden="true">↓</span>';
+  });
+
   fromHash();
 })();
