@@ -67,6 +67,9 @@ button.primary small { color: inherit; opacity: 0.75; }
 .seg { display: flex; gap: 6px; flex-wrap: wrap; }
 .seg button { padding: 7px 12px; display: inline-block; font-size: 13.5px; }
 .seg button[aria-pressed="true"] { border-color: var(--ink); }
+.toggle { width: 100%; }
+.toggle[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.toggle[aria-pressed="true"] small { color: inherit; opacity: 0.75; }
 .hint { margin: 0; font-size: 13px; color: var(--muted); }
 .anims { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .anims li { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 14px; }
@@ -106,7 +109,13 @@ td code { font-family: var(--mono); font-size: 12.5px; }
           <li data-anim="IDLE"><i></i><b>Idle</b><small>loop · plays on its own</small></li>
           <li data-anim="WAVING"><i></i><b>Waving</b><small>one-shot · 3 s</small></li>
           <li data-anim="FRUSTRATED"><i></i><b>Frustrated</b><small>one-shot · 2.5 s</small></li>
+          <li data-anim="COFFIN_WAKEUP"><i></i><b>Coffin wake-up</b><small>loop · 6 s · loading</small></li>
         </ul>
+      </div>
+      <div class="group">
+        <div class="label">Loading screen</div>
+        <button id="b-load" class="toggle" type="button" aria-pressed="false" disabled><b>Coffin wake-up</b><small id="loadVal">loading: false</small></button>
+        <p class="hint">Turn it on to play the loading loop. Turn it off and he goes straight back to idle.</p>
       </div>
       <div class="group">
         <div class="label">Reactions</div>
@@ -130,15 +139,15 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <table>
           <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
           <tr><td>State machine</td><td><code>State Machine 1</code></td></tr>
-          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers)</td></tr>
-          <tr><td>Loop</td><td><code>IDLE</code> 4 s: breathing, sway, a blink</td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers) · loading (boolean)</td></tr>
+          <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>COFFIN_WAKEUP</code> 6 s, while loading is true</td></tr>
           <tr><td>One-shots</td><td><code>WAVING</code> 3 s · <code>FRUSTRATED</code> 2.5 s, both back to idle</td></tr>
         </table>
       </div>
     </aside>
   </div>
 
-  <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, and the two triggers, <code>wave</code> and <code>frustrate</code>, are all it needs to play the reactions.</p>
+  <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, and setting <code>loading</code> to true plays the coffin loop until you set it back to false.</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@rive-app/canvas-single@2.44.0/rive.js"></script>
@@ -149,8 +158,10 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var loadmsg = document.getElementById('loadmsg');
   var bW = document.getElementById('b-wave');
   var bF = document.getElementById('b-frustrate');
+  var bL = document.getElementById('b-load');
+  var loadVal = document.getElementById('loadVal');
   var vmi = null;
-  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated' };
+  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated', COFFIN_WAKEUP: 'coffin wake-up' };
 
   function setState(name) {
     stateName.textContent = LABELS[name] || name.toLowerCase();
@@ -158,11 +169,12 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     var idle = name === 'IDLE';
     bW.disabled = !idle || !vmi;
     bF.disabled = !idle || !vmi;
+    bL.disabled = !vmi || (name !== 'IDLE' && name !== 'COFFIN_WAKEUP');
   }
 
   rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
   var r = new rive.Rive({
-    src: 'countly.riv?v=4',
+    src: 'countly.riv?v=5',
     canvas: document.getElementById('cv'),
     artboard: 'Artboard 1',
     stateMachine: 'State Machine 1',
@@ -193,6 +205,13 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   }
   bW.addEventListener('click', function () { fire('wave', bW); });
   bF.addEventListener('click', function () { fire('frustrate', bF); });
+  bL.addEventListener('click', function () {
+    var p = vmi && vmi.boolean('loading');
+    if (!p) return;
+    p.value = !p.value;
+    bL.setAttribute('aria-pressed', String(p.value));
+    loadVal.textContent = 'loading: ' + p.value;
+  });
 
   document.querySelectorAll('.seg button').forEach(function (b) {
     b.addEventListener('click', function () {
