@@ -1,0 +1,158 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aria Teacher Rig</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f1eff4; --panel:#ffffff; --fg:#1d1a24; --muted:#655f72; --line:#dcd8e3;
+  --stage-a:#efe9f7; --stage-b:#d9cdea; --accent:#7a45c4; --accent-ink:#ffffff; --chip:#ece7f3;
+  --bubble:#ffffff; --bubble-ink:#2a2533; --live:#2fae7a;
+  --display:"Fraunces", Georgia, serif; --body:"Figtree", system-ui, sans-serif; --mono:"JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#131118; --panel:#1b1822; --fg:#ebe8f0; --muted:#a39cb0; --line:#2e2a37;
+  --stage-a:#2a2338; --stage-b:#15121c; --accent:#a77de8; --accent-ink:#140d20; --chip:#241f2d;
+  --bubble:#262130; --bubble-ink:#ebe8f0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131118; --panel:#1b1822; --fg:#ebe8f0; --muted:#a39cb0; --line:#2e2a37;
+  --stage-a:#2a2338; --stage-b:#15121c; --accent:#a77de8; --accent-ink:#140d20; --chip:#241f2d;
+  --bubble:#262130; --bubble-ink:#ebe8f0; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--body);margin:0;padding:24px 16px 40px}
+.wrap{max-width:1080px;margin:0 auto;display:grid;gap:20px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 16px}
+h1{font:600 clamp(26px,4vw,36px)/1.1 var(--display);margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.badge{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+@media (max-width:820px){.main{grid-template-columns:minmax(0,1fr)}}
+.stage{position:relative;background:radial-gradient(120% 90% at 50% 20%,var(--stage-a),var(--stage-b));border-radius:14px;overflow:hidden;aspect-ratio:1/1;width:100%;max-width:620px;justify-self:center}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font:500 13px var(--mono)}
+.status{position:absolute;left:14px;top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.pill{font:500 12px var(--mono);background:var(--bubble);color:var(--bubble-ink);border:1px solid var(--line);border-radius:999px;padding:5px 10px;display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.pill.on .dot{background:var(--live)}
+.rail{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:22px}
+.group{display:grid;gap:10px}
+.label{font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.btns{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+button{font:600 14px var(--body);border:1px solid var(--line);background:var(--chip);color:var(--fg);padding:10px 8px;border-radius:10px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:6px}
+button small{font:500 11px var(--mono);color:var(--muted)}
+button:hover{border-color:var(--accent)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button[aria-pressed="true"] small{color:var(--accent-ink);opacity:.8}
+.wide{grid-column:1/-1;justify-content:center}
+.toggle{display:flex;align-items:center;gap:10px;font-size:14px}
+.note{font-size:13px;color:var(--muted);margin:0}
+.note code{font:500 12px var(--mono);color:var(--fg)}
+</style></head><body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Aria, Teacher Character Rig</h1>
+      <p class="sub">The live Rive file in the same web runtime a React or JS app uses. Switch expressions and turn on speaking: idle breathing and blinks keep running underneath, and expressions keep blending while she talks.</p>
+    </div>
+    <span class="badge">Live Rive preview</span>
+  </header>
+
+  <div class="main">
+    <div class="stage" id="stage">
+      <canvas id="cv"></canvas>
+      <div class="loading" id="loading">Loading Aria…</div>
+      <div class="status">
+        <span class="pill" id="pExp"><span class="dot"></span><span id="expName">Neutral</span></span>
+        <span class="pill" id="pSpk"><span class="dot"></span><span id="spkName">Not speaking</span></span>
+      </div>
+    </div>
+
+    <aside class="rail">
+      <div class="group">
+        <span class="label">Expression · number input</span>
+        <div class="btns" id="exprs"></div>
+      </div>
+      <div class="group">
+        <span class="label">Speaking · boolean input</span>
+        <label class="toggle"><input type="checkbox" id="spk"> Speaking</label>
+        <div class="btns"><button class="wide" id="say">Say one sentence (3 s)</button></div>
+      </div>
+      <div class="group">
+        <span class="label">Demo</span>
+        <label class="toggle"><input type="checkbox" id="auto"> Auto-play a short lesson</label>
+      </div>
+      <p class="note">Artboard <code>Female Teacher</code>, state machine <code>Aria</code>. Inputs: <code>Expression</code> (number 0–6) and <code>Speaking</code> (boolean). Layered: idle and blink always on, expression and mouth layers blend on top.</p>
+    </aside>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@rive-app/canvas-single@2.44.0/rive.js"></script>
+<script>
+(function(){
+  const NAMES = ['Neutral','Happy','Thinking','Curious','Encouraging','Gentle Correction','Listening'];
+  const cv = document.getElementById('cv');
+  const box = document.getElementById('exprs');
+  const spk = document.getElementById('spk'), auto = document.getElementById('auto');
+  let E = null, S = null, sayTimer = 0, autoTimer = 0;
+
+  NAMES.forEach((n, i) => {
+    const b = document.createElement('button');
+    b.dataset.e = i; b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.innerHTML = `<span>${n}</span><small>${i}</small>`;
+    b.addEventListener('click', () => { stopAuto(); setExpr(i); });
+    box.appendChild(b);
+  });
+
+  function setExpr(i){
+    if (E) E.value = i;
+    box.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.e === i ? 'true' : 'false'));
+    document.getElementById('expName').textContent = NAMES[i];
+    document.getElementById('pExp').classList.add('on');
+  }
+  function setSpeak(on){
+    if (S) S.value = on;
+    spk.checked = on;
+    document.getElementById('spkName').textContent = on ? 'Speaking' : 'Not speaking';
+    document.getElementById('pSpk').classList.toggle('on', on);
+  }
+
+  spk.addEventListener('change', () => { stopAuto(); clearTimeout(sayTimer); setSpeak(spk.checked); });
+  document.getElementById('say').addEventListener('click', () => {
+    stopAuto(); clearTimeout(sayTimer); setSpeak(true);
+    sayTimer = setTimeout(() => setSpeak(false), 3000);
+  });
+
+  // A short scripted "lesson": [expression, speaking, ms]
+  const LESSON = [[6,false,2600],[0,true,3000],[2,false,2400],[3,true,2600],[5,true,2800],[4,true,2600],[1,false,2600]];
+  function runAuto(step){
+    const [e, s, ms] = LESSON[step % LESSON.length];
+    setExpr(e); setSpeak(s);
+    autoTimer = setTimeout(() => runAuto(step + 1), ms);
+  }
+  function stopAuto(){ if (auto.checked){ auto.checked = false; } clearTimeout(autoTimer); }
+  auto.addEventListener('change', () => { clearTimeout(autoTimer); clearTimeout(sayTimer); if (auto.checked) runAuto(0); else setSpeak(false); });
+
+  const r = new rive.Rive({
+    src: 'aria.riv', canvas: cv, stateMachines: 'Aria', autoplay: true,
+    layout: new rive.Layout({ fit: rive.Fit.Contain, alignment: rive.Alignment.Center }),
+    onLoad: () => {
+      document.getElementById('loading').hidden = true;
+      r.resizeDrawingSurfaceToCanvas();
+      const ins = r.stateMachineInputs('Aria') || [];
+      E = ins.find(i => i.name === 'Expression') || null;
+      S = ins.find(i => i.name === 'Speaking') || null;
+      window.__aria = { r, E, S };
+      setExpr(0); setSpeak(false);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches){ auto.checked = true; runAuto(0); }
+    },
+    onLoadError: e => { document.getElementById('loading').textContent = 'Could not load the Aria file.'; console.error(e); }
+  });
+  addEventListener('resize', () => r.resizeDrawingSurfaceToCanvas());
+})();
+</script>
+</body></html>
