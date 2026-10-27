@@ -495,15 +495,6 @@
     ]
    },
    {
-    "n": "Explainer Video - SaaS & Product",
-    "icon": "&#9654;",
-    "t": [
-     "Aura - SaaS Explainer Video",
-     "Gora - Blockchain Oracle Explainer",
-     "TRACE"
-    ]
-   },
-   {
     "n": "Motion Graphics & 3D",
     "icon": "&#10023;",
     "t": [
@@ -525,6 +516,17 @@
      "Develomark",
      "Logo & Character Animation",
      "Aurenity Logo Motion"
+    ]
+   }
+  ],
+  "pg-explainer": [
+   {
+    "n": "",
+    "icon": "",
+    "t": [
+     "Aura - SaaS Explainer Video",
+     "Gora - Blockchain Oracle Explainer",
+     "TRACE"
     ]
    }
   ],

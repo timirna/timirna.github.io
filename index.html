@@ -270,9 +270,23 @@ nav{display:flex;align-items:center;justify-content:space-between}
 
 /* ---------- FOOTER ---------- */
 footer{text-align:center;padding:30px 20px 40px;color:var(--faint);font-size:12.5px}
-footer .flinks{display:flex;justify-content:center;gap:26px;margin:14px 0 18px;font-size:13px;color:var(--muted)}
+footer .flinks{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 26px;margin:14px 0 18px;font-size:13px;color:var(--muted)}
 footer .flinks a:hover{color:#fff}
 footer .logo{font-size:20px;margin-bottom:4px}
+
+/* ---------- EXPLAINER PAGE ---------- */
+.ex-intro{text-align:center;color:var(--muted);font-size:14px;margin:-14px auto 26px;max-width:560px}
+.ex-page .pgrid{grid-template-columns:repeat(2,1fr);gap:18px}
+.ex-page .pcard{padding:16px}
+.ex-page .pcard .pthumb{height:auto;aspect-ratio:16/9;margin-bottom:16px}
+.ex-page .pcard .pthumb::after{content:'\25B6';position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(6px);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;padding-left:4px;box-sizing:border-box;transition:background .25s,transform .25s}
+.ex-page .pcard:hover .pthumb::after{background:var(--accent);border-color:var(--accent);transform:scale(1.08)}
+.ex-page .pcard .pname{font-size:18px;margin-top:4px}
+.ex-page .pcard .pdesc{font-size:13px;-webkit-line-clamp:3}
+.ex-page .pcard:first-child{grid-column:1/-1}
+.ex-page .pcard:first-child .pthumb{aspect-ratio:21/9}
+.ex-page .pcard:first-child .pname{font-size:22px}
+@media(max-width:560px){.ex-page .pgrid{grid-template-columns:1fr}.ex-page .pcard:first-child .pthumb{aspect-ratio:16/9}}
 
 /* ---------- CATEGORY SECTION HEADERS ---------- */
 .ghead{
@@ -344,6 +358,7 @@ footer .logo{font-size:20px;margin-bottom:4px}
       <a href="#home" data-page="home">Home</a>
       <a href="#about" data-page="about">About</a>
       <a href="#motion" data-page="motion">Motion Graphics</a>
+      <a href="#explainer" data-page="explainer">Explainer Videos</a>
       <a href="#video" data-page="video">Video Editing</a>
       <a href="#graphics" data-page="graphics">Graphics Design</a>
       <a href="#free" data-page="free">Free Download</a>
@@ -524,6 +539,14 @@ footer .logo{font-size:20px;margin-bottom:4px}
   </div>
 </section>
 
+<!-- ================= EXPLAINER VIDEOS ================= -->
+<section class="panel page" id="explainer">
+  <h2 class="sec-head"><span class="star">&#10022;</span>Explainer Videos<span class="star">&#10022;</span></h2>
+  <p class="ex-intro">SaaS &amp; product explainers &mdash; script to screen, turning complex products into clear, engaging stories.</p>
+  <div id="pg-explainer" class="ex-page"></div>
+  <p style="text-align:center;margin-top:22px"><a class="btn-talk" href="#contact">Need an explainer? Let's talk &#8599;</a></p>
+</section>
+
 <!-- ================= VIDEO EDITING ================= -->
 <section class="panel page" id="video">
   <h2 class="sec-head"><span class="star">&#10022;</span>Video Editing<span class="star">&#10022;</span></h2>
@@ -652,6 +675,7 @@ footer .logo{font-size:20px;margin-bottom:4px}
     <a href="#home">Home</a>
     <a href="#about">About</a>
     <a href="#motion">Motion Graphics</a>
+    <a href="#explainer">Explainer Videos</a>
     <a href="#video">Video Editing</a>
     <a href="#graphics">Graphics Design</a>
     <a href="#free">Free Download</a>
@@ -826,7 +850,7 @@ function initLotties(root){
 }
 
 /* ---------- page router ---------- */
-var PAGES=['home','about','motion','video','graphics','free','contact','case-rive'];
+var PAGES=['home','about','motion','explainer','video','graphics','free','contact','case-rive'];
 function route(){
   var h=(location.hash||'#home').slice(1);
   if(PAGES.indexOf(h)===-1)h='home';
