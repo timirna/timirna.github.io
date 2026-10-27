@@ -5,6 +5,7 @@ import { VideoPreview } from "@/components/media/VideoPreview";
 import { LottiePlayer } from "@/components/media/LottiePlayer";
 import { RivePlayer } from "@/components/media/RivePlayer";
 import { cn } from "@/lib/utils";
+import { riveHintsFor } from "@/data/rive-hints";
 
 /** The visual for a project card: poster/clip, live Lottie, live Rive, or an honest placeholder. */
 export function ProjectMedia({ project, active, className }: { project: Project; active: boolean; className?: string }) {
@@ -26,6 +27,7 @@ export function ProjectMedia({ project, active, className }: { project: Project;
           stateMachine={project.riveStateMachine}
           artboard={project.riveArtboard}
           label={project.coverAlt}
+          hints={riveHintsFor(project.riveStateMachine)}
           className="h-full"
           canvasClassName="h-full"
         />

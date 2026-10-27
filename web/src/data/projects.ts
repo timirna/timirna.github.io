@@ -37,6 +37,53 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "silver-tabby-cat",
+    title: "Silver Tabby Gaze Rig",
+    year: 2026,
+    categories: ["Rive", "Character"],
+    summary:
+      "A Rive cat mascot for a sign-in screen whose head and eyes follow your cursor or finger, with blink, nose-lick and happy reactions. Move your pointer — it's live.",
+    role: "Character rigging, interactive animation",
+    tools: ["Rive"],
+    deliverables: ["Single .riv file", "View model CatVM: Look_X, Look_Y", "Triggers: Blink, LickNose, Happy"],
+    cover: "",
+    coverAlt: "A silver tabby cat that looks at your cursor",
+    riveFile: "/animations/rive/cat.riv",
+    riveStateMachine: "Cat_SM",
+    externalDemo: "/cat-preview/",
+    challenge:
+      "The cat had to sit above a sign-in card and feel attentive — watching the user wherever they move — while running in the same web runtime the app will use.",
+    approach: [
+      "The gaze is a grid of drawn head poses: five rows on Look_Y, with nine poses across the middle row and three on the others. Two numbers, Look_X and Look_Y from −1 to 1, pick the pose, so the app only has to pass the pointer position.",
+      "Idle breathing runs all the time, and the cat blinks on its own while looking straight ahead. Blink, LickNose and Happy are triggers on the view model for moments the app wants to call out.",
+      "Shown here as a preview — the art isn't final.",
+    ],
+  },
+  {
+    slug: "zeiziq-bird",
+    title: "ZEIZIQ Bird",
+    year: 2026,
+    categories: ["Rive", "Character"],
+    summary:
+      "A Rive bird that perches, takes off, flaps, glides and lands — one state machine the website drives while its own code sets the flight path.",
+    role: "Character animation, state machine",
+    tools: ["Rive"],
+    deliverables: ["Single .riv file (2800 × 2400 artboard)", "View model BirdVM: attention, takeoff, land, isGliding"],
+    cover: "",
+    coverAlt: "The ZEIZIQ bird character",
+    riveFile: "/animations/rive/bird.riv",
+    riveStateMachine: "BirdSM",
+    riveArtboard: "ZEIZIQ_Bird",
+    externalDemo: "/zeiziq-bird/",
+    challenge:
+      "The bird needed to live on a website and move around it — so the animation had to stay fixed inside its artboard and leave position, flight path, scale and timing to the site's code.",
+    approach: [
+      "Three loops — idle (5 s), flap (0.6 s) and glide (3 s) — and three one-shots — attention (1.6 s), takeoff (1 s) and land-settle (1.6 s).",
+      "The state machine knows where the bird is: Attention and Take off only work while it's perched; Glide and Land only work while it's flying. The site drives it through the BirdVM view model with three triggers and an isGliding boolean.",
+      "Later passes added a new body, a flap-down wing pose, a tilt in flight, visible legs and a larger artboard.",
+    ],
+  },
+  {
     slug: "countly-character",
     title: "Countly — Rive Mascot",
     year: 2026,
@@ -359,30 +406,6 @@ export const projects: Project[] = [
   },
 
   // ---- Live character demos (also in the Playground) ----
-  {
-    slug: "silver-tabby-cat",
-    title: "Silver Tabby Gaze Rig",
-    categories: ["Rive", "Character"],
-    summary: "A Rive cat whose head and eyes follow a look target, with blink, nose-lick and happy reactions.",
-    cover: "",
-    coverAlt: "A silver tabby cat character",
-    riveFile: "/animations/rive/cat.riv",
-    riveStateMachine: "Cat_SM",
-    externalDemo: "/cat-preview/",
-  },
-  {
-    slug: "zeiziq-bird",
-    title: "ZEIZIQ Bird",
-    categories: ["Rive", "Character"],
-    summary: "A Rive bird character with idle, flap and glide states.",
-    cover: "",
-    coverAlt: "The ZEIZIQ bird character",
-    riveFile: "/animations/rive/bird.riv",
-    riveStateMachine: "BirdSM",
-    riveArtboard: "ZEIZIQ_Bird",
-    externalDemo: "/zeiziq-bird/",
-  },
-
   // ---- Seeded from the brief: media and facts still to confirm ----
   {
     slug: "reportability",
@@ -447,14 +470,17 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 // Selected Work on the homepage, in this order (rhythm: full width, half, half).
 const featuredOrder = [
   "koala-sleep-tracker",
+  "silver-tabby-cat",
+  "zeiziq-bird",
+  "sohopay-launch-films",
   "countly-character",
   "aria-teacher-rig",
-  "sohopay-launch-films",
   "aura-saas-explainer",
   "gora-blockchain-explainer",
   "interactive-micro-animations",
   "interactive-lottie-character",
   "ask-rosie-hero",
+  "trace-saas-explainer",
 ];
 export const featuredProjects = featuredOrder.map(getProject).filter((p): p is Project => !!p);
 

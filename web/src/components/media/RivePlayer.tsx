@@ -32,6 +32,12 @@ type Hints = {
   numberLabels?: Record<string, string[]>;
   /** [min, max, step] for a number input/property, if known. */
   numberRanges?: Record<string, [number, number, number]>;
+  /**
+   * Drive two number properties from the pointer position (-1..1 around the
+   * stage centre), snapped to the rig's drawn poses. `xStepOffAxis` is the X
+   * step used when Y isn't centred.
+   */
+  follow?: { x: string; y: string; xStep: number; yStep: number; xStepOffAxis?: number };
 };
 
 type Props = {
@@ -170,6 +176,38 @@ export function RivePlayer({
     },
     [rive, stateMachine, reduce, paused],
   );
+
+  // Pointer follow (e.g. a gaze rig), only when both properties exist in the file.
+  const follow = hints?.follow;
+  const canFollow = !!follow && controls.some((c) => c.name === follow.x) && controls.some((c) => c.name === follow.y);
+  useEffect(() => {
+    if (!canFollow || !follow || !visible) return;
+    let frame = 0;
+    let last = "";
+    const clamp = (v: number) => Math.max(-1, Math.min(1, v));
+    const onMove = (e: PointerEvent) => {
+      const el = box.current;
+      if (!el || frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const r = el.getBoundingClientRect();
+        const reach = Math.max(r.width, 1) * 0.6;
+        const y = Math.round(clamp((e.clientY - (r.top + r.height * 0.4)) / reach) / follow.yStep) * follow.yStep;
+        const xs = Math.abs(y) < 0.01 ? follow.xStep : (follow.xStepOffAxis ?? follow.xStep);
+        const x = Math.round(clamp((e.clientX - (r.left + r.width / 2)) / reach) / xs) * xs;
+        const key = `${x},${y}`;
+        if (key === last) return;
+        last = key;
+        setValue(follow.x, x);
+        setValue(follow.y, y);
+      });
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(frame);
+    };
+  }, [canFollow, follow, visible, setValue]);
 
   useImperativeHandle(
     handleRef,

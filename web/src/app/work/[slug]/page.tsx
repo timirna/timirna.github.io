@@ -8,7 +8,7 @@ import { LottiePlayer } from "@/components/media/LottiePlayer";
 import { MediaPlaceholder } from "@/components/project/ProjectMedia";
 import { ProjectGallery } from "@/components/project/ProjectGallery";
 import { ContactCTA } from "@/components/sections/ContactCTA";
-import { ariaHints, catHints } from "@/data/rive-hints";
+import { riveHintsFor } from "@/data/rive-hints";
 import { site } from "@/data/site";
 
 export const dynamicParams = false;
@@ -28,8 +28,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: { title: p.title, description: p.summary, images: p.cover && !p.cover.endsWith(".gif") ? [p.cover] : undefined },
   };
 }
-
-const hintsFor = (sm?: string) => (sm === "Aria" ? ariaHints : sm === "Cat_SM" ? catHints : undefined);
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -140,7 +138,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                     artboard={p.riveArtboard}
                     label={p.coverAlt}
                     showControls
-                    hints={hintsFor(p.riveStateMachine)}
+                    hints={riveHintsFor(p.riveStateMachine)}
                     canvasClassName="aspect-square md:aspect-[4/3]"
                     fallbackHref={p.externalDemo}
                   />
