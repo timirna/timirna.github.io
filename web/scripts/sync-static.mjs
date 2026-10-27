@@ -21,8 +21,9 @@ const ENTRIES = [
   ["motiondesk.html", "motiondesk.html"],
   ["admin.html", "admin.html"],
   ["data.json", "data.json"],
-  // The previous single-page site stays reachable at /classic.html
-  ["index.html", "classic.html"],
+  // Earlier versions of the site stay reachable
+  ["classic.html", "classic.html"],
+  ["index.html", "dark.html"],
 ];
 
 mkdirSync(pub, { recursive: true });

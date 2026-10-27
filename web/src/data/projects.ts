@@ -35,7 +35,66 @@ export const projects: Project[] = [
       { src: img("40116cbaee57e19ca856bc511eb71d96-1783889565987/Koala_Tired.gif"), alt: "Tired state" },
       { src: img("40116cbaee57e19ca856bc511eb71d96-1783889584583/Koala_crying.gif"), alt: "Crying state" },
     ],
-    featured: true,
+  },
+  {
+    slug: "countly-character",
+    title: "Countly — Rive Mascot",
+    year: 2026,
+    categories: ["Rive", "Character"],
+    summary:
+      "A Rive mascot with an idle loop, wave and frustrated reactions, and a coffin wake-up loading loop — all driven from one file through data binding.",
+    role: "Character animation, rigging, state machine",
+    tools: ["Rive"],
+    deliverables: ["Single .riv file", "Data-bound triggers: wave, frustrate", "Boolean: loading"],
+    cover: "",
+    coverAlt: "Countly, an animated mascot",
+    riveFile: "/animations/rive/countly.riv",
+    riveStateMachine: "State Machine 1",
+    riveArtboard: "Artboard 1",
+    externalDemo: "/countly-preview/",
+    challenge:
+      "Countly needed to feel alive while idle, react on cue, and double as a loading screen — without the app juggling separate files or animations.",
+    approach: [
+      "Four animations live in one state machine: an idle loop that plays on its own, a 3-second wave, a 2.5-second frustrated reaction (with a squinting left eye), and a 6-second coffin wake-up loop.",
+      "The app talks to the file through data binding: firing the wave or frustrate trigger plays that reaction once and returns to idle, and reactions only start from idle so they never cut each other off.",
+      "A single loading boolean switches to the coffin wake-up loop — a flat 2D coffin with a purple velvet interior that Countly wakes up inside — and switching it off sends him straight back to idle. Unused coffin parts were stripped from the file to keep it light.",
+    ],
+  },
+  {
+    slug: "aria-teacher-rig",
+    title: "Aria Teacher Rig",
+    categories: ["Rive", "Character"],
+    summary: "A Rive teacher character with seven expressions and a speaking toggle, driven by one state machine.",
+    cover: "",
+    coverAlt: "Aria, an animated teacher character",
+    riveFile: "/animations/rive/aria.riv",
+    riveStateMachine: "Aria",
+    externalDemo: "/aria-preview/",
+  },
+  {
+    slug: "sohopay-launch-films",
+    title: "SohoPay — Four Launch Films",
+    client: "SohoPay",
+    categories: ["2D Motion", "Video"],
+    summary:
+      "SohoPay lets AI agents pay for the things they do. Four films explain the product, introduce it and set the brand's tone — from a 22-second cut to an 80-second explainer.",
+    services: ["Explainer", "Launch film", "Product film", "Brand film"],
+    tools: ["After Effects", "Premiere Pro"],
+    deliverables: ["4 films", "1920×1080"],
+    cover: "/assets/sohopay-launch.jpg",
+    coverAlt: "SohoPay launch film frame",
+    previewVideo: "/assets/sohopay-launch.mp4",
+    heroVideo: "/assets/sohopay-launch.mp4",
+    approach: [
+      "Launch film (0:48) opens on the problem — agents can do the work but can't pay for it — then shows how SohoPay clears the blocked payment.",
+      "How SohoPay Works (1:20) is the full product explainer: a step-by-step walk through the flow, built for the website and sales calls.",
+      "Agents (0:22) layers chat-style UI motion over live footage of real businesses, showing agents placing orders on their own. The Brand Film (0:58) is a slower, typographic piece with ambient green light that sets the brand's tone.",
+    ],
+    gallery: [
+      { type: "video", src: "/assets/sohopay-howitworks.mp4", poster: "/assets/sohopay-howitworks.jpg", alt: "How SohoPay Works — 1:20 explainer" },
+      { type: "video", src: "/assets/sohopay-agents.mp4", poster: "/assets/sohopay-agents.jpg", alt: "SohoPay Agents — 0:22 product film" },
+      { type: "video", src: "/assets/sohopay-brand.mp4", poster: "/assets/sohopay-brand.jpg", alt: "SohoPay Brand Film — 0:58" },
+    ],
   },
   {
     slug: "aura-saas-explainer",
@@ -49,7 +108,6 @@ export const projects: Project[] = [
     coverAlt: "Aura explainer frame: a web form notification card on a violet grid",
     previewVideo: "/assets/aura-explainer.mp4",
     heroVideo: "/assets/aura-explainer.mp4",
-    featured: true,
   },
   {
     slug: "gora-blockchain-explainer",
@@ -66,7 +124,6 @@ export const projects: Project[] = [
     gallery: [
       { src: "https://cdn.dribbble.com/userupload/11339073/file/original-0ec9f9b979f0fffe31f9756bab030b65.gif", alt: "Gora brand animation" },
     ],
-    featured: true,
   },
   {
     slug: "interactive-micro-animations",
@@ -85,7 +142,6 @@ export const projects: Project[] = [
       poster: `/assets/stage-${n}.jpg`,
       alt: `Onboarding stage ${n}`,
     })),
-    featured: true,
   },
   {
     slug: "interactive-lottie-character",
@@ -107,7 +163,6 @@ export const projects: Project[] = [
       "/animations/lottie/home-screen.json",
       "/animations/lottie/analytics-screen.json",
     ],
-    featured: true,
   },
   {
     slug: "ask-rosie-hero",
@@ -119,7 +174,6 @@ export const projects: Project[] = [
     coverAlt: "Ask Rosie website hero",
     previewVideo: "https://cdn.dribbble.com/userupload/21729180/file/large-a4feaaf401ae32b3789d09194bba6050.mp4",
     heroVideo: "https://cdn.dribbble.com/userupload/21729180/file/large-a4feaaf401ae32b3789d09194bba6050.mp4",
-    featured: true,
   },
   {
     slug: "trace-saas-explainer",
@@ -306,29 +360,6 @@ export const projects: Project[] = [
 
   // ---- Live character demos (also in the Playground) ----
   {
-    slug: "aria-teacher-rig",
-    title: "Aria Teacher Rig",
-    categories: ["Rive", "Character"],
-    summary: "A Rive teacher character with seven expressions and a speaking toggle, driven by one state machine.",
-    cover: "",
-    coverAlt: "Aria, an animated teacher character",
-    riveFile: "/animations/rive/aria.riv",
-    riveStateMachine: "Aria",
-    externalDemo: "/aria-preview/",
-  },
-  {
-    slug: "countly-character",
-    title: "Countly Character",
-    categories: ["Rive", "Character"],
-    summary: "A Rive mascot with wave and frustrate reactions plus a coffin wake-up loading loop, controlled through data binding.",
-    cover: "",
-    coverAlt: "Countly, an animated mascot",
-    riveFile: "/animations/rive/countly.riv",
-    riveStateMachine: "State Machine 1",
-    riveArtboard: "Artboard 1",
-    externalDemo: "/countly-preview/",
-  },
-  {
     slug: "silver-tabby-cat",
     title: "Silver Tabby Gaze Rig",
     categories: ["Rive", "Character"],
@@ -413,7 +444,19 @@ export const categories: Category[] = ["Rive", "Lottie", "UI Motion", "2D Motion
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
 
-export const featuredProjects = projects.filter((p) => p.featured);
+// Selected Work on the homepage, in this order (rhythm: full width, half, half).
+const featuredOrder = [
+  "koala-sleep-tracker",
+  "countly-character",
+  "aria-teacher-rig",
+  "sohopay-launch-films",
+  "aura-saas-explainer",
+  "gora-blockchain-explainer",
+  "interactive-micro-animations",
+  "interactive-lottie-character",
+  "ask-rosie-hero",
+];
+export const featuredProjects = featuredOrder.map(getProject).filter((p): p is Project => !!p);
 
 export function nextProject(slug: string) {
   const list = projects.filter((p) => p.status !== "in-progress");

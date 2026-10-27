@@ -17,7 +17,7 @@ npm run lint && npm run typecheck
 `npm run dev` and `npm run build` first run `scripts/sync-static.mjs`, which copies the existing
 files from the repo root (`/assets`, the `*-preview` demos, `inovetix-reel`, `tavana-lottie-testbench`,
 `motiondesk.html`, `admin.html`, `data.json`) into `web/public` so they keep their current URLs.
-The old single-page site stays available at `/classic.html`. Those copies are gitignored — edit the
+Earlier versions stay available: the original site at `/classic.html` and the dark redesign at `/dark.html`. Those copies are gitignored — edit the
 originals at the repo root. The script also self-hosts the Rive runtime (`/rive/rive.wasm`).
 
 ## Deploying
@@ -32,6 +32,7 @@ Until you flip this, Pages keeps serving the old `index.html` from the repo root
 | What | Where |
 | --- | --- |
 | Projects (cards, filters, `/work/[slug]` pages) | `src/data/projects.ts` |
+| Homepage Selected Work and its order | `featuredOrder` in `src/data/projects.ts` |
 | Name, email, verified socials, showreel | `src/data/site.ts` |
 | Playground demos | `src/data/playground.ts` |
 | Friendly labels for known Rive inputs | `src/data/rive-hints.ts` |

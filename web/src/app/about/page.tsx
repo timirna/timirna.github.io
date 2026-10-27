@@ -114,7 +114,7 @@ export default function AboutPage() {
 
       <div className="mt-20 flex flex-wrap gap-3">
         <Button href="/contact/">Start a project</Button>
-        <Button href={site.socials[1].href} variant="secondary">
+        <Button href={site.socials[0].href} variant="secondary">
           LinkedIn
         </Button>
       </div>

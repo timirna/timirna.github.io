@@ -32,7 +32,6 @@ export type Project = {
   approach?: string[];
   deliverables?: string[];
   gallery?: GalleryItem[];
-  featured?: boolean;
   /** "in-progress": listed, but its media/facts still need confirming. */
   status?: "published" | "in-progress";
 };

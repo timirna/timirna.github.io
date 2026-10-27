@@ -8,8 +8,9 @@ export const site = {
     "Timir is an independent motion designer creating Lottie, Rive, interactive UI motion, character animation and 2D explainers for products, brands and the web.",
   // Only verified profiles. Add more here once confirmed.
   socials: [
-    { label: "Fiverr", href: "https://www.fiverr.com/timir69" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/timir69/" },
+    { label: "Dribbble", href: "https://dribbble.com/timir69" },
+    { label: "Behance", href: "https://www.behance.net/timirna" },
   ],
   /**
    * TODO: add the showreel when it's cut, e.g.

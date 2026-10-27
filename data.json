@@ -1,6 +1,42 @@
 {
  "projects": [
   {
+   "k": "Launch Film",
+   "t": "SohoPay Launch Film",
+   "cs": "case-sohopay",
+   "d": "48-second launch film for SohoPay, a payments layer for AI agents - opens on the problem (agents can do the work but can't pay for it) and shows how SohoPay clears the blocked payment.",
+   "m": [
+    "F|assets/sohopay-launch"
+   ]
+  },
+  {
+   "k": "SaaS Explainer",
+   "t": "How SohoPay Works",
+   "cs": "case-sohopay",
+   "d": "80-second product explainer walking through the SohoPay flow step by step, built for the website and sales calls.",
+   "m": [
+    "F|assets/sohopay-howitworks"
+   ]
+  },
+  {
+   "k": "Product Film",
+   "t": "SohoPay Agents",
+   "cs": "case-sohopay",
+   "d": "Live footage of real businesses with chat-style UI motion on top, showing agents placing orders on their own.",
+   "m": [
+    "F|assets/sohopay-agents"
+   ]
+  },
+  {
+   "k": "Brand Film",
+   "t": "SohoPay Brand Film",
+   "cs": "case-sohopay",
+   "d": "Typographic brand film with ambient green light that sets the tone for the SohoPay brand.",
+   "m": [
+    "F|assets/sohopay-brand"
+   ]
+  },
+  {
    "k": "Lottie Animation",
    "t": "Character Design & Animation",
    "d": "Designed and animated a custom Lottie character - clean vector assets optimized for web and mobile apps. Character illustration, rigging, and multiple smooth animations while keeping the file lightweight and performance-friendly.",
@@ -495,6 +531,19 @@
     ]
    },
    {
+    "n": "Explainer Video - SaaS & Product",
+    "icon": "&#9654;",
+    "t": [
+     "SohoPay Launch Film",
+     "How SohoPay Works",
+     "SohoPay Agents",
+     "SohoPay Brand Film",
+     "Aura - SaaS Explainer Video",
+     "Gora - Blockchain Oracle Explainer",
+     "TRACE"
+    ]
+   },
+   {
     "n": "Motion Graphics & 3D",
     "icon": "&#10023;",
     "t": [
@@ -516,17 +565,6 @@
      "Develomark",
      "Logo & Character Animation",
      "Aurenity Logo Motion"
-    ]
-   }
-  ],
-  "pg-explainer": [
-   {
-    "n": "",
-    "icon": "",
-    "t": [
-     "Aura - SaaS Explainer Video",
-     "Gora - Blockchain Oracle Explainer",
-     "TRACE"
     ]
    }
   ],
