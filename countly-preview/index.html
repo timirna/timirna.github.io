@@ -116,12 +116,16 @@ td code { font-family: var(--mono); font-size: 12.5px; }
           <li data-anim="FRUSTRATED"><i></i><b>Frustrated</b><small>one-shot · 2.5 s</small></li>
           <li data-anim="COFFIN_WAKEUP"><i></i><b>Coffin wake-up</b><small>loop · 6 s · loading</small></li>
           <li data-anim="CAULDRON_STIR"><i></i><b>Cauldron stir</b><small>loop · 4 s · cooking</small></li>
+          <li data-anim="FOOD_SCAN"><i></i><b>Food scan</b><small>loop · 4 s · scanning</small></li>
         </ul>
       </div>
       <div class="group">
         <div class="label">Loading screens</div>
         <button id="b-load" class="toggle" type="button" aria-pressed="false" disabled><b>Coffin wake-up</b><small id="loadVal">loading: false</small></button>
         <button id="b-cook" class="toggle" type="button" aria-pressed="false" disabled><b>Cauldron stir</b><small id="cookVal">cooking: false</small></button>
+        <button id="b-scan" class="toggle" type="button" aria-pressed="false" disabled><b>Food scan</b><small id="scanVal">scanning: false</small></button>
+        <button id="b-photo" type="button" disabled><b>Try a meal photo</b><small>sets mealPhoto (image)</small></button>
+        <input id="f-photo" type="file" accept="image/*" hidden>
         <p class="hint">Turn one on to play its loop (meal recommendations use the cauldron). Turn it off and he goes straight back to idle.</p>
       </div>
       <div class="group">
@@ -146,8 +150,8 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <table>
           <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
           <tr><td>State machine</td><td><code>State Machine 1</code></td></tr>
-          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers) · loading, cooking, refreshing (booleans)</td></tr>
-          <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>COFFIN_WAKEUP</code> 6 s, while loading is true · <code>CAULDRON_STIR</code> 4 s, while cooking is true</td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers) · loading, cooking, scanning, refreshing (booleans) · mealPhoto (image)</td></tr>
+          <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>COFFIN_WAKEUP</code> 6 s, while loading is true · <code>CAULDRON_STIR</code> 4 s, while cooking is true · <code>FOOD_SCAN</code> 4 s, while scanning is true</td></tr>
           <tr><td>One-shots</td><td><code>WAVING</code> 3 s · <code>FRUSTRATED</code> 2.5 s, both back to idle</td></tr>
         </table>
       </div>
@@ -178,7 +182,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     </aside>
   </section>
 
-  <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, setting <code>loading</code> to true plays the coffin loop, and <code>cooking</code> plays the cauldron loop, each until you set it back to false.</p>
+  <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, setting <code>loading</code> to true plays the coffin loop, <code>cooking</code> plays the cauldron loop and <code>scanning</code> the food scan, each until you set it back to false. For the food scan, set the image property <code>mealPhoto</code> to the user's meal photo (4:3, ideally 800 × 560) and it appears in the frame he studies.</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@rive-app/canvas-single@2.44.0/rive.js"></script>
@@ -193,8 +197,10 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var loadVal = document.getElementById('loadVal');
   var bC = document.getElementById('b-cook');
   var cookVal = document.getElementById('cookVal');
+  var bS = document.getElementById('b-scan');
+  var scanVal = document.getElementById('scanVal');
   var vmi = null;
-  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated', COFFIN_WAKEUP: 'coffin wake-up', CAULDRON_STIR: 'cauldron stir' };
+  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated', COFFIN_WAKEUP: 'coffin wake-up', CAULDRON_STIR: 'cauldron stir', FOOD_SCAN: 'food scan' };
 
   function setState(name) {
     stateName.textContent = LABELS[name] || name.toLowerCase();
@@ -204,11 +210,13 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     bF.disabled = !idle || !vmi;
     bL.disabled = !vmi || (name !== 'IDLE' && name !== 'COFFIN_WAKEUP');
     bC.disabled = !vmi || (name !== 'IDLE' && name !== 'CAULDRON_STIR');
+    bS.disabled = !vmi || (name !== 'IDLE' && name !== 'FOOD_SCAN');
+    bPh.disabled = !vmi;
   }
 
   rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
   var r = new rive.Rive({
-    src: 'countly.riv?v=11',
+    src: 'countly.riv?v=14',
     canvas: document.getElementById('cv'),
     artboard: 'Artboard 1',
     stateMachine: 'State Machine 1',
@@ -248,13 +256,39 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   }
   bL.addEventListener('click', function () { toggle('loading', bL, loadVal); });
   bC.addEventListener('click', function () { toggle('cooking', bC, cookVal); });
+  bS.addEventListener('click', function () { toggle('scanning', bS, scanVal); });
+  var bPh = document.getElementById('b-photo'), fPh = document.getElementById('f-photo');
+  bPh.addEventListener('click', function () { fPh.click(); });
+  // the frame shows the photo at 800 x 560 (4:3): crop-to-fill before handing it to Rive
+  fPh.addEventListener('change', function () {
+    var file = fPh.files && fPh.files[0];
+    if (!file || !vmi) return;
+    var img = new Image();
+    img.onload = function () {
+      var W = 800, H = 560, c = document.createElement('canvas');
+      c.width = W; c.height = H;
+      var k = Math.max(W / img.width, H / img.height), w = img.width * k, h = img.height * k;
+      c.getContext('2d').drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+      c.toBlob(function (blob) {
+        blob.arrayBuffer().then(function (buf) { return rive.decodeImage(new Uint8Array(buf)); }).then(function (ri) {
+          vmi.image('mealPhoto').value = ri;
+          ri.unref();
+          var p = vmi.boolean('scanning');
+          if (p && !p.value) toggle('scanning', bS, scanVal);
+        });
+      }, 'image/png');
+      URL.revokeObjectURL(img.src);
+    };
+    img.src = URL.createObjectURL(file);
+    fPh.value = '';
+  });
 
   var BAT = { BAT_EMPTY: 'empty', BAT_IN: 'dropping in', BAT_HOVER: 'refreshing', BAT_OUT: 'flying off' };
   var batState = document.getElementById('batState');
   var bP = document.getElementById('b-pull'), bH = document.getElementById('b-hold'), holdVal = document.getElementById('holdVal');
   var bvmi = null, pullTimer = null;
   var rb = new rive.Rive({
-    src: 'countly.riv?v=11',
+    src: 'countly.riv?v=14',
     canvas: document.getElementById('cv2'),
     artboard: 'Artboard 1',
     stateMachine: 'Bat Refresh',
