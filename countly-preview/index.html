@@ -52,6 +52,10 @@ canvas { display: block; width: 100%; height: 100%; }
 .state i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .loadmsg { position: absolute; inset: 0; display: grid; place-items: center; color: #a29cb3; font-family: var(--mono); font-size: 13px; padding: 16px; text-align: center; }
 
+.ptr { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+@media (max-width: 820px) { .ptr { grid-template-columns: minmax(0, 1fr); } }
+.ptr .stage { aspect-ratio: 4 / 3; }
+.ptr h2 { font-family: var(--display); font-weight: 700; font-size: 1.25rem; margin: 0 0 4px; }
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 18px; }
 .group { display: grid; gap: 10px; }
 .label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
@@ -142,13 +146,37 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <table>
           <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
           <tr><td>State machine</td><td><code>State Machine 1</code></td></tr>
-          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers) · loading, cooking (booleans)</td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers) · loading, cooking, refreshing (booleans)</td></tr>
           <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>COFFIN_WAKEUP</code> 6 s, while loading is true · <code>CAULDRON_STIR</code> 4 s, while cooking is true</td></tr>
           <tr><td>One-shots</td><td><code>WAVING</code> 3 s · <code>FRUSTRATED</code> 2.5 s, both back to idle</td></tr>
         </table>
       </div>
     </aside>
   </div>
+
+  <section class="ptr" aria-labelledby="ptrTitle">
+    <div class="stage" id="stage2" data-bg="light">
+      <canvas id="cv2" width="1200" height="900" aria-label="Countly as a bat, pull to refresh"></canvas>
+      <div class="state" aria-live="polite"><i></i><span id="batState">loading</span></div>
+    </div>
+    <aside class="panel">
+      <div class="group">
+        <h2 id="ptrTitle">Pull to refresh</h2>
+        <p class="hint">Same file and artboard, its own state machine, <code>Bat Refresh</code>, for the top of a list. Countly drops in as a bat, hovers while the app refreshes, then flies off.</p>
+        <button id="b-pull" class="primary" type="button" disabled><b>Pull to refresh</b><small>refreshing: true for 2.5 s</small></button>
+        <button id="b-hold" class="toggle" type="button" aria-pressed="false" disabled><b>Hold refreshing</b><small id="holdVal">refreshing: false</small></button>
+      </div>
+      <div class="specs">
+        <div class="label">File details</div>
+        <table>
+          <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
+          <tr><td>State machine</td><td><code>Bat Refresh</code> (load it instead of State Machine 1)</td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: refreshing (boolean)</td></tr>
+          <tr><td>Timelines</td><td><code>BAT_EMPTY</code> → <code>BAT_IN</code> 0.7 s → <code>BAT_HOVER</code> 2 s loop → <code>BAT_OUT</code> 0.5 s</td></tr>
+        </table>
+      </div>
+    </aside>
+  </section>
 
   <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, setting <code>loading</code> to true plays the coffin loop, and <code>cooking</code> plays the cauldron loop, each until you set it back to false.</p>
 </div>
@@ -180,7 +208,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
 
   rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
   var r = new rive.Rive({
-    src: 'countly.riv?v=8',
+    src: 'countly.riv?v=11',
     canvas: document.getElementById('cv'),
     artboard: 'Artboard 1',
     stateMachine: 'State Machine 1',
@@ -221,9 +249,51 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   bL.addEventListener('click', function () { toggle('loading', bL, loadVal); });
   bC.addEventListener('click', function () { toggle('cooking', bC, cookVal); });
 
+  var BAT = { BAT_EMPTY: 'empty', BAT_IN: 'dropping in', BAT_HOVER: 'refreshing', BAT_OUT: 'flying off' };
+  var batState = document.getElementById('batState');
+  var bP = document.getElementById('b-pull'), bH = document.getElementById('b-hold'), holdVal = document.getElementById('holdVal');
+  var bvmi = null, pullTimer = null;
+  var rb = new rive.Rive({
+    src: 'countly.riv?v=11',
+    canvas: document.getElementById('cv2'),
+    artboard: 'Artboard 1',
+    stateMachine: 'Bat Refresh',
+    autoplay: true,
+    autoBind: true,
+    layout: new rive.Layout({ fit: rive.Fit.Cover, alignment: rive.Alignment.Center }),
+    onLoad: function () {
+      rb.resizeDrawingSurfaceToCanvas();
+      bvmi = rb.viewModelInstance;
+      bP.disabled = bH.disabled = !bvmi;
+      batState.textContent = 'empty';
+      window.__bat = rb;
+    },
+    onStateChange: function (e) {
+      var names = (e && e.data) || [];
+      for (var i = 0; i < names.length; i++) if (BAT[names[i]]) { batState.textContent = BAT[names[i]]; return; }
+    }
+  });
+  addEventListener('resize', function () { rb.resizeDrawingSurfaceToCanvas(); });
+  function setRefreshing(v) {
+    var p = bvmi && bvmi.boolean('refreshing');
+    if (!p) return;
+    p.value = v;
+    bH.setAttribute('aria-pressed', String(v));
+    holdVal.textContent = 'refreshing: ' + v;
+  }
+  bP.addEventListener('click', function () {
+    clearTimeout(pullTimer);
+    setRefreshing(true);
+    pullTimer = setTimeout(function () { setRefreshing(false); }, 2500);
+  });
+  bH.addEventListener('click', function () {
+    clearTimeout(pullTimer);
+    setRefreshing(!(bvmi && bvmi.boolean('refreshing').value));
+  });
+
   document.querySelectorAll('.seg button').forEach(function (b) {
     b.addEventListener('click', function () {
-      stage.dataset.bg = b.dataset.bg;
+      stage.dataset.bg = document.getElementById('stage2').dataset.bg = b.dataset.bg;
       document.querySelectorAll('.seg button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
     });
   });
