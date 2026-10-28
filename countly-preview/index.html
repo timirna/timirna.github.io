@@ -188,6 +188,29 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     </aside>
   </section>
 
+  <section class="ptr" aria-labelledby="fireTitle">
+    <div class="stage" id="stage3" data-bg="light" style="aspect-ratio: 1 / 1; max-width: 420px;">
+      <canvas id="cv3" width="900" height="900" aria-label="Streak fire"></canvas>
+      <div class="state" aria-live="polite"><i></i><span id="fireState">loading</span></div>
+    </div>
+    <aside class="panel">
+      <div class="group">
+        <h2 id="fireTitle">Streak fire</h2>
+        <p class="hint">Same file and artboard, its own state machine, <code>Streak Fire</code>. Countly isn't in it. Unlit until the day's streak is filled, then it lights up and keeps burning.</p>
+        <button id="b-fire" class="toggle" type="button" aria-pressed="false" disabled><b>Fill today's streak</b><small id="fireVal">streakLit: false</small></button>
+      </div>
+      <div class="specs">
+        <div class="label">File details</div>
+        <table>
+          <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
+          <tr><td>State machine</td><td><code>Streak Fire</code></td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: streakLit (boolean)</td></tr>
+          <tr><td>Timelines</td><td><code>FIRE_OUT</code> → <code>FIRE_IGNITE</code> 0.8 s → <code>FIRE_BURN</code> 2 s loop</td></tr>
+        </table>
+      </div>
+    </aside>
+  </section>
+
   <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, setting <code>loading</code> to true plays the coffin loop, <code>cooking</code> plays the cauldron loop and <code>scanning</code> the food scan and <code>fridge</code> the fridge loop, each until you set it back to false. For the food scan, set the image property <code>mealPhoto</code> to the user's meal photo (4:3, ideally 800 × 560) and it appears in the frame he studies.</p>
 </div>
 
@@ -229,7 +252,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
 
   rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
   var r = new rive.Rive({
-    src: 'countly.riv?v=17',
+    src: 'countly.riv?v=18',
     canvas: document.getElementById('cv'),
     artboard: 'Artboard 1',
     stateMachine: 'State Machine 1',
@@ -304,7 +327,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var bP = document.getElementById('b-pull'), bH = document.getElementById('b-hold'), holdVal = document.getElementById('holdVal');
   var bvmi = null, pullTimer = null;
   var rb = new rive.Rive({
-    src: 'countly.riv?v=17',
+    src: 'countly.riv?v=18',
     canvas: document.getElementById('cv2'),
     artboard: 'Artboard 1',
     stateMachine: 'Bat Refresh',
@@ -341,9 +364,41 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     setRefreshing(!(bvmi && bvmi.boolean('refreshing').value));
   });
 
+  var FIRE = { FIRE_OUT: 'unlit', FIRE_IGNITE: 'lighting up', FIRE_BURN: 'burning' };
+  var fireState = document.getElementById('fireState'), bFi = document.getElementById('b-fire'), fireVal = document.getElementById('fireVal');
+  var fvmi = null;
+  var rf = new rive.Rive({
+    src: 'countly.riv?v=18',
+    canvas: document.getElementById('cv3'),
+    artboard: 'Artboard 1',
+    stateMachine: 'Streak Fire',
+    autoplay: true,
+    autoBind: true,
+    layout: new rive.Layout({ fit: rive.Fit.Contain, alignment: rive.Alignment.Center }),
+    onLoad: function () {
+      rf.resizeDrawingSurfaceToCanvas();
+      fvmi = rf.viewModelInstance;
+      bFi.disabled = !fvmi;
+      fireState.textContent = 'unlit';
+      window.__fire = rf;
+    },
+    onStateChange: function (e) {
+      var names = (e && e.data) || [];
+      for (var i = 0; i < names.length; i++) if (FIRE[names[i]]) { fireState.textContent = FIRE[names[i]]; return; }
+    }
+  });
+  addEventListener('resize', function () { rf.resizeDrawingSurfaceToCanvas(); });
+  bFi.addEventListener('click', function () {
+    var p = fvmi && fvmi.boolean('streakLit');
+    if (!p) return;
+    p.value = !p.value;
+    bFi.setAttribute('aria-pressed', String(p.value));
+    fireVal.textContent = 'streakLit: ' + p.value;
+  });
+
   document.querySelectorAll('.seg button').forEach(function (b) {
     b.addEventListener('click', function () {
-      stage.dataset.bg = document.getElementById('stage2').dataset.bg = b.dataset.bg;
+      stage.dataset.bg = document.getElementById('stage2').dataset.bg = document.getElementById('stage3').dataset.bg = b.dataset.bg;
       document.querySelectorAll('.seg button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
     });
   });
