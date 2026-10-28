@@ -118,6 +118,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
           <li data-anim="CAULDRON_STIR"><i></i><b>Cauldron stir</b><small>loop · 4 s · cooking</small></li>
           <li data-anim="FOOD_SCAN"><i></i><b>Food scan</b><small>loop · 4 s · scanning</small></li>
           <li data-anim="FRIDGE_BAT"><i></i><b>Fridge + bat</b><small>loop · 5 s · fridge</small></li>
+          <li data-anim="PLANT_WATER"><i></i><b>Water the plant</b><small>one-shot · 4 s · water</small></li>
         </ul>
       </div>
       <div class="group">
@@ -135,6 +136,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <div class="btns">
           <button id="b-wave" class="primary" type="button" disabled><b>Wave</b><small>trigger: wave</small></button>
           <button id="b-frustrate" type="button" disabled><b>Frustrated</b><small>trigger: frustrate</small></button>
+          <button id="b-water" type="button" disabled><b>Water the plant</b><small>trigger: water</small></button>
         </div>
         <p class="hint">Reactions only start from idle. While one is playing, the buttons wait until he's back.</p>
       </div>
@@ -152,9 +154,9 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <table>
           <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
           <tr><td>State machine</td><td><code>State Machine 1</code></td></tr>
-          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers) · loading, cooking, scanning, fridge, refreshing (booleans) · mealPhoto (image)</td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate, water (triggers) · loading, cooking, scanning, fridge, refreshing (booleans) · mealPhoto (image)</td></tr>
           <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>COFFIN_WAKEUP</code> 6 s, while loading is true · <code>CAULDRON_STIR</code> 4 s, while cooking is true · <code>FOOD_SCAN</code> 4 s, while scanning is true · <code>FRIDGE_BAT</code> 5 s, while fridge is true</td></tr>
-          <tr><td>One-shots</td><td><code>WAVING</code> 3 s · <code>FRUSTRATED</code> 2.5 s, both back to idle</td></tr>
+          <tr><td>One-shots</td><td><code>WAVING</code> 3 s · <code>FRUSTRATED</code> 2.5 s · <code>PLANT_WATER</code> 4 s (first water of the day), all back to idle</td></tr>
         </table>
       </div>
     </aside>
@@ -195,6 +197,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var loadmsg = document.getElementById('loadmsg');
   var bW = document.getElementById('b-wave');
   var bF = document.getElementById('b-frustrate');
+  var bWa = document.getElementById('b-water');
   var bL = document.getElementById('b-load');
   var loadVal = document.getElementById('loadVal');
   var bC = document.getElementById('b-cook');
@@ -204,7 +207,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var bFr = document.getElementById('b-fridge');
   var fridgeVal = document.getElementById('fridgeVal');
   var vmi = null;
-  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated', COFFIN_WAKEUP: 'coffin wake-up', CAULDRON_STIR: 'cauldron stir', FOOD_SCAN: 'food scan', FRIDGE_BAT: 'fridge + bat' };
+  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated', COFFIN_WAKEUP: 'coffin wake-up', CAULDRON_STIR: 'cauldron stir', FOOD_SCAN: 'food scan', FRIDGE_BAT: 'fridge + bat', PLANT_WATER: 'watering the plant' };
 
   function setState(name) {
     stateName.textContent = LABELS[name] || name.toLowerCase();
@@ -212,6 +215,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     var idle = name === 'IDLE';
     bW.disabled = !idle || !vmi;
     bF.disabled = !idle || !vmi;
+    bWa.disabled = !idle || !vmi;
     bL.disabled = !vmi || (name !== 'IDLE' && name !== 'COFFIN_WAKEUP');
     bC.disabled = !vmi || (name !== 'IDLE' && name !== 'CAULDRON_STIR');
     bS.disabled = !vmi || (name !== 'IDLE' && name !== 'FOOD_SCAN');
@@ -221,7 +225,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
 
   rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
   var r = new rive.Rive({
-    src: 'countly.riv?v=15',
+    src: 'countly.riv?v=16',
     canvas: document.getElementById('cv'),
     artboard: 'Artboard 1',
     stateMachine: 'State Machine 1',
@@ -248,10 +252,11 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   function fire(name, btn) {
     if (!vmi) return;
     var t = vmi.trigger(name);
-    if (t) { t.trigger(); bW.disabled = bF.disabled = true; }
+    if (t) { t.trigger(); bW.disabled = bF.disabled = bWa.disabled = true; }
   }
   bW.addEventListener('click', function () { fire('wave', bW); });
   bF.addEventListener('click', function () { fire('frustrate', bF); });
+  bWa.addEventListener('click', function () { fire('water', bWa); });
   function toggle(prop, btn, out) {
     var p = vmi && vmi.boolean(prop);
     if (!p) return;
@@ -294,7 +299,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var bP = document.getElementById('b-pull'), bH = document.getElementById('b-hold'), holdVal = document.getElementById('holdVal');
   var bvmi = null, pullTimer = null;
   var rb = new rive.Rive({
-    src: 'countly.riv?v=15',
+    src: 'countly.riv?v=16',
     canvas: document.getElementById('cv2'),
     artboard: 'Artboard 1',
     stateMachine: 'Bat Refresh',
