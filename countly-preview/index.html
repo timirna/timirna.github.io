@@ -68,6 +68,7 @@ button.primary small { color: inherit; opacity: 0.75; }
 .seg button { padding: 7px 12px; display: inline-block; font-size: 13.5px; }
 .seg button[aria-pressed="true"] { border-color: var(--ink); }
 .toggle { width: 100%; }
+.toggle + .toggle { margin-top: 8px; }
 .toggle[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
 .toggle[aria-pressed="true"] small { color: inherit; opacity: 0.75; }
 .hint { margin: 0; font-size: 13px; color: var(--muted); }
@@ -110,12 +111,14 @@ td code { font-family: var(--mono); font-size: 12.5px; }
           <li data-anim="WAVING"><i></i><b>Waving</b><small>one-shot · 3 s</small></li>
           <li data-anim="FRUSTRATED"><i></i><b>Frustrated</b><small>one-shot · 2.5 s</small></li>
           <li data-anim="COFFIN_WAKEUP"><i></i><b>Coffin wake-up</b><small>loop · 6 s · loading</small></li>
+          <li data-anim="CAULDRON_STIR"><i></i><b>Cauldron stir</b><small>loop · 4 s · cooking</small></li>
         </ul>
       </div>
       <div class="group">
-        <div class="label">Loading screen</div>
+        <div class="label">Loading screens</div>
         <button id="b-load" class="toggle" type="button" aria-pressed="false" disabled><b>Coffin wake-up</b><small id="loadVal">loading: false</small></button>
-        <p class="hint">Turn it on to play the loading loop. Turn it off and he goes straight back to idle.</p>
+        <button id="b-cook" class="toggle" type="button" aria-pressed="false" disabled><b>Cauldron stir</b><small id="cookVal">cooking: false</small></button>
+        <p class="hint">Turn one on to play its loop (meal recommendations use the cauldron). Turn it off and he goes straight back to idle.</p>
       </div>
       <div class="group">
         <div class="label">Reactions</div>
@@ -139,15 +142,15 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <table>
           <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
           <tr><td>State machine</td><td><code>State Machine 1</code></td></tr>
-          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers) · loading (boolean)</td></tr>
-          <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>COFFIN_WAKEUP</code> 6 s, while loading is true</td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: wave, frustrate (triggers) · loading, cooking (booleans)</td></tr>
+          <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>COFFIN_WAKEUP</code> 6 s, while loading is true · <code>CAULDRON_STIR</code> 4 s, while cooking is true</td></tr>
           <tr><td>One-shots</td><td><code>WAVING</code> 3 s · <code>FRUSTRATED</code> 2.5 s, both back to idle</td></tr>
         </table>
       </div>
     </aside>
   </div>
 
-  <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, and setting <code>loading</code> to true plays the coffin loop until you set it back to false.</p>
+  <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, setting <code>loading</code> to true plays the coffin loop, and <code>cooking</code> plays the cauldron loop, each until you set it back to false.</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@rive-app/canvas-single@2.44.0/rive.js"></script>
@@ -160,8 +163,10 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var bF = document.getElementById('b-frustrate');
   var bL = document.getElementById('b-load');
   var loadVal = document.getElementById('loadVal');
+  var bC = document.getElementById('b-cook');
+  var cookVal = document.getElementById('cookVal');
   var vmi = null;
-  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated', COFFIN_WAKEUP: 'coffin wake-up' };
+  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated', COFFIN_WAKEUP: 'coffin wake-up', CAULDRON_STIR: 'cauldron stir' };
 
   function setState(name) {
     stateName.textContent = LABELS[name] || name.toLowerCase();
@@ -170,11 +175,12 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     bW.disabled = !idle || !vmi;
     bF.disabled = !idle || !vmi;
     bL.disabled = !vmi || (name !== 'IDLE' && name !== 'COFFIN_WAKEUP');
+    bC.disabled = !vmi || (name !== 'IDLE' && name !== 'CAULDRON_STIR');
   }
 
   rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
   var r = new rive.Rive({
-    src: 'countly.riv?v=7',
+    src: 'countly.riv?v=8',
     canvas: document.getElementById('cv'),
     artboard: 'Artboard 1',
     stateMachine: 'State Machine 1',
@@ -205,13 +211,15 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   }
   bW.addEventListener('click', function () { fire('wave', bW); });
   bF.addEventListener('click', function () { fire('frustrate', bF); });
-  bL.addEventListener('click', function () {
-    var p = vmi && vmi.boolean('loading');
+  function toggle(prop, btn, out) {
+    var p = vmi && vmi.boolean(prop);
     if (!p) return;
     p.value = !p.value;
-    bL.setAttribute('aria-pressed', String(p.value));
-    loadVal.textContent = 'loading: ' + p.value;
-  });
+    btn.setAttribute('aria-pressed', String(p.value));
+    out.textContent = prop + ': ' + p.value;
+  }
+  bL.addEventListener('click', function () { toggle('loading', bL, loadVal); });
+  bC.addEventListener('click', function () { toggle('cooking', bC, cookVal); });
 
   document.querySelectorAll('.seg button').forEach(function (b) {
     b.addEventListener('click', function () {
