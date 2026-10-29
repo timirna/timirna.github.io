@@ -116,7 +116,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
           <li data-anim="FOOD_SCAN"><i></i><b>Food scan</b><small>loop · 4 s · scanning</small></li>
           <li data-anim="FRIDGE_BAT"><i></i><b>Fridge + bat</b><small>loop · 5 s · fridge</small></li>
           <li data-anim="PLANT_WATER"><i></i><b>Water the plant</b><small>one-shot · 4 s · water</small></li>
-          <li data-anim="PULLUP_CRUNCH"><i></i><b>Pull-up bar crunches</b><small>one-shot · 4 s · exercise</small></li>
+          <li data-anim="PULLUP_CRUNCH"><i></i><b>Pull-up bar crunches</b><small>one-shot · 4.5 s · exercise</small></li>
           <li data-anim="MIRROR_FLEX"><i></i><b>Mirror flex</b><small>one-shot · 4.5 s · flex</small></li>
         </ul>
       </div>
@@ -154,7 +154,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
           <tr><td>State machine</td><td><code>State Machine 1</code></td></tr>
           <tr><td>Controls</td><td><code>ViewModel1</code>: water, exercise, flex (triggers) · cooking, scanning, fridge (booleans) · mealPhoto (image)</td></tr>
           <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>CAULDRON_STIR</code> 4 s, while cooking is true · <code>FOOD_SCAN</code> 4 s, while scanning is true · <code>FRIDGE_BAT</code> 5 s, while fridge is true</td></tr>
-          <tr><td>One-shots</td><td><code>PLANT_WATER</code> 4 s (first water of the day) · <code>PULLUP_CRUNCH</code> 4 s (first exercise of the day) · <code>MIRROR_FLEX</code> 4.5 s, all back to idle</td></tr>
+          <tr><td>One-shots</td><td><code>PLANT_WATER</code> 4 s (first water of the day) · <code>PULLUP_CRUNCH</code> 4.5 s (first exercise of the day) · <code>MIRROR_FLEX</code> 4.5 s, all back to idle</td></tr>
         </table>
       </div>
     </aside>
@@ -243,7 +243,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
 
   rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
   var r = new rive.Rive({
-    src: '../countly.riv?v=19',
+    src: '../countly.riv?v=20',
     canvas: document.getElementById('cv'),
     artboard: 'Artboard 1',
     stateMachine: 'State Machine 1',
@@ -316,7 +316,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var bP = document.getElementById('b-pull'), bH = document.getElementById('b-hold'), holdVal = document.getElementById('holdVal');
   var bvmi = null, pullTimer = null;
   var rb = new rive.Rive({
-    src: '../countly.riv?v=19',
+    src: '../countly.riv?v=20',
     canvas: document.getElementById('cv2'),
     artboard: 'Artboard 1',
     stateMachine: 'Bat Refresh',
@@ -357,7 +357,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var fireState = document.getElementById('fireState'), bFi = document.getElementById('b-fire'), fireVal = document.getElementById('fireVal');
   var fvmi = null;
   var rf = new rive.Rive({
-    src: '../countly.riv?v=19',
+    src: '../countly.riv?v=20',
     canvas: document.getElementById('cv3'),
     artboard: 'Artboard 1',
     stateMachine: 'Streak Fire',
