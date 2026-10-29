@@ -43,6 +43,8 @@ h1 span { color: var(--accent); }
 .sub { margin: 0; color: var(--muted); max-width: 60ch; }
 .main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
 @media (max-width: 820px) { .main { grid-template-columns: minmax(0, 1fr); } }
+/* phones: the character stays in view while the controls scroll under it */
+@media (max-width: 820px) { .main > .stage { position: sticky; top: 8px; z-index: 5; width: min(100%, 42vh); margin: 0 auto; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28); } }
 
 .stage { position: relative; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; aspect-ratio: 1 / 1; max-width: 100%; background: var(--stage-dark); }
 .stage[data-bg="light"] { background: var(--stage-light); }
@@ -131,7 +133,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <button id="b-fridge" class="toggle" type="button" aria-pressed="false" disabled><b>Fridge + bat</b><small id="fridgeVal">fridge: false</small></button>
         <button id="b-photo" type="button" disabled><b>Try a meal photo</b><small>sets mealPhoto (image)</small></button>
         <input id="f-photo" type="file" accept="image/*" hidden>
-        <p class="hint">Turn one on to play its loop (meal recommendations use the cauldron). Turn it off and he goes straight back to idle.</p>
+        <p class="hint">Turn one on to play its loop (meal recommendations use the cauldron). Turn it off and he goes back to idle.</p>
       </div>
       <div class="group">
         <div class="label">Reactions</div>
@@ -213,7 +215,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     </aside>
   </section>
 
-  <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, setting <code>loading</code> to true plays the coffin loop, <code>cooking</code> plays the cauldron loop and <code>scanning</code> the food scan and <code>fridge</code> the fridge loop, each until you set it back to false. For the food scan, set the image property <code>mealPhoto</code> to the user's meal photo (4:3, ideally 800 × 560) and it appears in the frame he studies.</p>
+  <p class="note">Countly stays centred inside his artboard. In your app, his size and position are set by your code, the two triggers, <code>wave</code> and <code>frustrate</code>, play the reactions, setting <code>loading</code> to true plays the coffin loop, <code>cooking</code> plays the cauldron loop and <code>scanning</code> the food scan and <code>fridge</code> the fridge loop, each until you set it back to false. For the food scan, set the image property <code>mealPhoto</code> to the user's meal photo (4:3, ideally 800 × 560) and it appears on the plate on his desk.</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@rive-app/canvas-single@2.44.0/rive.js"></script>
