@@ -1,0 +1,398 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Countly Phase 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a stage on the left that holds the live character, a control column on the right; stacks on phones. */
+:root {
+  --bg: #f4f2f8;
+  --surface: #ffffff;
+  --ink: #17132a;
+  --muted: #676179;
+  --line: #e1dcea;
+  --accent: #7c3aed;
+  --accent-ink: #ffffff;
+  --stage-dark: #1c1730;
+  --stage-light: #ffffff;
+  --check-a: #e6e2ee;
+  --check-b: #f6f4fa;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #110f19; --surface: #1a1726; --ink: #efecf6; --muted: #a29cb3; --line: #2e2a3d;
+    --accent: #a274f5; --accent-ink: #120d1f; --check-a: #2a2638; --check-b: #211d2e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #110f19; --surface: #1a1726; --ink: #efecf6; --muted: #a29cb3; --line: #2e2a3d;
+  --accent: #a274f5; --accent-ink: #120d1f; --check-a: #2a2638; --check-b: #211d2e;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 40px; display: grid; gap: 22px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(1.6rem, 3.4vw, 2.3rem); letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+h1 span { color: var(--accent); }
+.sub { margin: 0; color: var(--muted); max-width: 60ch; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+@media (max-width: 820px) { .main { grid-template-columns: minmax(0, 1fr); } }
+/* phones: the character stays in view while the controls scroll under it */
+@media (max-width: 820px) { .main > .stage { position: sticky; top: 8px; z-index: 5; width: min(100%, 42vh); margin: 0 auto; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28); } }
+
+.stage { position: relative; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; aspect-ratio: 1 / 1; max-width: 100%; background: var(--stage-dark); }
+.stage[data-bg="light"] { background: var(--stage-light); }
+.stage[data-bg="check"] { background-color: var(--check-b); background-image: conic-gradient(var(--check-a) 25%, transparent 0 50%, var(--check-a) 0 75%, transparent 0); background-size: 24px 24px; }
+canvas { display: block; width: 100%; height: 100%; }
+.state { position: absolute; left: 12px; top: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; border-radius: 999px; background: rgba(23,19,42,0.78); color: #efecf6; font-family: var(--mono); font-size: 12.5px; }
+.state i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.loadmsg { position: absolute; inset: 0; display: grid; place-items: center; color: #a29cb3; font-family: var(--mono); font-size: 13px; padding: 16px; text-align: center; }
+
+.ptr { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+@media (max-width: 820px) { .ptr { grid-template-columns: minmax(0, 1fr); } }
+.ptr .stage { aspect-ratio: 4 / 3; }
+.ptr h2 { font-family: var(--display); font-weight: 700; font-size: 1.25rem; margin: 0 0 4px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 18px; }
+.group { display: grid; gap: 10px; }
+.label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); padding: 11px 12px; text-align: left; display: grid; gap: 1px; transition: border-color .15s, background .15s, opacity .15s; }
+button b { font-weight: 600; }
+button small { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button.primary small { color: inherit; opacity: 0.75; }
+.seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg button { padding: 7px 12px; display: inline-block; font-size: 13.5px; }
+.seg button[aria-pressed="true"] { border-color: var(--ink); }
+.toggle { width: 100%; }
+.toggle + .toggle { margin-top: 8px; }
+.toggle[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.toggle[aria-pressed="true"] small { color: inherit; opacity: 0.75; }
+.hint { margin: 0; font-size: 13px; color: var(--muted); }
+.anims { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.anims li { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 14px; }
+.anims li i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); flex: none; }
+.anims li small { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.anims li.on { border-color: var(--accent); }
+.anims li.on i { background: var(--accent); }
+
+.specs { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+td { padding: 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td:first-child { color: var(--muted); padding-right: 12px; white-space: nowrap; }
+td code { font-family: var(--mono); font-size: 12.5px; }
+.note { margin: 0; color: var(--muted); font-size: 13.5px; max-width: 70ch; }
+.note code { font-family: var(--mono); font-size: 12.5px; color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { button { transition: none; } }
+</style>
+
+</head><body>
+<div class="wrap">
+  <header>
+    <h1><span>Countly</span> Phase 2</h1>
+    <p class="sub">The 8 Phase 2 in-app animations, running live from the Rive file. Turn a loop on, or press a reaction to fire its trigger; he plays it once and goes back to idle. Phase 1 (idle, waving, frustrated, coffin wake-up) is on the <a href="../">main preview</a>.</p>
+  </header>
+
+  <div class="main">
+    <div class="stage" id="stage" data-bg="light">
+      <canvas id="cv" width="1200" height="1200" aria-label="Animated Countly character"></canvas>
+      <div class="state" aria-live="polite"><i></i><span id="stateName">loading</span></div>
+      <div class="loadmsg" id="loadmsg">Loading countly.riv…</div>
+    </div>
+
+    <aside class="panel">
+      <div class="group">
+        <div class="label">Animations</div>
+        <ul class="anims" aria-label="Animations, the playing one is highlighted">
+          <li data-anim="IDLE"><i></i><b>Idle</b><small>loop · the base he returns to</small></li>
+          <li data-anim="CAULDRON_STIR"><i></i><b>Cauldron stir</b><small>loop · 4 s · cooking</small></li>
+          <li data-anim="FOOD_SCAN"><i></i><b>Food scan</b><small>loop · 4 s · scanning</small></li>
+          <li data-anim="FRIDGE_BAT"><i></i><b>Fridge + bat</b><small>loop · 5 s · fridge</small></li>
+          <li data-anim="PLANT_WATER"><i></i><b>Water the plant</b><small>one-shot · 4 s · water</small></li>
+          <li data-anim="PULLUP_CRUNCH"><i></i><b>Pull-up bar crunches</b><small>one-shot · 4.5 s · exercise</small></li>
+          <li data-anim="MIRROR_FLEX"><i></i><b>Mirror flex</b><small>one-shot · 4.5 s · flex</small></li>
+        </ul>
+      </div>
+      <div class="group">
+        <div class="label">Loops</div>
+        <button id="b-cook" class="toggle" type="button" aria-pressed="false" disabled><b>Cauldron stir</b><small id="cookVal">cooking: false</small></button>
+        <button id="b-scan" class="toggle" type="button" aria-pressed="false" disabled><b>Food scan</b><small id="scanVal">scanning: false</small></button>
+        <button id="b-fridge" class="toggle" type="button" aria-pressed="false" disabled><b>Fridge + bat</b><small id="fridgeVal">fridge: false</small></button>
+        <button id="b-photo" type="button" disabled><b>Try a meal photo</b><small>sets mealPhoto (image)</small></button>
+        <input id="f-photo" type="file" accept="image/*" hidden>
+        <p class="hint">Turn one on to play its loop (meal recommendations use the cauldron). Turn it off and he fades back to idle.</p>
+      </div>
+      <div class="group">
+        <div class="label">Reactions</div>
+        <div class="btns">
+          <button id="b-water" class="primary" type="button" disabled><b>Water the plant</b><small>trigger: water</small></button>
+          <button id="b-exercise" type="button" disabled><b>Crunches</b><small>trigger: exercise</small></button>
+          <button id="b-flex" type="button" disabled><b>Mirror flex</b><small>trigger: flex</small></button>
+        </div>
+        <p class="hint">Reactions only start from idle. While one is playing, the buttons wait until he's back.</p>
+      </div>
+      <div class="group">
+        <div class="label">Background</div>
+        <div class="seg" role="group" aria-label="Stage background">
+          <button type="button" data-bg="light" aria-pressed="true">Light</button>
+          <button type="button" data-bg="dark" aria-pressed="false">Dark</button>
+          <button type="button" data-bg="check" aria-pressed="false">Transparent</button>
+        </div>
+      </div>
+
+      <div class="specs">
+        <div class="label">File details</div>
+        <table>
+          <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
+          <tr><td>State machine</td><td><code>State Machine 1</code></td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: water, exercise, flex (triggers) · cooking, scanning, fridge (booleans) · mealPhoto (image)</td></tr>
+          <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>CAULDRON_STIR</code> 4 s, while cooking is true · <code>FOOD_SCAN</code> 4 s, while scanning is true · <code>FRIDGE_BAT</code> 5 s, while fridge is true</td></tr>
+          <tr><td>One-shots</td><td><code>PLANT_WATER</code> 4 s (first water of the day) · <code>PULLUP_CRUNCH</code> 4.5 s (first exercise of the day) · <code>MIRROR_FLEX</code> 4.5 s, all back to idle</td></tr>
+        </table>
+      </div>
+    </aside>
+  </div>
+
+  <section class="ptr" aria-labelledby="ptrTitle">
+    <div class="stage" id="stage2" data-bg="light">
+      <canvas id="cv2" width="1200" height="900" aria-label="Countly as a bat, pull to refresh"></canvas>
+      <div class="state" aria-live="polite"><i></i><span id="batState">loading</span></div>
+    </div>
+    <aside class="panel">
+      <div class="group">
+        <h2 id="ptrTitle">Pull to refresh</h2>
+        <p class="hint">Same file and artboard, its own state machine, <code>Bat Refresh</code>, for the top of a list. Countly drops in as a bat, hovers while the app refreshes, then flies off.</p>
+        <button id="b-pull" class="primary" type="button" disabled><b>Pull to refresh</b><small>refreshing: true for 2.5 s</small></button>
+        <button id="b-hold" class="toggle" type="button" aria-pressed="false" disabled><b>Hold refreshing</b><small id="holdVal">refreshing: false</small></button>
+      </div>
+      <div class="specs">
+        <div class="label">File details</div>
+        <table>
+          <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
+          <tr><td>State machine</td><td><code>Bat Refresh</code> (load it instead of State Machine 1)</td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: refreshing (boolean)</td></tr>
+          <tr><td>Timelines</td><td><code>BAT_EMPTY</code> → <code>BAT_IN</code> 0.7 s → <code>BAT_HOVER</code> 2 s loop → <code>BAT_OUT</code> 0.5 s</td></tr>
+        </table>
+      </div>
+    </aside>
+  </section>
+
+  <section class="ptr" aria-labelledby="fireTitle">
+    <div class="stage" id="stage3" data-bg="light" style="aspect-ratio: 1 / 1; max-width: 420px;">
+      <canvas id="cv3" width="900" height="900" aria-label="Streak fire"></canvas>
+      <div class="state" aria-live="polite"><i></i><span id="fireState">loading</span></div>
+    </div>
+    <aside class="panel">
+      <div class="group">
+        <h2 id="fireTitle">Streak fire</h2>
+        <p class="hint">Same file and artboard, its own state machine, <code>Streak Fire</code>. Countly isn't in it. Unlit until the day's streak is filled, then it lights up and keeps burning.</p>
+        <button id="b-fire" class="toggle" type="button" aria-pressed="false" disabled><b>Fill today's streak</b><small id="fireVal">streakLit: false</small></button>
+      </div>
+      <div class="specs">
+        <div class="label">File details</div>
+        <table>
+          <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
+          <tr><td>State machine</td><td><code>Streak Fire</code></td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: streakLit (boolean)</td></tr>
+          <tr><td>Timelines</td><td><code>FIRE_OUT</code> → <code>FIRE_IGNITE</code> 0.8 s → <code>FIRE_BURN</code> 2 s loop</td></tr>
+        </table>
+      </div>
+    </aside>
+  </section>
+
+  <p class="note">Everything here is in the same <code>countly.riv</code> as Phase 1, on <code>Artboard 1</code>. In <code>State Machine 1</code>, set <code>cooking</code>, <code>scanning</code> or <code>fridge</code> to true to play that loop until you set it back to false, and fire <code>water</code>, <code>exercise</code> or <code>flex</code> to play a one-shot. For the food scan, set the image property <code>mealPhoto</code> to the user's meal photo (4:3, ideally 800 × 560); it appears on the plate on his desk. Pull to refresh and the streak fire each have their own state machine, <code>Bat Refresh</code> and <code>Streak Fire</code>.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@rive-app/canvas-single@2.44.0/rive.js"></script>
+<script>
+(function () {
+  var stage = document.getElementById('stage');
+  var stateName = document.getElementById('stateName');
+  var loadmsg = document.getElementById('loadmsg');
+  var bWa = document.getElementById('b-water');
+  var bEx = document.getElementById('b-exercise');
+  var bFx = document.getElementById('b-flex');
+  var bC = document.getElementById('b-cook');
+  var cookVal = document.getElementById('cookVal');
+  var bS = document.getElementById('b-scan');
+  var scanVal = document.getElementById('scanVal');
+  var bFr = document.getElementById('b-fridge');
+  var fridgeVal = document.getElementById('fridgeVal');
+  var vmi = null;
+  var LABELS = { IDLE: 'idle', WAVING: 'waving', FRUSTRATED: 'frustrated', COFFIN_WAKEUP: 'coffin wake-up', CAULDRON_STIR: 'cauldron stir', FOOD_SCAN: 'food scan', FRIDGE_BAT: 'fridge + bat', PLANT_WATER: 'watering the plant', PULLUP_CRUNCH: 'crunches', MIRROR_FLEX: 'mirror flex' };
+
+  function setState(name) {
+    stateName.textContent = LABELS[name] || name.toLowerCase();
+    document.querySelectorAll('.anims li').forEach(function (li) { li.classList.toggle('on', li.dataset.anim === name); });
+    var idle = name === 'IDLE';
+    bWa.disabled = !idle || !vmi;
+    bEx.disabled = !idle || !vmi;
+    bFx.disabled = !idle || !vmi;
+    bC.disabled = !vmi || (name !== 'IDLE' && name !== 'CAULDRON_STIR');
+    bS.disabled = !vmi || (name !== 'IDLE' && name !== 'FOOD_SCAN');
+    bFr.disabled = !vmi || (name !== 'IDLE' && name !== 'FRIDGE_BAT');
+    bPh.disabled = !vmi;
+  }
+
+  rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
+  var r = new rive.Rive({
+    src: '../countly.riv?v=23',
+    canvas: document.getElementById('cv'),
+    artboard: 'Artboard 1',
+    stateMachine: 'State Machine 1',
+    autoplay: true,
+    autoBind: true,
+    layout: new rive.Layout({ fit: rive.Fit.Contain, alignment: rive.Alignment.Center }),
+    onLoad: function () {
+      loadmsg.hidden = true;
+      r.resizeDrawingSurfaceToCanvas();
+      vmi = r.viewModelInstance;
+      setState('IDLE');
+      window.__countly = r;
+    },
+    onLoadError: function (e) { loadmsg.textContent = 'Could not load countly.riv.'; console.error(e); },
+    onStateChange: function (e) {
+      var names = (e && e.data) || [];
+      for (var i = 0; i < names.length; i++) {
+        if (LABELS[names[i]]) { setState(names[i]); return; }
+      }
+    }
+  });
+  addEventListener('resize', function () { r.resizeDrawingSurfaceToCanvas(); });
+
+  function fire(name, btn) {
+    if (!vmi) return;
+    var t = vmi.trigger(name);
+    if (t) { t.trigger(); bWa.disabled = bEx.disabled = bFx.disabled = true; }
+  }
+  bWa.addEventListener('click', function () { fire('water', bWa); });
+  bEx.addEventListener('click', function () { fire('exercise', bEx); });
+  bFx.addEventListener('click', function () { fire('flex', bFx); });
+  function toggle(prop, btn, out) {
+    var p = vmi && vmi.boolean(prop);
+    if (!p) return;
+    p.value = !p.value;
+    btn.setAttribute('aria-pressed', String(p.value));
+    out.textContent = prop + ': ' + p.value;
+  }
+  bC.addEventListener('click', function () { toggle('cooking', bC, cookVal); });
+  bS.addEventListener('click', function () { toggle('scanning', bS, scanVal); });
+  bFr.addEventListener('click', function () { toggle('fridge', bFr, fridgeVal); });
+  var bPh = document.getElementById('b-photo'), fPh = document.getElementById('f-photo');
+  bPh.addEventListener('click', function () { fPh.click(); });
+  // the frame shows the photo at 800 x 560 (4:3): crop-to-fill before handing it to Rive
+  fPh.addEventListener('change', function () {
+    var file = fPh.files && fPh.files[0];
+    if (!file || !vmi) return;
+    var img = new Image();
+    img.onload = function () {
+      var W = 800, H = 560, c = document.createElement('canvas');
+      c.width = W; c.height = H;
+      var k = Math.max(W / img.width, H / img.height), w = img.width * k, h = img.height * k;
+      c.getContext('2d').drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+      c.toBlob(function (blob) {
+        blob.arrayBuffer().then(function (buf) { return rive.decodeImage(new Uint8Array(buf)); }).then(function (ri) {
+          vmi.image('mealPhoto').value = ri;
+          ri.unref();
+          var p = vmi.boolean('scanning');
+          if (p && !p.value) toggle('scanning', bS, scanVal);
+        });
+      }, 'image/png');
+      URL.revokeObjectURL(img.src);
+    };
+    img.src = URL.createObjectURL(file);
+    fPh.value = '';
+  });
+
+  var BAT = { BAT_EMPTY: 'empty', BAT_IN: 'dropping in', BAT_HOVER: 'refreshing', BAT_OUT: 'flying off' };
+  var batState = document.getElementById('batState');
+  var bP = document.getElementById('b-pull'), bH = document.getElementById('b-hold'), holdVal = document.getElementById('holdVal');
+  var bvmi = null, pullTimer = null;
+  var rb = new rive.Rive({
+    src: '../countly.riv?v=23',
+    canvas: document.getElementById('cv2'),
+    artboard: 'Artboard 1',
+    stateMachine: 'Bat Refresh',
+    autoplay: true,
+    autoBind: true,
+    layout: new rive.Layout({ fit: rive.Fit.Cover, alignment: rive.Alignment.Center }),
+    onLoad: function () {
+      rb.resizeDrawingSurfaceToCanvas();
+      bvmi = rb.viewModelInstance;
+      bP.disabled = bH.disabled = !bvmi;
+      batState.textContent = 'empty';
+      window.__bat = rb;
+    },
+    onStateChange: function (e) {
+      var names = (e && e.data) || [];
+      for (var i = 0; i < names.length; i++) if (BAT[names[i]]) { batState.textContent = BAT[names[i]]; return; }
+    }
+  });
+  addEventListener('resize', function () { rb.resizeDrawingSurfaceToCanvas(); });
+  function setRefreshing(v) {
+    var p = bvmi && bvmi.boolean('refreshing');
+    if (!p) return;
+    p.value = v;
+    bH.setAttribute('aria-pressed', String(v));
+    holdVal.textContent = 'refreshing: ' + v;
+  }
+  bP.addEventListener('click', function () {
+    clearTimeout(pullTimer);
+    setRefreshing(true);
+    pullTimer = setTimeout(function () { setRefreshing(false); }, 2500);
+  });
+  bH.addEventListener('click', function () {
+    clearTimeout(pullTimer);
+    setRefreshing(!(bvmi && bvmi.boolean('refreshing').value));
+  });
+
+  var FIRE = { FIRE_OUT: 'unlit', FIRE_IGNITE: 'lighting up', FIRE_BURN: 'burning' };
+  var fireState = document.getElementById('fireState'), bFi = document.getElementById('b-fire'), fireVal = document.getElementById('fireVal');
+  var fvmi = null;
+  var rf = new rive.Rive({
+    src: '../countly.riv?v=23',
+    canvas: document.getElementById('cv3'),
+    artboard: 'Artboard 1',
+    stateMachine: 'Streak Fire',
+    autoplay: true,
+    autoBind: true,
+    layout: new rive.Layout({ fit: rive.Fit.Contain, alignment: rive.Alignment.Center }),
+    onLoad: function () {
+      rf.resizeDrawingSurfaceToCanvas();
+      fvmi = rf.viewModelInstance;
+      bFi.disabled = !fvmi;
+      fireState.textContent = 'unlit';
+      window.__fire = rf;
+    },
+    onStateChange: function (e) {
+      var names = (e && e.data) || [];
+      for (var i = 0; i < names.length; i++) if (FIRE[names[i]]) { fireState.textContent = FIRE[names[i]]; return; }
+    }
+  });
+  addEventListener('resize', function () { rf.resizeDrawingSurfaceToCanvas(); });
+  bFi.addEventListener('click', function () {
+    var p = fvmi && fvmi.boolean('streakLit');
+    if (!p) return;
+    p.value = !p.value;
+    bFi.setAttribute('aria-pressed', String(p.value));
+    fireVal.textContent = 'streakLit: ' + p.value;
+  });
+
+  document.querySelectorAll('.seg button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      stage.dataset.bg = document.getElementById('stage2').dataset.bg = document.getElementById('stage3').dataset.bg = b.dataset.bg;
+      document.querySelectorAll('.seg button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+    });
+  });
+})();
+</script>
+</body></html>
