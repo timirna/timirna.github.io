@@ -12,11 +12,6 @@ export const site = {
     { label: "Dribbble", href: "https://dribbble.com/timir69" },
     { label: "Behance", href: "https://www.behance.net/timirna" },
   ],
-  /**
-   * TODO: add the showreel when it's cut, e.g.
-   * { src: "/assets/showreel.mp4", poster: "/assets/showreel.jpg", captions: "/assets/showreel.vtt" }
-   */
-  showreel: null as null | { src: string; poster: string; captions?: string },
 } as const;
 
 export const nav = [

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 
 export default function NotFound() {
   return (
-    <div className="container-page flex min-h-[60vh] flex-col justify-center py-24">
+    <div className="container-page flex min-h-[70vh] flex-col justify-center pb-24 pt-32">
       <p className="eyebrow mb-6">404</p>
       <h1 className="display max-w-4xl text-[clamp(3rem,9vw,8rem)]">
         This frame <span className="text-violet">dropped.</span>

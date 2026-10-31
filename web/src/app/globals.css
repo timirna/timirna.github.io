@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f7f6f2;
-  --surface: #ffffff;
-  --ink: #171717;
-  --muted: #666762;
-  --line: #dfded8;
-  --violet: #7758ed;
-  --lime: #c5f078;
-  --dark: #1c1c1e;
+  /* Netflix-style palette */
+  --bg: #141414;
+  --surface: #181818;
+  --ink: #ffffff;
+  --muted: #a3a3a3;
+  --line: #333333;
+  --red: #e50914;
+  --red-hover: #f6121d;
+  --green: #46d369;
+  --dark: #000000;
+  /* legacy names used across components */
+  --violet: var(--red);
+  --lime: var(--red);
   --radius-sm: 12px;
   --radius-md: 20px;
   --radius-lg: 28px;
@@ -22,6 +27,8 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
+  --color-red: var(--red);
+  --color-green: var(--green);
   --color-violet: var(--violet);
   --color-lime: var(--lime);
   --color-dark: var(--dark);
@@ -30,6 +37,7 @@
   --radius-lg: var(--radius-lg);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-brand: var(--font-bebas), Impact, "Arial Narrow", sans-serif;
   --ease-out: var(--ease-out);
 }
 
@@ -48,12 +56,30 @@ body {
 }
 
 ::selection {
-  background: var(--lime);
-  color: var(--ink);
+  background: var(--red);
+  color: #fff;
+}
+
+/* Horizontal rows: hide the scrollbar, keep wheel/touch/keyboard scrolling. */
+.row-scroller {
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.row-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.rank-numeral {
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.08em;
+  color: var(--bg);
+  -webkit-text-stroke: 4px #595959;
+  paint-order: stroke fill;
 }
 
 :focus-visible {
-  outline: 2px solid var(--violet);
+  outline: 2px solid #fff;
   outline-offset: 3px;
   border-radius: 6px;
 }

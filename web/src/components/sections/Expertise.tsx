@@ -26,15 +26,15 @@ const areas = [
 
 export function Expertise() {
   return (
-    <section aria-labelledby="expertise-title" className="container-page py-20 md:py-28">
-      <SectionHeading id="expertise-title" index="02" eyebrow="Expertise" title="Four things I do, properly." />
+    <section aria-labelledby="expertise-title" className="py-20 md:py-24">
+      <SectionHeading id="expertise-title" eyebrow="Expertise" title="Four things I do, properly." />
       <ul className="grid gap-px overflow-hidden rounded-lg border border-line bg-line md:grid-cols-2">
         {areas.map((a, i) => (
           <li key={a.title} className="bg-bg">
             <Reveal delay={i * 0.06} className="group flex h-full flex-col justify-between gap-12 p-6 transition-colors duration-300 hover:bg-surface md:p-10">
               <div className="flex items-start justify-between gap-6">
                 <span className="font-mono text-sm text-muted">0{i + 1}</span>
-                <span className="rounded-full bg-lime px-3 py-1 font-mono text-xs transition-transform duration-300 group-hover:-rotate-6">{a.tag}</span>
+                <span className="rounded-sm bg-red px-2 py-0.5 font-mono text-xs text-white transition-transform duration-300 group-hover:-rotate-6">{a.tag}</span>
               </div>
               <div>
                 <h3 className="text-2xl font-semibold tracking-tight md:text-3xl">{a.title}</h3>

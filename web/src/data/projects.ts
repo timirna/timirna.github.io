@@ -85,14 +85,19 @@ export const projects: Project[] = [
   },
   {
     slug: "countly-character",
-    title: "Countly — Rive Mascot",
+    title: "Countly",
     year: 2026,
     categories: ["Rive", "Character"],
     summary:
-      "A Rive mascot with an idle loop, wave and frustrated reactions, and a coffin wake-up loading loop — all driven from one file through data binding.",
-    role: "Character animation, rigging, state machine",
+      "An in-app Rive mascot with nine animations — idle, reactions, four loading loops and daily-habit moments — plus a pull-to-refresh bat, all driven from one file through data binding.",
+    role: "Character animation, rigging, state machines",
     tools: ["Rive"],
-    deliverables: ["Single .riv file", "Data-bound triggers: wave, frustrate", "Boolean: loading"],
+    deliverables: [
+      "Single .riv file, two state machines",
+      "Triggers: wave, frustrate, water, exercise, flex",
+      "Booleans: loading, cooking, scanning, fridge, refreshing",
+      "Image property: mealPhoto",
+    ],
     cover: "",
     coverAlt: "Countly, an animated mascot",
     riveFile: "/animations/rive/countly.riv",
@@ -100,11 +105,11 @@ export const projects: Project[] = [
     riveArtboard: "Artboard 1",
     externalDemo: "/countly-preview/",
     challenge:
-      "Countly needed to feel alive while idle, react on cue, and double as a loading screen — without the app juggling separate files or animations.",
+      "Countly is the face of the app: alive while idle, reacting on cue, standing in for loading screens and celebrating daily habits — without the app juggling separate files.",
     approach: [
-      "Four animations live in one state machine: an idle loop that plays on its own, a 3-second wave, a 2.5-second frustrated reaction (with a squinting left eye), and a 6-second coffin wake-up loop.",
-      "The app talks to the file through data binding: firing the wave or frustrate trigger plays that reaction once and returns to idle, and reactions only start from idle so they never cut each other off.",
-      "A single loading boolean switches to the coffin wake-up loop — a flat 2D coffin with a purple velvet interior that Countly wakes up inside — and switching it off sends him straight back to idle. Unused coffin parts were stripped from the file to keep it light.",
+      "Idle (4 s) breathes, sways and blinks. Reactions — wave (3 s) and frustrated (2.5 s) — fire from triggers, play once and return to idle; they only start from idle so they never cut each other off.",
+      "Four loading loops each sit behind a boolean: a coffin wake-up (6 s, loading), a cauldron stir (4 s, cooking — used for meal recommendations), a food scan (4 s, scanning) and a fridge with a bat (5 s, fridge). A mealPhoto image property puts the user's own photo into the scene. Turn the boolean off and he fades back to idle.",
+      "Phase 2 added daily-habit one-shots — watering the plant (4 s), pull-up bar crunches (4.5 s) and a mirror flex (4.5 s) — and a second state machine, Bat Refresh, where Countly drops in as a bat, hovers while the list refreshes, then flies off.",
     ],
   },
   {
@@ -120,28 +125,20 @@ export const projects: Project[] = [
   },
   {
     slug: "sohopay-launch-films",
-    title: "SohoPay — Four Launch Films",
+    title: "SohoPay",
     client: "SohoPay",
+    year: 2026,
     categories: ["2D Motion", "Video"],
     summary:
-      "SohoPay lets AI agents pay for the things they do. Four films explain the product, introduce it and set the brand's tone — from a 22-second cut to an 80-second explainer.",
+      "Agents can do the work, but they can't pay for it. Eight films for SohoPay, the payments layer built for AI agents — explainers, launch films, a product film, brand films and a story cut.",
     services: ["Explainer", "Launch film", "Product film", "Brand film"],
     tools: ["After Effects", "Premiere Pro"],
-    deliverables: ["4 films", "1920×1080"],
+    deliverables: ["8 films", "1920×1080"],
     cover: "/assets/sohopay-launch.jpg",
     coverAlt: "SohoPay launch film frame",
+    backdrop: "/assets/sohopay-link-film.jpg",
     previewVideo: "/assets/sohopay-launch.mp4",
     heroVideo: "/assets/sohopay-launch.mp4",
-    approach: [
-      "Launch film (0:48) opens on the problem — agents can do the work but can't pay for it — then shows how SohoPay clears the blocked payment.",
-      "How SohoPay Works (1:20) is the full product explainer: a step-by-step walk through the flow, built for the website and sales calls.",
-      "Agents (0:22) layers chat-style UI motion over live footage of real businesses, showing agents placing orders on their own. The Brand Film (0:58) is a slower, typographic piece with ambient green light that sets the brand's tone.",
-    ],
-    gallery: [
-      { type: "video", src: "/assets/sohopay-howitworks.mp4", poster: "/assets/sohopay-howitworks.jpg", alt: "How SohoPay Works — 1:20 explainer" },
-      { type: "video", src: "/assets/sohopay-agents.mp4", poster: "/assets/sohopay-agents.jpg", alt: "SohoPay Agents — 0:22 product film" },
-      { type: "video", src: "/assets/sohopay-brand.mp4", poster: "/assets/sohopay-brand.jpg", alt: "SohoPay Brand Film — 0:58" },
-    ],
   },
   {
     slug: "aura-saas-explainer",
@@ -463,29 +460,41 @@ export const projects: Project[] = [
   },
 ];
 
+/** The eight SohoPay films, shown as their own row and on the SohoPay page. */
+export type Film = { title: string; kind: string; duration: string; blurb: string; src: string; poster: string };
+
+export const sohopayFilms: Film[] = [
+  { title: "Launch Film", kind: "Launch", duration: "0:48", src: "/assets/sohopay-launch.mp4", poster: "/assets/sohopay-launch.jpg",
+    blurb: "Opens on the problem — agents can do the work but can't pay for it — then shows how SohoPay clears the blocked payment." },
+  { title: "How SohoPay Works", kind: "Explainer", duration: "1:20", src: "/assets/sohopay-howitworks.mp4", poster: "/assets/sohopay-howitworks.jpg",
+    blurb: "The full product explainer: a step-by-step walk through the flow, built for the website and sales calls." },
+  { title: "Presenter Explainer", kind: "Explainer", duration: "1:17", src: "/inovetix-reel/videos/SohoPay_Explainer_Claude_Reference_v11.mp4", poster: "/assets/sohopay-explainer-v11.jpg",
+    blurb: "A presenter-led cut of the explainer: a founder on camera, with animated product UI and titles carrying the walkthrough." },
+  { title: "Good to Buy", kind: "Launch", duration: "0:30", src: "/inovetix-reel/videos/SohoPay_Film_Link_Reference_v06h.mp4", poster: "/assets/sohopay-link-film.jpg",
+    blurb: "A cinematic lifestyle film in the “green means go” spirit — calm rooms, green doors opening, payments that simply go through." },
+  { title: "Brand Film — Agent Prompt", kind: "Brand", duration: "0:47", src: "/inovetix-reel/videos/SohoPay_Brand_Film_v8.mp4", poster: "/assets/sohopay-brand-v8.jpg",
+    blurb: "A dark, green-lit brand piece built around the agent prompt: one request, and SohoPay handles the payment behind it." },
+  { title: "Story", kind: "Story", duration: "0:37", src: "/inovetix-reel/videos/SohoPay_Story_v7.mp4", poster: "/assets/sohopay-story.jpg",
+    blurb: "A short typographic intro that builds the pixel mascot and introduces SohoPay — made for social and the top of the site." },
+  { title: "Agents", kind: "Product film", duration: "0:22", src: "/assets/sohopay-agents.mp4", poster: "/assets/sohopay-agents.jpg",
+    blurb: "Live footage of real businesses with chat-style UI motion layered on top, showing agents placing orders on their own." },
+  { title: "Brand Film", kind: "Brand", duration: "0:58", src: "/assets/sohopay-brand.mp4", poster: "/assets/sohopay-brand.jpg",
+    blurb: "A slower, typographic piece with ambient green light that sets the tone for the brand." },
+];
+
 export const categories: Category[] = ["Rive", "Lottie", "UI Motion", "2D Motion", "Character", "Video"];
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
 
-// Selected Work on the homepage, in this order (rhythm: full width, half, half).
-const featuredOrder = [
-  "koala-sleep-tracker",
-  "silver-tabby-cat",
-  "zeiziq-bird",
-  "sohopay-launch-films",
-  "countly-character",
-  "aria-teacher-rig",
-  "aura-saas-explainer",
-  "gora-blockchain-explainer",
-  "interactive-micro-animations",
-  "interactive-lottie-character",
-  "ask-rosie-hero",
-  "trace-saas-explainer",
+/** Homepage rows (Netflix-style). */
+export const homeRows: { title: string; note?: string; slugs: string[] }[] = [
+  { title: "Live characters", note: "Interactive Rive — they react", slugs: ["silver-tabby-cat", "countly-character", "zeiziq-bird", "aria-teacher-rig", "koala-sleep-tracker"] },
+  { title: "Explainers & product films", slugs: ["sohopay-launch-films", "aura-saas-explainer", "gora-blockchain-explainer", "trace-saas-explainer", "ask-rosie-hero"] },
+  { title: "Lottie & UI motion", slugs: ["interactive-lottie-character", "interactive-micro-animations", "app-splash-screens", "jamin-k-hero", "spoon-micro-animation", "ux-interactive-motion", "sports-app-characters", "lottie-character-design"] },
+  { title: "Logo animation", slugs: ["unicorn-logo-wink", "logo-lottie-app-web", "logos-to-life-lottie", "blender-3d-roll-lottie"] },
+  { title: "Video edits", slugs: ["bfour-real-estate-promo", "istanbul-travel-reel", "sucuk-food-short"] },
 ];
-export const featuredProjects = featuredOrder.map(getProject).filter((p): p is Project => !!p);
 
-export function nextProject(slug: string) {
-  const list = projects.filter((p) => p.status !== "in-progress");
-  const i = list.findIndex((p) => p.slug === slug);
-  return list[(i + 1) % list.length];
-}
+export const topPicks = ["sohopay-launch-films", "silver-tabby-cat", "countly-character", "koala-sleep-tracker", "aura-saas-explainer", "zeiziq-bird", "gora-blockchain-explainer", "interactive-micro-animations", "aria-teacher-rig", "interactive-lottie-character"];
+
+export const projectsBySlugs = (slugs: string[]) => slugs.map((s) => getProject(s)).filter((p): p is Project => !!p);

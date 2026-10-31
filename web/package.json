@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource/bebas-neue": "^5.3.0",
     "@rive-app/react-canvas": "^4.37.1",
     "geist": "^1.8.2",
     "lottie-web": "^5.13.0",

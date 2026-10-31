@@ -32,7 +32,7 @@ Until you flip this, Pages keeps serving the old `index.html` from the repo root
 | What | Where |
 | --- | --- |
 | Projects (cards, filters, `/work/[slug]` pages) | `src/data/projects.ts` |
-| Homepage Selected Work and its order | `featuredOrder` in `src/data/projects.ts` |
+| Homepage rows, Top 10 and the SohoPay films | `homeRows`, `topPicks`, `sohopayFilms` in `src/data/projects.ts` |
 | Name, email, verified socials, showreel | `src/data/site.ts` |
 | Playground demos | `src/data/playground.ts` |
 | Friendly labels for known Rive inputs | `src/data/rive-hints.ts` |
@@ -40,8 +40,7 @@ Until you flip this, Pages keeps serving the old `index.html` from the repo root
 
 - A project page is generated for every entry in `projects.ts`. Leave a field out rather than guess;
   `status: "in-progress"` shows an honest "Media in progress" placeholder.
-- **Showreel:** set `site.showreel = { src, poster, captions? }`. Until then the section plays the Aura
-  explainer and says so.
+- **Billboard:** the homepage hero is set in `src/app/page.tsx` (title, backdrop, teaser loop and the film Play opens).
 - **Rive:** drop `.riv` files in `public/animations/rive/`. Controls are discovered at runtime from the
   file's state machine inputs and data-binding (view model) properties — nothing is hardcoded.
 - **Lottie:** drop `.json` files in `public/animations/lottie/`.

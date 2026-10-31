@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/data/site";
+import { Expertise } from "@/components/sections/Expertise";
+import { Process } from "@/components/sections/Process";
 
 export const metadata: Metadata = {
   title: "About",
@@ -25,7 +27,7 @@ const experience = [
 
 export default function AboutPage() {
   return (
-    <div className="container-page pb-24 pt-12 md:pt-20">
+    <div className="container-page pb-24 pt-28 md:pt-32">
       <p className="eyebrow mb-6">About</p>
       <h1 className="display max-w-6xl text-[clamp(3rem,8vw,7rem)]">
         Making digital products feel <span className="text-violet">alive.</span>
@@ -111,6 +113,11 @@ export default function AboutPage() {
           ))}
         </ol>
       </section>
+
+      <Expertise />
+      <div id="process" className="scroll-mt-24">
+        <Process />
+      </div>
 
       <div className="mt-20 flex flex-wrap gap-3">
         <Button href="/contact/">Start a project</Button>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="container-page pb-24 pt-12 md:pt-20">
+    <div className="container-page pb-24 pt-28 md:pt-32">
       <p className="eyebrow mb-6">Contact</p>
       <h1 className="display max-w-5xl text-[clamp(3rem,8vw,7rem)]">Let&apos;s make it move.</h1>
       <div className="mt-16 grid gap-14 lg:grid-cols-[1fr_1.4fr]">

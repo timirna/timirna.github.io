@@ -10,8 +10,8 @@ const steps = [
 
 export function Process() {
   return (
-    <section aria-labelledby="process-title" className="container-page py-20 md:py-28">
-      <SectionHeading id="process-title" index="04" eyebrow="Process" title="Clear steps, no surprises." />
+    <section aria-labelledby="process-title" className="py-20 md:py-24">
+      <SectionHeading id="process-title" eyebrow="Process" title="Clear steps, no surprises." />
       <ol className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
         {steps.map((s, i) => (
           <li key={s.t}>

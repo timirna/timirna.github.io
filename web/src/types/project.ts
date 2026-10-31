@@ -17,6 +17,8 @@ export type Project = {
   /** Poster image. Leave empty to render the intentional placeholder. */
   cover: string;
   coverAlt: string;
+  /** Wide, dark image for the title-page backdrop (falls back to cover). */
+  backdrop?: string;
   /** Muted clip played on hover in cards. */
   previewVideo?: string;
   /** Main video on the detail page. */

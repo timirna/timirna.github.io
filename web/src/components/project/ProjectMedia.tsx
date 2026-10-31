@@ -14,14 +14,14 @@ export function ProjectMedia({ project, active, className }: { project: Project;
   }
   if (project.lottieFiles?.length) {
     return (
-      <div className={cn("bg-surface p-[8%]", className)}>
+      <div className={cn("bg-[radial-gradient(circle_at_50%_45%,#f3f1ea_0%,#d9d6cc_100%)] p-[8%]", className)}>
         <LottiePlayer files={project.lottieFiles.slice(0, 1)} label={project.coverAlt} className="h-full" stageClassName="h-full" />
       </div>
     );
   }
   if (project.riveFile) {
     return (
-      <div className={cn("bg-[#ecebe5]", className)}>
+      <div className={cn("bg-[radial-gradient(circle_at_50%_45%,#3a3a3a_0%,#1c1c1c_60%,#111_100%)]", className)}>
         <RivePlayer
           src={project.riveFile}
           stateMachine={project.riveStateMachine}
@@ -41,12 +41,12 @@ export function MediaPlaceholder({ title, className }: { title: string; classNam
   return (
     <div
       className={cn(
-        "relative flex flex-col justify-between overflow-hidden bg-[repeating-linear-gradient(135deg,#efeee9_0_12px,#f4f3ef_12px_24px)] p-5",
+        "relative flex flex-col justify-between overflow-hidden bg-[repeating-linear-gradient(135deg,#1d1d1d_0_12px,#222_12px_24px)] p-4",
         className,
       )}
     >
-      <span className="chip w-fit">Media in progress</span>
-      <span aria-hidden className="display select-none text-[clamp(3rem,8vw,6rem)] text-ink/10">
+      <span className="w-fit rounded-sm bg-black/60 px-2 py-0.5 text-[11px] font-semibold text-[#bcbcbc]">Coming soon</span>
+      <span aria-hidden className="font-brand select-none text-[clamp(3rem,7vw,5.5rem)] leading-none text-white/10">
         {title
           .split(/\s+/)
           .slice(0, 2)

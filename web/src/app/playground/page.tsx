@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PlaygroundPage() {
   return (
-    <div className="container-page pb-24 pt-12 md:pt-20">
+    <div className="container-page pb-24 pt-28 md:pt-32">
       <p className="eyebrow mb-6">Playground</p>
       <h1 className="display max-w-5xl text-[clamp(3rem,8vw,7rem)]">Poke the characters.</h1>
       <p className="mt-6 max-w-2xl text-lg text-muted">
