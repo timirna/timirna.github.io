@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/data/site";
+import { cv } from "@/data/cv";
 import { Expertise } from "@/components/sections/Expertise";
 import { Process } from "@/components/sections/Process";
 
@@ -12,18 +13,13 @@ export const metadata: Metadata = {
 };
 
 const focus = ["Rive characters & state machines", "Lottie for web & apps", "UI / UX motion", "2D explainers & brand animation"];
-const tools = ["After Effects", "Illustrator", "Figma", "Rive", "Lottie / Bodymovin", "Premiere Pro", "Blender", "Photoshop"];
+const tools = ["After Effects", "Premiere Pro", "Rive", "Lottie / Bodymovin", "Figma", "Illustrator", "Photoshop", "Blender", "Airtable"];
 const workflow = [
   ["Plan the rig before animating", "State machines and layer structure are mapped first, so adding a state later doesn't mean starting over."],
   ["Build for the runtime", "Files are checked in the actual player — Lottie on web and mobile, Rive in its runtime — before delivery."],
   ["Hand off cleanly", "Named inputs, documented states and organised files your developers can wire up without guessing."],
 ];
-// TODO: confirm these entries before relying on them elsewhere (taken from the previous site).
-const experience = [
-  ["2023 — Now", "Freelance Motion Designer", "Fiverr"],
-  ["2016 — 2023", "Creative Designer", "G Technologies — motion graphics, explainer videos, UI/UX prototypes"],
-  ["2014 — 2017", "Executive (Design)", "Daffodil Japan IT — branding and image editing"],
-];
+const experience = cv.experience.map((e) => [e.dates, e.role, e.org]);
 
 export default function AboutPage() {
   return (
@@ -121,6 +117,9 @@ export default function AboutPage() {
 
       <div className="mt-20 flex flex-wrap gap-3">
         <Button href="/contact/">Start a project</Button>
+        <Button href="/resume/" variant="secondary">
+          Résumé
+        </Button>
         <Button href={site.socials[0].href} variant="secondary">
           LinkedIn
         </Button>

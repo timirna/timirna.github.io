@@ -6,6 +6,7 @@ const more = [
   { href: "/work/", label: "Lottie animation" },
   { href: "/work/sohopay-launch-films/", label: "SohoPay films" },
   { href: "/about/#process", label: "Process" },
+  { href: "/resume/", label: "Résumé" },
 ];
 
 export function Footer() {

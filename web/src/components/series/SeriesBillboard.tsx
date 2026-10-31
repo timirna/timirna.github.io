@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useState } from "react";
-import { profile } from "@/data/series";
+import { profile, seasons } from "@/data/series";
 import { Portrait } from "./Portrait";
 import { PlayIntro } from "./PlayIntro";
 
@@ -55,13 +55,13 @@ export function SeriesBillboard() {
         </h1>
         <p className="mt-1 text-sm font-bold tracking-[0.55em] text-red">{profile.tagline}</p>
         <p className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[15px] text-[#ddd]">
-          <span className="font-semibold text-green">3 seasons</span>
+          <span className="font-semibold text-green">{seasons.length} seasons</span>
           {profile.meta.map((m) => (
             <span key={m}>{m}</span>
           ))}
-          <span className="rounded-sm border border-white/50 px-1.5 text-xs">{profile.stats[0].value} Fiverr</span>
+          <span className="rounded-sm border border-white/50 px-1.5 text-xs">BSc Computer Science</span>
         </p>
-        <p className="mt-3 text-xs font-bold tracking-[0.25em] text-[#bbb]">MOTION DESIGNER · COMPUTER SCIENCE BACKGROUND</p>
+        <p className="mt-3 text-xs font-bold tracking-[0.25em] text-[#bbb]">MOTION DESIGNER & RIVE SPECIALIST · OPEN TO REMOTE</p>
         <p className="mt-4 max-w-xl text-[clamp(1rem,1.3vw,1.2rem)] leading-snug text-[#e5e5e5]">{profile.summary}</p>
         <div className="mt-7 flex flex-wrap gap-3">
           <button
@@ -73,13 +73,17 @@ export function SeriesBillboard() {
             <span aria-hidden>▶</span> Play Intro
           </button>
           <Link
-            href="/journey/"
+            href="/resume/"
             className="flex min-h-11 items-center gap-2 rounded bg-[rgba(109,109,110,.7)] px-6 text-lg font-bold text-white transition-colors hover:bg-[rgba(109,109,110,.4)]"
           >
-            <span aria-hidden className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-sm">
-              i
-            </span>
-            My Story
+            <span aria-hidden>⤓</span> View Résumé
+          </Link>
+          <Link
+            href="/journey/"
+            aria-label="My story"
+            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/70 bg-black/30 text-lg font-bold hover:border-white"
+          >
+            i
           </Link>
         </div>
       </div>
