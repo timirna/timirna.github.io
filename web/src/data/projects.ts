@@ -29,6 +29,27 @@ export const projects: Project[] = [
       "Shadows, colour refinement and depth were added inside Rive rather than baked into the artwork, so the shading moves with the character while staying 100% vector and lightweight.",
       "I rigged the koala with bones and constraints and built nine states: Idle, Talking, Sleepy, Tired, Sleeping, Wake Up, Celebration, Crying and Pride. States that originally lived across several artboards were consolidated into one unified state machine on a single artboard, so the koala flows between any mood the app calls for.",
     ],
+    process: [
+      {
+        title: "Sketch & shapes",
+        text: "Turned one reference image into a master Illustrator illustration — clean flat vector with every limb, ear, eyelid and facial feature as a separate, rig-ready piece.",
+      },
+      {
+        title: "Rig",
+        text: "Rigged the koala with bones and constraints in Rive. Shadows and colour depth were added in Rive so shading moves with the character while staying fully vector.",
+        image: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890870631/SH-03_1.gif",
+      },
+      {
+        title: "State machine",
+        text: "Nine states (Idle, Talking, Sleepy, Tired, Sleeping, Wake Up, Celebration, Crying, Pride) consolidated into one unified state machine on a single artboard for the iOS app.",
+        image: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/40116cbaee57e19ca856bc511eb71d96-1783889560566/Celebration_Victory.gif",
+      },
+      {
+        title: "Result",
+        text: "One production-ready .riv file — a living mascot that is the app experience, not decoration.",
+        image: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/f24c69f0e2a4aad6ecb437249b862a28-1783890456236/Rive%20app%20animation.gif",
+      },
+    ],
     gallery: [
       { src: img("f24c69f0e2a4aad6ecb437249b862a28-1783890870631/SH-03_1.gif"), alt: "Koala rig shown in the Rive editor" },
       { src: img("40116cbaee57e19ca856bc511eb71d96-1783889560566/Celebration_Victory.gif"), alt: "Celebration state" },
@@ -58,6 +79,24 @@ export const projects: Project[] = [
       "Idle breathing runs all the time, and the cat blinks on its own while looking straight ahead. Blink, LickNose and Happy are triggers on the view model for moments the app wants to call out.",
       "Shown here as a preview — the art isn't final.",
     ],
+    process: [
+      {
+        title: "Sketch & shapes",
+        text: "Built as a sign-in mascot: a silver tabby whose head and eyes need to feel attentive above a login card. Art is still marked as preview — not final.",
+      },
+      {
+        title: "Rig",
+        text: "Gaze is a grid of drawn head poses — five rows on Look_Y, with nine poses across the middle row and three on the others — so two numbers from −1 to 1 pick the pose.",
+      },
+      {
+        title: "State machine",
+        text: "Cat_SM drives idle breathing and auto-blink when looking ahead. View model CatVM exposes Look_X / Look_Y plus Blink, LickNose and Happy triggers for the app.",
+      },
+      {
+        title: "Result",
+        text: "A single .riv file that follows the cursor or finger in the same web runtime the product will ship — try it live on this page or the /cat-preview/ demo.",
+      },
+    ],
   },
   {
     slug: "zeiziq-bird",
@@ -81,6 +120,24 @@ export const projects: Project[] = [
       "Three loops — idle (5 s), flap (0.6 s) and glide (3 s) — and three one-shots — attention (1.6 s), takeoff (1 s) and land-settle (1.6 s).",
       "The state machine knows where the bird is: Attention and Take off only work while it's perched; Glide and Land only work while it's flying. The site drives it through the BirdVM view model with three triggers and an isGliding boolean.",
       "Later passes added a new body, a flap-down wing pose, a tilt in flight, visible legs and a larger artboard.",
+    ],
+    process: [
+      {
+        title: "Sketch & shapes",
+        text: "Designed for a website bird that must stay inside a fixed artboard (2800 × 2400) while the site's own code owns position, flight path, scale and timing.",
+      },
+      {
+        title: "Rig",
+        text: "Three loops — idle (5 s), flap (0.6 s) and glide (3 s) — plus one-shots for attention, takeoff and land-settle. Later passes added a new body, flap-down wing, flight tilt and visible legs.",
+      },
+      {
+        title: "State machine",
+        text: "BirdSM knows perch vs flight: Attention and Take off only from perched; Glide and Land only while flying. BirdVM exposes attention, takeoff, land triggers and an isGliding boolean.",
+      },
+      {
+        title: "Result",
+        text: "One .riv file the website drives for perch → takeoff → flap → glide → land. Live on this page and at /zeiziq-bird/.",
+      },
     ],
   },
   {
@@ -111,6 +168,24 @@ export const projects: Project[] = [
       "Four loading loops each sit behind a boolean: a coffin wake-up (6 s, loading), a cauldron stir (4 s, cooking — used for meal recommendations), a food scan (4 s, scanning) and a fridge with a bat (5 s, fridge). A mealPhoto image property puts the user's own photo into the scene. Turn the boolean off and he fades back to idle.",
       "Phase 2 added daily-habit one-shots — watering the plant (4 s), pull-up bar crunches (4.5 s) and a mirror flex (4.5 s) — and a second state machine, Bat Refresh, where Countly drops in as a bat, hovers while the list refreshes, then flies off.",
     ],
+    process: [
+      {
+        title: "Sketch & shapes",
+        text: "Countly is the face of the habit app — one character that must feel alive while idle, react on cue, cover loading screens and celebrate daily habits.",
+      },
+      {
+        title: "Rig",
+        text: "Idle breathing/sway/blink, reaction one-shots (wave, frustrated), four loading loops (coffin, cauldron, food scan, fridge bat) and Phase 2 habit moments (water, pull-ups, flex).",
+      },
+      {
+        title: "State machine",
+        text: "Two state machines in one file: State Machine 1 for the character (triggers + loading booleans + mealPhoto image binding) and Bat Refresh for the pull-to-refresh bat drop-in.",
+      },
+      {
+        title: "Result",
+        text: "A single .riv the app drives through data binding — no juggling separate files. Live here and at /countly-preview/.",
+      },
+    ],
   },
   {
     slug: "aria-teacher-rig",
@@ -122,6 +197,24 @@ export const projects: Project[] = [
     riveFile: "/animations/rive/aria.riv",
     riveStateMachine: "Aria",
     externalDemo: "/aria-preview/",
+    process: [
+      {
+        title: "Sketch & shapes",
+        text: "Aria is a teacher character built for expression-led interaction — calm, clear silhouettes that read at small UI sizes.",
+      },
+      {
+        title: "Rig",
+        text: "Rigged in Rive for face and body motion that can switch between teaching moods without swapping files.",
+      },
+      {
+        title: "State machine",
+        text: "One Aria state machine with seven expressions and a speaking toggle the host app can drive.",
+      },
+      {
+        title: "Result",
+        text: "A single .riv for the live teacher demo — try it on this page or at /aria-preview/.",
+      },
+    ],
   },
   {
     slug: "sohopay-launch-films",
@@ -492,7 +585,6 @@ export const homeRows: { title: string; note?: string; slugs: string[] }[] = [
   { title: "Explainers & product films", slugs: ["sohopay-launch-films", "aura-saas-explainer", "gora-blockchain-explainer", "trace-saas-explainer", "ask-rosie-hero"] },
   { title: "Lottie & UI motion", slugs: ["interactive-lottie-character", "interactive-micro-animations", "app-splash-screens", "jamin-k-hero", "spoon-micro-animation", "ux-interactive-motion", "sports-app-characters", "lottie-character-design"] },
   { title: "Logo animation", slugs: ["unicorn-logo-wink", "logo-lottie-app-web", "logos-to-life-lottie", "blender-3d-roll-lottie"] },
-  { title: "Video edits", slugs: ["bfour-real-estate-promo", "istanbul-travel-reel", "sucuk-food-short"] },
 ];
 
 export const topPicks = ["sohopay-launch-films", "silver-tabby-cat", "countly-character", "koala-sleep-tracker", "aura-saas-explainer", "zeiziq-bird", "gora-blockchain-explainer", "interactive-micro-animations", "aria-teacher-rig", "interactive-lottie-character"];

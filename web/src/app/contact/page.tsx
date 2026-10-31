@@ -33,6 +33,18 @@ export default function ContactPage() {
               ))}
             </ul>
           </div>
+          <div>
+            <p className="eyebrow mb-3">Hire on Dribbble</p>
+            <a
+              href={site.dribbbleServices}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center rounded-full bg-red px-5 text-sm font-bold tracking-wide text-white hover:bg-[var(--red-hover)]"
+            >
+              Hire me for a Rive mascot — from $300 ↗
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </div>
           <p className="max-w-sm text-muted">Tell me what you&apos;re making, where the motion will live and your timing. I usually reply within a working day.</p>
         </div>
         <ContactForm />

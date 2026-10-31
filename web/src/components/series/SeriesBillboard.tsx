@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useState } from "react";
 import { profile } from "@/data/series";
+import { site } from "@/data/site";
 import { Portrait } from "./Portrait";
 import { PlayIntro } from "./PlayIntro";
 
@@ -81,6 +82,15 @@ export function SeriesBillboard() {
             </span>
             My Story
           </Link>
+          <a
+            href={site.dribbbleServices}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-11 items-center gap-2 rounded border border-white/40 bg-transparent px-6 text-lg font-bold text-white transition-colors hover:border-white hover:bg-white/10"
+          >
+            Hire me for a Rive mascot — from $300 ↗
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
         </div>
       </div>
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />

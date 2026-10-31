@@ -12,6 +12,8 @@ export const site = {
     { label: "Dribbble", href: "https://dribbble.com/timir69" },
     { label: "Behance", href: "https://www.behance.net/timirna" },
   ],
+  /** Dribbble Services listing (Rive mascot starter from $300). */
+  dribbbleServices: "https://dribbble.com/timir69/services",
 } as const;
 
 export const nav = [

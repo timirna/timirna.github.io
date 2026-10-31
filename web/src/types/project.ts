@@ -32,6 +32,8 @@ export type Project = {
   externalDemo?: string;
   challenge?: string;
   approach?: string[];
+  /** Short process steps (Sketch → Rig → State machine → Result). */
+  process?: { title: string; text: string; image?: string }[];
   deliverables?: string[];
   gallery?: GalleryItem[];
   /** "in-progress": listed, but its media/facts still need confirming. */

@@ -14,7 +14,8 @@ export const profile = {
   summary:
     "Characters that react, interfaces that explain themselves and explainers that make complex products simple — built web-ready so developers can ship them.",
   meta: ["2014 – Now", "Lottie • Rive • 2D"],
-  // TODO: confirm these numbers before each update (taken from the previous site).
+  // Verified 2026-10-31 from https://www.fiverr.com/timir69
+  // (AggregateRating 4.9 / reviewCount 1029; seller_level level_two_seller).
   stats: [
     { value: "4.9 ★", label: "Fiverr rating" },
     { value: "1,000+", label: "client reviews" },
@@ -42,7 +43,7 @@ export const viewers: Viewer[] = [
     blurb: "The full series, in order",
     avatar: { kind: "portrait" },
     tile: "radial-gradient(circle at 50% 40%,#a1243a,#4a0c18)",
-    rows: ["continue", "characters", "top", "films", "explainers", "lottie", "logos", "edits"],
+    rows: ["continue", "characters", "top", "films", "explainers", "lottie", "logos"],
   },
   {
     id: "client",
@@ -50,7 +51,7 @@ export const viewers: Viewer[] = [
     blurb: "Films, characters & how we'd work",
     avatar: { kind: "rive", src: "/animations/rive/cat.riv", stateMachine: "Cat_SM" },
     tile: "linear-gradient(160deg,#7fd3e6,#2f7fa8 55%,#1d4f73)",
-    rows: ["films", "characters", "explainers", "top", "continue", "lottie", "logos", "edits"],
+    rows: ["films", "characters", "explainers", "top", "continue", "lottie", "logos"],
   },
   {
     id: "developer",
@@ -58,7 +59,7 @@ export const viewers: Viewer[] = [
     blurb: "Live .riv & Lottie files, inputs & handoff",
     avatar: { kind: "rive", src: "/animations/rive/countly.riv", stateMachine: "State Machine 1", artboard: "Artboard 1" },
     tile: "linear-gradient(160deg,#8be38f,#2f9a52 55%,#17602f)",
-    rows: ["characters", "lottie", "continue", "top", "logos", "films", "explainers", "edits"],
+    rows: ["characters", "lottie", "continue", "top", "logos", "films", "explainers"],
   },
   {
     id: "recruiter",
@@ -66,7 +67,7 @@ export const viewers: Viewer[] = [
     blurb: "Experience, skills & highlights first",
     avatar: { kind: "rive", src: "/animations/rive/aria.riv", stateMachine: "Aria" },
     tile: "linear-gradient(160deg,#ffd76a,#e09a1c 55%,#a2620b)",
-    rows: ["top", "continue", "characters", "films", "explainers", "lottie", "logos", "edits"],
+    rows: ["top", "continue", "characters", "films", "explainers", "lottie", "logos"],
   },
 ];
 
