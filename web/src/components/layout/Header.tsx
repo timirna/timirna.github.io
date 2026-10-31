@@ -5,9 +5,11 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { nav, site } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { useSeries } from "@/components/series/SeriesProvider";
 
 export function Header() {
   const pathname = usePathname();
+  const { viewer, openProfiles } = useSeries();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -81,9 +83,21 @@ export function Header() {
           Browse <span aria-hidden className={cn("text-[10px] transition-transform", open && "rotate-180")}>▼</span>
         </button>
 
+        {viewer && (
+          <button
+            type="button"
+            onClick={openProfiles}
+            className="ml-auto flex min-h-11 items-center gap-2 text-sm text-[#ddd] hover:text-white"
+            aria-label={`Watching as ${viewer.name}. Switch profile`}
+          >
+            <span aria-hidden className="h-8 w-8 rounded" style={{ background: viewer.tile }} />
+            <span className="hidden sm:inline">{viewer.name}</span>
+            <span aria-hidden className="text-[10px]">▼</span>
+          </button>
+        )}
         <Link
           href="/contact/"
-          className="ml-auto rounded bg-red px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--red-hover)]"
+          className={cn(viewer ? "ml-2" : "ml-auto", "rounded bg-red px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--red-hover)]")}
         >
           Let&apos;s work
         </Link>

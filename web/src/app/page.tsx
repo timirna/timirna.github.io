@@ -1,43 +1,38 @@
-import { getProject, homeRows, projectsBySlugs, sohopayFilms, topPicks } from "@/data/projects";
-import { Billboard } from "@/components/netflix/Billboard";
+import { homeRows, projectsBySlugs, sohopayFilms, topPicks } from "@/data/projects";
 import { Row } from "@/components/netflix/Row";
 import { TitleCard } from "@/components/netflix/TitleCard";
 import { TopTenRow } from "@/components/netflix/TopTenRow";
 import { FilmRow } from "@/components/netflix/FilmRow";
-import { JoinCTA } from "@/components/netflix/JoinCTA";
+import { SeriesBillboard } from "@/components/series/SeriesBillboard";
+import { ContinueExploring } from "@/components/series/ContinueExploring";
+import { HomeRows } from "@/components/series/HomeRows";
+import { FinalCTA } from "@/components/series/FinalCTA";
+
+const rowIds = ["characters", "explainers", "lottie", "logos", "edits"];
 
 export default function Home() {
-  const soho = getProject("sohopay-launch-films")!;
-  const [first, ...rest] = homeRows;
+  const rows: Record<string, React.ReactNode> = {
+    continue: <ContinueExploring />,
+    top: <TopTenRow title="Top 10 picks" projects={projectsBySlugs(topPicks)} />,
+    films: <FilmRow title="SohoPay — the eight films" note="Click to play" films={sohopayFilms} />,
+  };
+  homeRows.forEach((r, i) => {
+    rows[rowIds[i]] = (
+      <Row title={r.title} note={r.note} id={`row-${rowIds[i]}`}>
+        {projectsBySlugs(r.slugs).map((p) => (
+          <TitleCard key={p.slug} project={p} />
+        ))}
+      </Row>
+    );
+  });
+
   return (
     <>
-      <Billboard
-        title="SohoPay"
-        label="FILMS"
-        meta={["2026", "8 films", "0:22 – 1:20", "SaaS • Explainer • Brand"]}
-        summary={soho.summary}
-        backdrop="/assets/sohopay-link-film.jpg"
-        teaser="/inovetix-reel/videos/SohoPay_Film_Link_Reference_v06h.mp4"
-        film={{ src: "/assets/sohopay-launch.mp4", poster: "/assets/sohopay-launch.jpg", title: "SohoPay — Launch Film" }}
-        moreHref="/work/sohopay-launch-films/"
-      />
-      <div className="relative z-10 -mt-[12vw] md:-mt-[9vw]">
-        <Row title={first.title} note={first.note} id="row-0">
-          {projectsBySlugs(first.slugs).map((p) => (
-            <TitleCard key={p.slug} project={p} />
-          ))}
-        </Row>
-        <TopTenRow title="Top 10 picks" projects={projectsBySlugs(topPicks)} />
-        <FilmRow title="SohoPay — the eight films" note="Click to play" films={sohopayFilms} />
-        {rest.map((r, i) => (
-          <Row key={r.title} title={r.title} note={r.note} id={`row-${i + 1}`}>
-            {projectsBySlugs(r.slugs).map((p) => (
-              <TitleCard key={p.slug} project={p} />
-            ))}
-          </Row>
-        ))}
-        <JoinCTA />
+      <SeriesBillboard />
+      <div className="relative z-10 -mt-24">
+        <HomeRows rows={rows} />
       </div>
+      <FinalCTA />
     </>
   );
 }
