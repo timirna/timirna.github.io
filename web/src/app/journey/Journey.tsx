@@ -72,7 +72,7 @@ export function Journey({ seasons }: { seasons: (Season & { projects: Project[] 
                 <li key={p.slug}>
                   <Link href={`/work/${p.slug}/`} className="group block overflow-hidden rounded-lg transition-transform duration-300 hover:-translate-y-1">
                     <span className="relative block aspect-video overflow-hidden">
-                      <ProjectMedia project={p} active={false} className="absolute inset-0 h-full w-full transition-transform duration-500 group-hover:scale-105" />
+                      <ProjectMedia project={p.backdrop ? { ...p, cover: p.backdrop } : p} active={false} className="absolute inset-0 h-full w-full transition-transform duration-500 group-hover:scale-105" />
                       <span className="absolute left-2.5 top-2 text-xs font-bold tracking-[0.15em] text-white/85 [text-shadow:0_1px_4px_#000]">EP {i + 1}</span>
                     </span>
                     <span className="block px-3.5 pb-4 pt-3" style={{ background: epColors[i % epColors.length] }}>

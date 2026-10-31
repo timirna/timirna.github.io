@@ -29,7 +29,7 @@ export function SeriesBillboard() {
         </div>
       )}
 
-      <motion.div style={{ y: portraitY }} className="absolute bottom-0 right-0 h-[62%] w-full md:right-[6%] md:h-[88%] md:w-[38%]">
+      <motion.div style={{ y: portraitY }} className="absolute bottom-0 right-0 h-[44%] w-full md:right-[6%] md:h-[88%] md:w-[38%]">
         <div aria-hidden className="absolute inset-[10%] rounded-full bg-red/30 blur-3xl" />
         <Portrait className="absolute inset-x-[12%] bottom-0 top-0 rounded-t-[45%] md:inset-x-0" />
         {profile.stats.map((s, i) => (
@@ -46,7 +46,7 @@ export function SeriesBillboard() {
         ))}
       </motion.div>
 
-      <div className="relative z-10 flex min-h-[92svh] flex-col justify-start px-4 pb-[46vh] pt-24 md:max-w-[52%] md:justify-center md:px-12 md:pb-24 md:pt-28">
+      <div className="relative z-10 flex min-h-[92svh] flex-col justify-start px-4 pb-[40svh] pt-24 md:max-w-[52%] md:justify-center md:px-12 md:pb-24 md:pt-28 max-md:bg-[linear-gradient(#0000_0%,#0000_60%,#141414cc_100%)]">
         <p className="flex items-center gap-2 text-sm font-semibold tracking-[0.35em] text-[#ddd]">
           <span className="font-brand text-[36px] leading-none tracking-normal text-red">T</span>S E R I E S
         </p>
