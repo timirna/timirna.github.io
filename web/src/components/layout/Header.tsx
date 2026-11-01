@@ -3,12 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useLenis } from "lenis/react";
 import { nav, site } from "@/data/site";
 import { cn } from "@/lib/utils";
 import { useSeries } from "@/components/series/SeriesProvider";
 
+function scrollHome(lenis: { scrollTo: (y: number, opts?: object) => void } | undefined) {
+  if (lenis) lenis.scrollTo(0, { immediate: true });
+  else window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
 export function Header() {
   const pathname = usePathname();
+  const lenis = useLenis();
   const { viewer, openProfiles } = useSeries();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -41,6 +48,17 @@ export function Header() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
+  const goHome = (e: React.MouseEvent) => {
+    // Same-page "/" Link does nothing — force scroll to the first page (top).
+    if (pathname === "/") {
+      e.preventDefault();
+      setOpen(false);
+      scrollHome(lenis);
+      return;
+    }
+    setOpen(false);
+  };
+
   const links = [{ href: "/", label: "Home" }, ...nav];
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
@@ -52,7 +70,12 @@ export function Header() {
       )}
     >
       <div className="flex h-16 items-center gap-6 px-4 md:h-[68px] md:gap-10 md:px-12">
-        <Link href="/" aria-label={`${site.wordmark}, home`} className="font-brand text-[34px] leading-none tracking-wide text-red md:text-[40px]">
+        <Link
+          href="/"
+          aria-label={`${site.wordmark}, home`}
+          onClick={goHome}
+          className="font-brand text-[34px] leading-none tracking-wide text-red md:text-[40px]"
+        >
           {site.wordmark}
         </Link>
 
@@ -63,6 +86,7 @@ export function Header() {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
+                  onClick={item.href === "/" ? goHome : undefined}
                   className={cn("transition-colors duration-300", isActive(item.href) ? "font-semibold text-white" : "text-[#e5e5e5] hover:text-[#b3b3b3]")}
                 >
                   {item.label}
@@ -111,6 +135,7 @@ export function Header() {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
+                  onClick={item.href === "/" ? goHome : () => setOpen(false)}
                   className={cn("block min-h-11 py-3 text-sm", isActive(item.href) ? "font-semibold text-white" : "text-[#b3b3b3]")}
                 >
                   {item.label}

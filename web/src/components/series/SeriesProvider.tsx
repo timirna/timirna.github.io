@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { useLenis } from "lenis/react";
 import { viewers, type Viewer, type ViewerId } from "@/data/series";
 import { OpeningSequence } from "./OpeningSequence";
 import { ProfileSelector } from "./ProfileSelector";
@@ -43,6 +44,7 @@ function sessionDone(): boolean {
  */
 export function SeriesProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const lenis = useLenis();
   const [viewerId, setViewerId] = useState<ViewerId | null>(null);
   const [stage, setStage] = useState<Stage>("idle");
   const [ready, setReady] = useState(false);
@@ -56,15 +58,19 @@ export function SeriesProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const chooseViewer = useCallback((id: ViewerId) => {
-    setViewerId(id);
-    try {
-      localStorage.setItem(VIEWER_KEY, id);
-      sessionStorage.setItem(SESSION_KEY, "done");
-    } catch {}
-    setStage("idle");
-    window.scrollTo(0, 0);
-  }, []);
+  const chooseViewer = useCallback(
+    (id: ViewerId) => {
+      setViewerId(id);
+      try {
+        localStorage.setItem(VIEWER_KEY, id);
+        sessionStorage.setItem(SESSION_KEY, "done");
+      } catch {}
+      setStage("idle");
+      if (lenis) lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo(0, 0);
+    },
+    [lenis],
+  );
 
   const value: SeriesState = {
     viewer: viewers.find((v) => v.id === viewerId) ?? null,

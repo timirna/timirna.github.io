@@ -32,13 +32,20 @@ export function ProfileSelector({ current, onChoose, onClose }: { current: Viewe
       aria-labelledby="who-title"
       className="fixed inset-0 z-[90] flex flex-col items-center justify-center overflow-y-auto bg-[radial-gradient(ellipse_at_50%_30%,#221c2b_0%,#141119_60%,#0d0c10_100%)] px-4 py-16"
     >
-      <span className="absolute left-4 top-4 font-brand text-[40px] leading-none text-red md:left-12">TIMIR</span>
+      <motion.p
+        className="mb-3 font-brand text-[clamp(2.5rem,8vw,4.5rem)] leading-none tracking-wide text-white"
+        initial={reduce ? false : { opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45 }}
+      >
+        TIMIR
+      </motion.p>
       <motion.h2
         id="who-title"
-        className="mb-10 text-[clamp(2rem,4vw,3.5rem)] font-medium"
-        initial={reduce ? false : { opacity: 0, scale: 1.1 }}
+        className="mb-10 text-[clamp(1.75rem,4vw,3.25rem)] font-medium"
+        initial={reduce ? false : { opacity: 0, scale: 1.08 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.55 }}
       >
         Who&apos;s watching?
       </motion.h2>

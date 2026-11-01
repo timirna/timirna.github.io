@@ -93,6 +93,15 @@ body {
   }
 }
 
+@keyframes intro-shine {
+  from {
+    transform: translateX(-140%);
+  }
+  to {
+    transform: translateX(320%);
+  }
+}
+
 .rank-numeral {
   font-weight: 800;
   line-height: 0.8;
