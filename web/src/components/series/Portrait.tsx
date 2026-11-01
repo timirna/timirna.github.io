@@ -21,7 +21,8 @@ export function Portrait({ className, fade = true, fadeLeft = false, cutout = fa
   const img = useRef<HTMLImageElement>(null);
   const src = cutout ? (fadeLeft ? profile.portraitCutoutHero : profile.portraitCutout) : profile.portrait;
 
-  // Bottom fade as a CSS mask only (no solid overlays — those create hard seams on the red hero glow).
+  // Soft fades via CSS mask only (no solid overlays — those create hard seams on the red hero glow).
+  // Bottom fade here; L/R soft edges are baked into the cutout / hero PNGs.
   const bottomMask = fade
     ? ({
         WebkitMaskImage: "linear-gradient(#000 48%, transparent 100%)",

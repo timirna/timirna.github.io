@@ -136,8 +136,9 @@ export function OpeningSequence({ onDone }: { onDone: () => void }) {
                 className="pointer-events-none absolute left-1/2 top-[18%] h-[55%] w-[70%] -translate-x-1/2 rounded-full bg-[#E50914]/35 blur-3xl"
               />
               <div
-                className="relative h-[min(58vh,28rem)] w-[min(78vw,22rem)]"
+                className="relative h-[min(64vh,32rem)] w-[min(92vw,28rem)]"
                 style={{
+                  // Bottom fade only — L/R soft edges are baked into the cutout PNG
                   WebkitMaskImage: "linear-gradient(#000 58%, transparent 100%)",
                   maskImage: "linear-gradient(#000 58%, transparent 100%)",
                 }}
