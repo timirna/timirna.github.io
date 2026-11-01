@@ -84,6 +84,15 @@ body {
   }
 }
 
+@keyframes intro-drift {
+  from {
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    transform: translate3d(0, -110vh, 0);
+  }
+}
+
 .rank-numeral {
   font-weight: 800;
   line-height: 0.8;

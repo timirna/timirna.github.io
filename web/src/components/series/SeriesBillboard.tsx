@@ -10,7 +10,7 @@ import { PlayIntro } from "./PlayIntro";
 
 const chips = ["2026", "Motion Design", "Rive • Lottie", "HD"] as const;
 
-/** Home billboard: "TIMIR — The Series", portrait with a red glow, chips, Play Showreel + View Work. */
+/** Home billboard: cutout portrait (no arch), chips, Play Showreel + View Work. */
 export function SeriesBillboard() {
   const reduce = useReducedMotion();
   const [intro, setIntro] = useState(false);
@@ -32,16 +32,13 @@ export function SeriesBillboard() {
         </div>
       )}
 
-      <motion.div style={{ y: portraitY }} className="absolute bottom-0 right-0 h-[44%] w-full md:right-[6%] md:h-[88%] md:w-[38%]">
-        <div aria-hidden className="absolute inset-[10%] rounded-full bg-red/30 blur-3xl" />
+      <motion.div style={{ y: portraitY }} className="absolute bottom-0 right-0 h-[48%] w-full md:right-[2%] md:h-[92%] md:w-[42%]">
+        <div aria-hidden className="pointer-events-none absolute -inset-[10%] bg-[radial-gradient(ellipse_at_55%_40%,rgba(229,9,20,0.45)_0%,rgba(122,20,36,0.22)_42%,transparent_70%)]" />
         <Portrait
-          className="absolute inset-x-[12%] bottom-0 top-0 rounded-t-[45%] md:inset-x-0"
-          // Soft left/bottom fade into the black hero
+          cutout
           fade
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(90deg,#141414_0%,transparent_28%),linear-gradient(180deg,transparent_55%,#141414_100%)] md:block"
+          fadeLeft
+          className="absolute inset-x-[8%] bottom-0 top-[4%] md:inset-x-[4%]"
         />
         {profile.stats.map((s, i) => (
           <motion.div

@@ -89,7 +89,7 @@ export function PlayIntro({ onClose }: { onClose: () => void }) {
             // eslint-disable-next-line @next/next/no-img-element
             <img src={s.media.src} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />
           )}
-          {s.media.kind === "portrait" && <Portrait className="absolute bottom-0 right-[4%] h-[85%] w-[min(80vw,30rem)] rounded-t-[45%]" alt="" />}
+          {s.media.kind === "portrait" && <Portrait cutout fade className="absolute bottom-0 right-[4%] h-[85%] w-[min(80vw,30rem)]" alt="" />}
           {s.media.kind === "rive" && (
             <RivePlayer
               src={s.media.src}

@@ -10,6 +10,10 @@ export const profile = {
   role: "Motion Designer · Lottie · Rive · 2D",
   // Local copy of Timir's Fiverr profile photo (also used by the intro + billboard).
   portrait: "/portrait.png",
+  /** Background-removed cutout for intro + hero (alpha PNG). */
+  portraitCutout: "/portrait-cutout.png",
+  /** Soft left-edge cutout for the homepage hero. */
+  portraitCutoutHero: "/portrait-cutout-hero.png",
   summary:
     "Characters that react, interfaces that explain themselves and explainers that make complex products simple — built web-ready so developers can ship them.",
   meta: ["2014 – Now", "Lottie • Rive • 2D"],
