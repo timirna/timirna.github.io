@@ -1,10 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { profile } from "@/data/series";
-
-type Phase = "title" | "portrait" | "leaving";
 
 const PARTICLES = Array.from({ length: 36 }, (_, i) => ({
   id: i,
@@ -17,18 +15,21 @@ const PARTICLES = Array.from({ length: 36 }, (_, i) => ({
 }));
 
 /**
- * Reference-matched cold open (Sushmita reel timing):
- * ~0.0–0.7s  — TIMIR with horizontal blur → sharp + light sweep; THE SERIES under
- * ~0.7s+     — name stays at top; portrait fades/scales in with red backlight;
- *              role line + white PLAY pill (portrait-only Ken Burns, not the button)
- * PLAY/SKIP  — brief leave, then hard-cut to the profile gate
+ * Reference cold-open (Sushmita reel):
+ * 0.0s  — TIMIR huge (~4.2×) + heavy blur, letters cropped at edges (CSS keyframes)
+ * 0.4–0.7s — shrinks/sharpens to ~50% frame width; red glow + THE SERIES
+ * 1.0s  — large portrait (~50% frame height) rises under/overlapping title
+ * 1.6s  — white PLAY pill (stable — outside Ken Burns)
+ * PLAY/SKIP — fade/blur leave → Who's watching
  */
 export function OpeningSequence({ onDone }: { onDone: () => void }) {
   const reduce = useReducedMotion();
-  const [phase, setPhase] = useState<Phase>(reduce ? "portrait" : "title");
+  const [showPortrait, setShowPortrait] = useState(!!reduce);
+  const [showPlay, setShowPlay] = useState(!!reduce);
+  const [leaving, setLeaving] = useState(false);
   const playRef = useRef<HTMLButtonElement>(null);
-  const particles = useMemo(() => PARTICLES, []);
   const finishing = useRef(false);
+  const particles = useMemo(() => PARTICLES, []);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -48,13 +49,17 @@ export function OpeningSequence({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     if (reduce) return;
-    const t = window.setTimeout(() => setPhase("portrait"), 700);
-    return () => clearTimeout(t);
+    const tPortrait = window.setTimeout(() => setShowPortrait(true), 1000);
+    const tPlay = window.setTimeout(() => setShowPlay(true), 1600);
+    return () => {
+      clearTimeout(tPortrait);
+      clearTimeout(tPlay);
+    };
   }, [reduce]);
 
   useEffect(() => {
-    if (phase === "portrait") playRef.current?.focus();
-  }, [phase]);
+    if (showPlay) playRef.current?.focus();
+  }, [showPlay]);
 
   function finish() {
     if (finishing.current) return;
@@ -63,8 +68,8 @@ export function OpeningSequence({ onDone }: { onDone: () => void }) {
       onDone();
       return;
     }
-    setPhase("leaving");
-    window.setTimeout(() => onDone(), 380);
+    setLeaving(true);
+    window.setTimeout(() => onDone(), 450);
   }
 
   return (
@@ -74,17 +79,18 @@ export function OpeningSequence({ onDone }: { onDone: () => void }) {
       aria-label={`${profile.name} — ${profile.tagline}`}
       className="fixed inset-0 z-[90] overflow-hidden bg-black"
     >
-      {/* Soft deep-red radial glow */}
-      <div
+      <motion.div
         aria-hidden
         className="pointer-events-none absolute inset-0"
+        initial={reduce ? false : { opacity: 0.15 }}
+        animate={{ opacity: leaving ? 0 : 1 }}
+        transition={{ duration: reduce ? 0 : 0.75, delay: reduce ? 0 : 0.15 }}
         style={{
           background:
-            "radial-gradient(ellipse 55% 50% at 50% 42%, rgba(120,10,22,0.55) 0%, rgba(60,4,12,0.28) 38%, rgba(0,0,0,0) 70%)",
+            "radial-gradient(ellipse 62% 50% at 50% 40%, rgba(170,14,30,0.7) 0%, rgba(90,8,16,0.35) 42%, rgba(0,0,0,0) 72%)",
         }}
       />
 
-      {/* Faint drifting white particles */}
       {!reduce && (
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           {particles.map((p) => (
@@ -112,119 +118,107 @@ export function OpeningSequence({ onDone }: { onDone: () => void }) {
         SKIP INTRO
       </button>
 
-      <AnimatePresence mode="sync">
-        {phase === "title" && (
-          <motion.div
-            key="title-only"
-            className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6"
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.25 } }}
-            transition={{ duration: 0.25 }}
+      <motion.div
+        className="absolute inset-0 z-10 flex flex-col items-center justify-center overflow-hidden px-0"
+        animate={
+          leaving
+            ? { opacity: 0, scale: 0.88, filter: "blur(12px)", x: -28 }
+            : { opacity: 1, scale: 1, filter: "blur(0px)", x: 0 }
+        }
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="relative z-20 flex flex-col items-center">
+          {/* CSS keyframes: first painted frame is giant+blur, then zooms to ~50% width */}
+          <h2
+            className={`relative whitespace-nowrap font-brand leading-[0.82] text-white ${reduce ? "" : "intro-title-zoom"}`}
+            style={{
+              fontSize: "clamp(5.5rem, 28vw, 26rem)",
+              letterSpacing: "0.02em",
+              textShadow: "0 0 48px rgba(255,255,255,0.14)",
+              animation: reduce ? undefined : "intro-title-zoom 0.9s cubic-bezier(0.4, 0, 0.2, 1) both",
+            }}
           >
-            <motion.h2
-              className="relative font-brand text-[min(30vw,15rem)] leading-none text-white"
-              initial={reduce ? false : { opacity: 0.55, scale: 1.12, filter: "blur(18px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {profile.name}
-              {/* Netflix-style light sweep */}
-              {!reduce && (
+            {profile.name}
+            {!reduce && (
+              <span aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
                 <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 overflow-hidden"
-                  style={{
-                    WebkitMaskImage: "linear-gradient(#000, #000)",
-                    maskImage: "linear-gradient(#000, #000)",
-                  }}
-                >
-                  <span className="absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/55 to-transparent opacity-80" style={{ animation: "intro-shine 0.85s ease-out 0.15s both" }} />
-                </span>
-              )}
-            </motion.h2>
-            <motion.p
-              className="mt-2 text-sm font-bold tracking-[0.62em] text-[#E50914] md:text-base"
-              initial={reduce ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.28 }}
-            >
-              {profile.tagline}
-            </motion.p>
-          </motion.div>
-        )}
-
-        {(phase === "portrait" || phase === "leaving") && (
-          <motion.div
-            key="portrait"
-            className="absolute inset-0 z-10 flex flex-col items-center px-6 pb-10 pt-[max(4.5rem,8vh)]"
-            initial={reduce ? false : { opacity: 0 }}
-            animate={
-              phase === "leaving"
-                ? { opacity: 0, scale: 0.92, x: -40, filter: "blur(6px)" }
-                : { opacity: 1, scale: 1, x: 0, filter: "blur(0px)" }
-            }
-            transition={{ duration: phase === "leaving" ? 0.35 : 0.55, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {/* Name stays above portrait — matches reference */}
-            <div className="relative z-10 flex flex-col items-center">
-              <h2 className="font-brand text-[clamp(3.5rem,12vw,7.5rem)] leading-none text-white drop-shadow-[0_0_28px_rgba(255,255,255,0.18)]">
-                {profile.name}
-              </h2>
-              <p className="mt-1 text-sm font-bold tracking-[0.62em] text-[#E50914] md:text-base">{profile.tagline}</p>
-            </div>
-
-            <div className="relative mt-2 flex w-full max-w-md flex-col items-center">
-              {/* Red backlight behind head/shoulders */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute left-1/2 top-[12%] h-[55%] w-[72%] -translate-x-1/2 rounded-full bg-[#E50914]/40 blur-3xl"
-              />
-
-              {/* Ken Burns ONLY on the image — PLAY stays clickable/stable */}
-              <motion.div
-                className="relative h-[min(52vh,26rem)] w-[min(92vw,26rem)]"
-                initial={reduce ? false : { opacity: 0, scale: 0.94 }}
-                animate={reduce ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1.06 }}
-                transition={
-                  reduce
-                    ? { duration: 0.4 }
-                    : { opacity: { duration: 0.55 }, scale: { duration: 9, ease: "linear" } }
-                }
-                style={{
-                  WebkitMaskImage: "linear-gradient(#000 58%, transparent 100%)",
-                  maskImage: "linear-gradient(#000 58%, transparent 100%)",
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={profile.portraitCutout}
-                  alt="Portrait of Timir"
-                  className="h-full w-full object-contain object-bottom"
-                  draggable={false}
+                  className="absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/65 to-transparent opacity-90"
+                  style={{ animation: "intro-shine 0.9s ease-out 0.2s both" }}
                 />
-              </motion.div>
+              </span>
+            )}
+          </h2>
 
-              <p className="relative z-10 -mt-4 text-center text-[11px] font-semibold tracking-[0.28em] text-white md:text-xs">
-                MOTION DESIGNER • RIVE • LOTTIE
-              </p>
+          <motion.p
+            className="relative z-20 mt-1 text-sm font-bold tracking-[0.62em] text-[#E50914] md:text-base"
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: reduce ? 0 : 0.3 }}
+          >
+            {profile.tagline}
+          </motion.p>
+        </div>
 
-              {/* White PLAY pill — matches reference; outside the scale transform */}
-              <button
-                ref={playRef}
-                type="button"
-                onClick={finish}
-                className="relative z-20 mt-5 flex min-h-11 items-center gap-2 rounded-full bg-white px-8 text-sm font-bold tracking-[0.14em] text-black shadow-[0_0_28px_rgba(229,9,20,.35)] transition-transform hover:scale-105 hover:bg-white/90"
-              >
-                <span aria-hidden className="text-[#E50914]">
-                  ▶
-                </span>{" "}
-                PLAY
-              </button>
-            </div>
+        <div className="relative z-10 -mt-20 flex w-full flex-col items-center md:-mt-32">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-[6%] h-[65%] w-[min(98vw,42rem)] -translate-x-1/2 rounded-full bg-[#E50914]/5 blur-3xl"
+          />
+
+          <motion.div
+            className="relative flex w-full flex-col items-center"
+            initial={false}
+            animate={showPortrait || reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 140 }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <motion.div
+              className="relative h-[min(56vh,42rem)] w-[min(100vw,48rem)] md:h-[min(62vh,48rem)]"
+              animate={reduce || !showPortrait ? { scale: 1 } : { scale: 1.05 }}
+              transition={{ duration: 10, ease: "linear" }}
+              style={{
+                WebkitMaskImage: "linear-gradient(#000 52%, transparent 100%)",
+                maskImage: "linear-gradient(#000 52%, transparent 100%)",
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={profile.portraitCutout}
+                alt="Portrait of Timir"
+                className="h-full w-full object-contain object-bottom"
+                draggable={false}
+              />
+            </motion.div>
+
+            <p className="relative z-10 -mt-2 text-center text-[11px] font-semibold tracking-[0.28em] text-white md:text-xs">
+              MOTION DESIGNER • RIVE • LOTTIE
+            </p>
           </motion.div>
-        )}
-      </AnimatePresence>
+
+          <motion.div
+            className="relative z-20 mt-3"
+            initial={false}
+            animate={
+              showPlay
+                ? { opacity: 1, y: 0, pointerEvents: "auto" as const }
+                : { opacity: 0, y: 16, pointerEvents: "none" as const }
+            }
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <button
+              ref={playRef}
+              type="button"
+              onClick={finish}
+              tabIndex={showPlay ? 0 : -1}
+              className="flex min-h-11 items-center gap-2 rounded-full bg-white px-8 text-sm font-bold tracking-[0.14em] text-black shadow-[0_0_28px_rgba(229,9,20,.4)] transition-transform hover:scale-105 hover:bg-white/90"
+            >
+              <span aria-hidden className="text-[#E50914]">
+                ▶
+              </span>{" "}
+              PLAY
+            </button>
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   );
 }
