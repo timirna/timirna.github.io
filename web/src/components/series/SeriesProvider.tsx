@@ -16,39 +16,51 @@ type SeriesState = {
 };
 
 const SeriesContext = createContext<SeriesState | null>(null);
-const KEY = "timir.viewer";
+const VIEWER_KEY = "timir.viewer";
+const SESSION_KEY = "timir.series.session";
 
 function readViewer(): ViewerId | null {
   try {
-    const v = localStorage.getItem(KEY);
+    const v = localStorage.getItem(VIEWER_KEY);
     return viewers.some((x) => x.id === v) ? (v as ViewerId) : null;
   } catch {
     return null;
   }
 }
 
+function sessionDone(): boolean {
+  try {
+    return sessionStorage.getItem(SESSION_KEY) === "done";
+  } catch {
+    return false;
+  }
+}
+
 /**
- * First visit to the homepage: opening sequence → "Who's watching?".
- * The chosen profile is remembered (localStorage) and only reorders the homepage.
+ * First visit in a browser session: opening sequence → "Who's watching?".
+ * Completing the gate marks the session done (sessionStorage). The chosen
+ * profile is remembered in localStorage and only reorders the homepage.
  */
 export function SeriesProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [viewerId, setViewerId] = useState<ViewerId | null>(null);
   const [stage, setStage] = useState<Stage>("idle");
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const saved = readViewer();
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate from localStorage after mount
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate after mount
     setViewerId(saved);
-    if (!saved && pathname === "/") setStage("opening");
-    // only on first load
+    if (!sessionDone() && pathname === "/") setStage("opening");
+    setReady(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const chooseViewer = useCallback((id: ViewerId) => {
     setViewerId(id);
     try {
-      localStorage.setItem(KEY, id);
+      localStorage.setItem(VIEWER_KEY, id);
+      sessionStorage.setItem(SESSION_KEY, "done");
     } catch {}
     setStage("idle");
     window.scrollTo(0, 0);
@@ -58,14 +70,21 @@ export function SeriesProvider({ children }: { children: ReactNode }) {
     viewer: viewers.find((v) => v.id === viewerId) ?? null,
     chooseViewer,
     openProfiles: () => setStage("profiles"),
-    replayOpening: () => setStage("opening"),
+    replayOpening: () => {
+      try {
+        sessionStorage.removeItem(SESSION_KEY);
+      } catch {}
+      setStage("opening");
+    },
   };
 
   return (
     <SeriesContext.Provider value={value}>
       {children}
-      {stage === "opening" && <OpeningSequence onDone={() => setStage("profiles")} />}
-      {stage === "profiles" && <ProfileSelector current={viewerId} onChoose={chooseViewer} onClose={viewerId ? () => setStage("idle") : undefined} />}
+      {ready && stage === "opening" && <OpeningSequence onDone={() => setStage("profiles")} />}
+      {ready && stage === "profiles" && (
+        <ProfileSelector current={viewerId} onChoose={chooseViewer} onClose={viewerId ? () => setStage("idle") : undefined} />
+      )}
     </SeriesContext.Provider>
   );
 }

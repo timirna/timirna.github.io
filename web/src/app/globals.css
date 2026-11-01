@@ -46,6 +46,12 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Hide native cursor only when the red ring is active (desktop, fine pointer). */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
 body {
   background: var(--bg);
   color: var(--ink);

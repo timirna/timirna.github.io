@@ -8,7 +8,9 @@ import { site } from "@/data/site";
 import { Portrait } from "./Portrait";
 import { PlayIntro } from "./PlayIntro";
 
-/** Home billboard: "TIMIR — The Series", portrait with a red glow, floating stat chips, Play Intro. */
+const chips = ["2026", "Motion Design", "Rive • Lottie", "HD"] as const;
+
+/** Home billboard: "TIMIR — The Series", portrait with a red glow, chips, Play Showreel + View Work. */
 export function SeriesBillboard() {
   const reduce = useReducedMotion();
   const [intro, setIntro] = useState(false);
@@ -32,7 +34,15 @@ export function SeriesBillboard() {
 
       <motion.div style={{ y: portraitY }} className="absolute bottom-0 right-0 h-[44%] w-full md:right-[6%] md:h-[88%] md:w-[38%]">
         <div aria-hidden className="absolute inset-[10%] rounded-full bg-red/30 blur-3xl" />
-        <Portrait className="absolute inset-x-[12%] bottom-0 top-0 rounded-t-[45%] md:inset-x-0" />
+        <Portrait
+          className="absolute inset-x-[12%] bottom-0 top-0 rounded-t-[45%] md:inset-x-0"
+          // Soft left/bottom fade into the black hero
+          fade
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(90deg,#141414_0%,transparent_28%),linear-gradient(180deg,transparent_55%,#141414_100%)] md:block"
+        />
         {profile.stats.map((s, i) => (
           <motion.div
             key={s.label}
@@ -62,6 +72,13 @@ export function SeriesBillboard() {
           ))}
           <span className="rounded-sm border border-white/50 px-1.5 text-xs">{profile.stats[0].value} Fiverr</span>
         </p>
+        <ul className="mt-4 flex flex-wrap gap-2" aria-label="Show details">
+          {chips.map((c) => (
+            <li key={c} className="rounded-sm border border-white/35 bg-black/30 px-2 py-0.5 text-xs font-semibold tracking-wide text-[#e5e5e5]">
+              {c}
+            </li>
+          ))}
+        </ul>
         <p className="mt-3 text-xs font-bold tracking-[0.25em] text-[#bbb]">MOTION DESIGNER · COMPUTER SCIENCE BACKGROUND</p>
         <p className="mt-4 max-w-xl text-[clamp(1rem,1.3vw,1.2rem)] leading-snug text-[#e5e5e5]">{profile.summary}</p>
         <div className="mt-7 flex flex-wrap gap-3">
@@ -71,11 +88,17 @@ export function SeriesBillboard() {
             onClick={() => setIntro(true)}
             className="flex min-h-11 items-center gap-2 rounded bg-white px-6 text-lg font-bold text-black transition-colors hover:bg-white/75 md:px-8"
           >
-            <span aria-hidden>▶</span> Play Intro
+            <span aria-hidden>▶</span> Play Showreel
           </button>
           <Link
-            href="/journey/"
+            href="/work/"
             className="flex min-h-11 items-center gap-2 rounded bg-[rgba(109,109,110,.7)] px-6 text-lg font-bold text-white transition-colors hover:bg-[rgba(109,109,110,.4)]"
+          >
+            View Work
+          </Link>
+          <Link
+            href="/journey/"
+            className="flex min-h-11 items-center gap-2 rounded bg-[rgba(109,109,110,.45)] px-6 text-lg font-bold text-white transition-colors hover:bg-[rgba(109,109,110,.3)]"
           >
             <span aria-hidden className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-sm">
               i

@@ -58,7 +58,7 @@ export function ProfileSelector({ current, onChoose, onClose }: { current: Viewe
             >
               <span
                 className={cn(
-                  "relative block aspect-square w-full overflow-hidden rounded-2xl border-[3px] shadow-[0_14px_30px_rgba(0,0,0,.6)] transition-transform duration-300 group-hover:scale-105 group-focus-visible:scale-105",
+                  "relative block aspect-square w-full overflow-hidden rounded-2xl border-[3px] shadow-[0_14px_30px_rgba(0,0,0,.6)] transition-[transform,border-color] duration-200 ease-out group-hover:scale-[1.08] group-focus-visible:scale-[1.08]",
                   current === v.id ? "border-white" : "border-transparent group-hover:border-white group-focus-visible:border-white",
                 )}
                 style={{ background: v.tile }}
@@ -82,7 +82,9 @@ export function ProfileSelector({ current, onChoose, onClose }: { current: Viewe
                   </span>
                 )}
               </span>
-              <span className="mt-3 text-lg font-semibold text-[#ddd] group-hover:text-white md:text-xl">{v.name}</span>
+              <span className="mt-3 text-lg font-semibold text-[#808080] transition-colors duration-200 group-hover:text-white group-focus-visible:text-white md:text-xl">
+                {v.name}
+              </span>
               <span className="mt-1 text-xs leading-snug text-[#808080] md:text-[13px]">{v.blurb}</span>
             </button>
           </motion.li>

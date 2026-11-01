@@ -28,7 +28,7 @@ export function TitleCard({ project: p, fluid = false }: { project: Project; flu
       <div
         className={cn(
           "relative origin-center rounded transition-[transform,box-shadow] delay-0 duration-300 ease-out",
-          active && "z-10 md:scale-[1.35] md:shadow-[0_12px_40px_rgba(0,0,0,.8)] md:delay-300",
+          active && "z-10 md:scale-105 md:shadow-[0_12px_40px_rgba(0,0,0,.8)] md:delay-150",
         )}
       >
         <Link href={href} className="block focus-visible:outline-offset-4" aria-label={p.title}>

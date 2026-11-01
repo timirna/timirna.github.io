@@ -8,9 +8,8 @@ export const profile = {
   fullName: "Timir Deb Nath",
   tagline: "THE SERIES",
   role: "Motion Designer · Lottie · Rive · 2D",
-  // Served from Fiverr's CDN; replace with a local file (e.g. /assets/portrait.jpg) when available.
-  portrait:
-    "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg",
+  // Local copy of Timir's Fiverr profile photo (also used by the intro + billboard).
+  portrait: "/portrait.png",
   summary:
     "Characters that react, interfaces that explain themselves and explainers that make complex products simple — built web-ready so developers can ship them.",
   meta: ["2014 – Now", "Lottie • Rive • 2D"],
