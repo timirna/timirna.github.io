@@ -33,7 +33,7 @@ export default function AboutPage() {
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg"
+            src="/portrait.png"
             alt="Portrait of Timir"
             className="aspect-[4/5] w-full max-w-sm rounded-lg object-cover"
           />

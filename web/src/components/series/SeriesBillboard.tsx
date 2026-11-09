@@ -4,10 +4,13 @@ import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useState } from "react";
 import { profile, seasons } from "@/data/series";
+import { site } from "@/data/site";
 import { Portrait } from "./Portrait";
 import { PlayIntro } from "./PlayIntro";
 
-/** Home billboard: "TIMIR — The Series", portrait with a red glow, floating stat chips, Play Intro. */
+const chips = ["2026", "Motion Design", "Rive • Lottie", "HD"] as const;
+
+/** Home billboard: cutout portrait (no arch), chips, Play Showreel + View Work. */
 export function SeriesBillboard() {
   const reduce = useReducedMotion();
   const [intro, setIntro] = useState(false);
@@ -29,9 +32,14 @@ export function SeriesBillboard() {
         </div>
       )}
 
-      <motion.div style={{ y: portraitY }} className="absolute bottom-0 right-0 h-[44%] w-full md:right-[6%] md:h-[88%] md:w-[38%]">
-        <div aria-hidden className="absolute inset-[10%] rounded-full bg-red/30 blur-3xl" />
-        <Portrait className="absolute inset-x-[12%] bottom-0 top-0 rounded-t-[45%] md:inset-x-0" />
+      <motion.div style={{ y: portraitY }} className="absolute bottom-0 right-0 h-[48%] w-full md:right-[2%] md:h-[92%] md:w-[42%]">
+        <div aria-hidden className="pointer-events-none absolute -inset-[10%] bg-[radial-gradient(ellipse_at_55%_40%,rgba(229,9,20,0.45)_0%,rgba(122,20,36,0.22)_42%,transparent_70%)]" />
+        <Portrait
+          cutout
+          fade
+          fadeLeft
+          className="absolute inset-x-[8%] bottom-0 top-[4%] md:inset-x-[4%]"
+        />
         {profile.stats.map((s, i) => (
           <motion.div
             key={s.label}
@@ -59,9 +67,16 @@ export function SeriesBillboard() {
           {profile.meta.map((m) => (
             <span key={m}>{m}</span>
           ))}
-          <span className="rounded-sm border border-white/50 px-1.5 text-xs">BSc Computer Science</span>
+          <span className="rounded-sm border border-white/50 px-1.5 text-xs">{profile.stats[0].value} Fiverr</span>
         </p>
-        <p className="mt-3 text-xs font-bold tracking-[0.25em] text-[#bbb]">MOTION DESIGNER & RIVE SPECIALIST · OPEN TO REMOTE</p>
+        <ul className="mt-4 flex flex-wrap gap-2" aria-label="Show details">
+          {chips.map((c) => (
+            <li key={c} className="rounded-sm border border-white/35 bg-black/30 px-2 py-0.5 text-xs font-semibold tracking-wide text-[#e5e5e5]">
+              {c}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 text-xs font-bold tracking-[0.25em] text-[#bbb]">MOTION DESIGNER · COMPUTER SCIENCE BACKGROUND</p>
         <p className="mt-4 max-w-xl text-[clamp(1rem,1.3vw,1.2rem)] leading-snug text-[#e5e5e5]">{profile.summary}</p>
         <div className="mt-7 flex flex-wrap gap-3">
           <button
@@ -70,21 +85,32 @@ export function SeriesBillboard() {
             onClick={() => setIntro(true)}
             className="flex min-h-11 items-center gap-2 rounded bg-white px-6 text-lg font-bold text-black transition-colors hover:bg-white/75 md:px-8"
           >
-            <span aria-hidden>▶</span> Play Intro
+            <span aria-hidden>▶</span> Play Showreel
           </button>
           <Link
-            href="/resume/"
+            href="/work/"
             className="flex min-h-11 items-center gap-2 rounded bg-[rgba(109,109,110,.7)] px-6 text-lg font-bold text-white transition-colors hover:bg-[rgba(109,109,110,.4)]"
           >
-            <span aria-hidden>⤓</span> View Résumé
+            View Work
           </Link>
           <Link
             href="/journey/"
-            aria-label="My story"
-            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/70 bg-black/30 text-lg font-bold hover:border-white"
+            className="flex min-h-11 items-center gap-2 rounded bg-[rgba(109,109,110,.45)] px-6 text-lg font-bold text-white transition-colors hover:bg-[rgba(109,109,110,.3)]"
           >
-            i
+            <span aria-hidden className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-sm">
+              i
+            </span>
+            My Story
           </Link>
+          <a
+            href={site.dribbbleServices}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-10 items-center gap-1.5 self-center rounded-full border border-white/30 bg-black/20 px-4 text-sm font-semibold text-[#e5e5e5] transition-colors hover:border-white hover:text-white"
+          >
+            Hire me for a Rive mascot — from $300 ↗
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
         </div>
       </div>
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />

@@ -8,7 +8,7 @@ import { ContinueExploring } from "@/components/series/ContinueExploring";
 import { HomeRows } from "@/components/series/HomeRows";
 import { FinalCTA } from "@/components/series/FinalCTA";
 
-const rowIds = ["characters", "explainers", "lottie", "logos", "edits"];
+const rowIds = ["characters", "explainers", "lottie", "logos"];
 
 export default function Home() {
   const rows: Record<string, React.ReactNode> = {

@@ -32,13 +32,20 @@ export function ProfileSelector({ current, onChoose, onClose }: { current: Viewe
       aria-labelledby="who-title"
       className="fixed inset-0 z-[90] flex flex-col items-center justify-center overflow-y-auto bg-[radial-gradient(ellipse_at_50%_30%,#221c2b_0%,#141119_60%,#0d0c10_100%)] px-4 py-16"
     >
-      <span className="absolute left-4 top-4 font-brand text-[40px] leading-none text-red md:left-12">TIMIR</span>
+      <motion.p
+        className="mb-3 font-brand text-[clamp(2.5rem,8vw,4.5rem)] leading-none tracking-wide text-white"
+        initial={reduce ? false : { opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45 }}
+      >
+        TIMIR
+      </motion.p>
       <motion.h2
         id="who-title"
-        className="mb-10 text-[clamp(2rem,4vw,3.5rem)] font-medium"
-        initial={reduce ? false : { opacity: 0, scale: 1.1 }}
+        className="mb-10 text-[clamp(1.75rem,4vw,3.25rem)] font-medium"
+        initial={reduce ? false : { opacity: 0, scale: 1.08 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.55 }}
       >
         Who&apos;s watching?
       </motion.h2>
@@ -58,7 +65,7 @@ export function ProfileSelector({ current, onChoose, onClose }: { current: Viewe
             >
               <span
                 className={cn(
-                  "relative block aspect-square w-full overflow-hidden rounded-2xl border-[3px] shadow-[0_14px_30px_rgba(0,0,0,.6)] transition-transform duration-300 group-hover:scale-105 group-focus-visible:scale-105",
+                  "relative block aspect-square w-full overflow-hidden rounded-2xl border-[3px] shadow-[0_14px_30px_rgba(0,0,0,.6)] transition-[transform,border-color] duration-200 ease-out group-hover:scale-[1.08] group-focus-visible:scale-[1.08]",
                   current === v.id ? "border-white" : "border-transparent group-hover:border-white group-focus-visible:border-white",
                 )}
                 style={{ background: v.tile }}
@@ -82,7 +89,9 @@ export function ProfileSelector({ current, onChoose, onClose }: { current: Viewe
                   </span>
                 )}
               </span>
-              <span className="mt-3 text-lg font-semibold text-[#ddd] group-hover:text-white md:text-xl">{v.name}</span>
+              <span className="mt-3 text-lg font-semibold text-[#808080] transition-colors duration-200 group-hover:text-white group-focus-visible:text-white md:text-xl">
+                {v.name}
+              </span>
               <span className="mt-1 text-xs leading-snug text-[#808080] md:text-[13px]">{v.blurb}</span>
             </button>
           </motion.li>

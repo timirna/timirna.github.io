@@ -127,8 +127,6 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <button id="b-cook" class="toggle" type="button" aria-pressed="false" disabled><b>Cauldron stir</b><small id="cookVal">cooking: false</small></button>
         <button id="b-scan" class="toggle" type="button" aria-pressed="false" disabled><b>Food scan</b><small id="scanVal">scanning: false</small></button>
         <button id="b-fridge" class="toggle" type="button" aria-pressed="false" disabled><b>Fridge + bat</b><small id="fridgeVal">fridge: false</small></button>
-        <button id="b-photo" type="button" disabled><b>Try a meal photo</b><small>sets mealPhoto (image)</small></button>
-        <input id="f-photo" type="file" accept="image/*" hidden>
         <p class="hint">Turn one on to play its loop (meal recommendations use the cauldron). Turn it off and he fades back to idle.</p>
       </div>
       <div class="group">
@@ -154,7 +152,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
         <table>
           <tr><td>Artboard</td><td><code>Artboard 1</code></td></tr>
           <tr><td>State machine</td><td><code>State Machine 1</code></td></tr>
-          <tr><td>Controls</td><td><code>ViewModel1</code>: water, exercise, flex (triggers) · cooking, scanning, fridge (booleans) · mealPhoto (image)</td></tr>
+          <tr><td>Controls</td><td><code>ViewModel1</code>: water, exercise, flex (triggers) · cooking, scanning, fridge (booleans)</td></tr>
           <tr><td>Loops</td><td><code>IDLE</code> 4 s: breathing, sway, a blink · <code>CAULDRON_STIR</code> 4 s, while cooking is true · <code>FOOD_SCAN</code> 4 s, while scanning is true · <code>FRIDGE_BAT</code> 5 s, while fridge is true</td></tr>
           <tr><td>One-shots</td><td><code>PLANT_WATER</code> 4 s (first water of the day) · <code>PULLUP_CRUNCH</code> 4.5 s (first exercise of the day) · <code>MIRROR_FLEX</code> 4.5 s, all back to idle</td></tr>
         </table>
@@ -209,7 +207,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     </aside>
   </section>
 
-  <p class="note">Everything here is in the same <code>countly.riv</code> as Phase 1, on <code>Artboard 1</code>. In <code>State Machine 1</code>, set <code>cooking</code>, <code>scanning</code> or <code>fridge</code> to true to play that loop until you set it back to false, and fire <code>water</code>, <code>exercise</code> or <code>flex</code> to play a one-shot. For the food scan, set the image property <code>mealPhoto</code> to the user's meal photo (4:3, ideally 800 × 560); it appears on the plate on his desk. Pull to refresh and the streak fire each have their own state machine, <code>Bat Refresh</code> and <code>Streak Fire</code>.</p>
+  <p class="note">Everything here is in the same <code>countly.riv</code> as Phase 1, on <code>Artboard 1</code>. In <code>State Machine 1</code>, set <code>cooking</code>, <code>scanning</code> or <code>fridge</code> to true to play that loop until you set it back to false, and fire <code>water</code>, <code>exercise</code> or <code>flex</code> to play a one-shot. Pull to refresh and the streak fire each have their own state machine, <code>Bat Refresh</code> and <code>Streak Fire</code>.</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@rive-app/canvas-single@2.44.0/rive.js"></script>
@@ -240,12 +238,11 @@ td code { font-family: var(--mono); font-size: 12.5px; }
     bC.disabled = !vmi || (name !== 'IDLE' && name !== 'CAULDRON_STIR');
     bS.disabled = !vmi || (name !== 'IDLE' && name !== 'FOOD_SCAN');
     bFr.disabled = !vmi || (name !== 'IDLE' && name !== 'FRIDGE_BAT');
-    bPh.disabled = !vmi;
   }
 
   rive.Rive.suppressDeprecationWarnings = ['state-change-events'];
   var r = new rive.Rive({
-    src: '../countly.riv?v=23',
+    src: '../countly.riv?v=27',
     canvas: document.getElementById('cv'),
     artboard: 'Artboard 1',
     stateMachine: 'State Machine 1',
@@ -287,38 +284,13 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   bC.addEventListener('click', function () { toggle('cooking', bC, cookVal); });
   bS.addEventListener('click', function () { toggle('scanning', bS, scanVal); });
   bFr.addEventListener('click', function () { toggle('fridge', bFr, fridgeVal); });
-  var bPh = document.getElementById('b-photo'), fPh = document.getElementById('f-photo');
-  bPh.addEventListener('click', function () { fPh.click(); });
-  // the frame shows the photo at 800 x 560 (4:3): crop-to-fill before handing it to Rive
-  fPh.addEventListener('change', function () {
-    var file = fPh.files && fPh.files[0];
-    if (!file || !vmi) return;
-    var img = new Image();
-    img.onload = function () {
-      var W = 800, H = 560, c = document.createElement('canvas');
-      c.width = W; c.height = H;
-      var k = Math.max(W / img.width, H / img.height), w = img.width * k, h = img.height * k;
-      c.getContext('2d').drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
-      c.toBlob(function (blob) {
-        blob.arrayBuffer().then(function (buf) { return rive.decodeImage(new Uint8Array(buf)); }).then(function (ri) {
-          vmi.image('mealPhoto').value = ri;
-          ri.unref();
-          var p = vmi.boolean('scanning');
-          if (p && !p.value) toggle('scanning', bS, scanVal);
-        });
-      }, 'image/png');
-      URL.revokeObjectURL(img.src);
-    };
-    img.src = URL.createObjectURL(file);
-    fPh.value = '';
-  });
 
   var BAT = { BAT_EMPTY: 'empty', BAT_IN: 'dropping in', BAT_HOVER: 'refreshing', BAT_OUT: 'flying off' };
   var batState = document.getElementById('batState');
   var bP = document.getElementById('b-pull'), bH = document.getElementById('b-hold'), holdVal = document.getElementById('holdVal');
   var bvmi = null, pullTimer = null;
   var rb = new rive.Rive({
-    src: '../countly.riv?v=23',
+    src: '../countly.riv?v=27',
     canvas: document.getElementById('cv2'),
     artboard: 'Artboard 1',
     stateMachine: 'Bat Refresh',
@@ -359,7 +331,7 @@ td code { font-family: var(--mono); font-size: 12.5px; }
   var fireState = document.getElementById('fireState'), bFi = document.getElementById('b-fire'), fireVal = document.getElementById('fireVal');
   var fvmi = null;
   var rf = new rive.Rive({
-    src: '../countly.riv?v=23',
+    src: '../countly.riv?v=27',
     canvas: document.getElementById('cv3'),
     artboard: 'Artboard 1',
     stateMachine: 'Streak Fire',

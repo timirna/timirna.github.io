@@ -8,13 +8,17 @@ export const profile = {
   fullName: "Timir Deb Nath",
   tagline: "THE SERIES",
   role: "Motion Designer & Rive Specialist",
-  // Served from Fiverr's CDN; replace with a local file (e.g. /assets/portrait.jpg) when available.
-  portrait:
-    "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/d4449f9244fc2d18ac1524cd2a39594a-1777942378776/9a0e990d-23e8-4a41-8db5-ca2a1efc336a.jpg",
+  // Local copy of Timir's Fiverr profile photo (also used by the intro + billboard).
+  portrait: "/portrait.png",
+  /** Background-removed cutout for intro + hero (alpha PNG). */
+  portraitCutout: "/portrait-cutout.png",
+  /** Soft left-edge cutout for the homepage hero. */
+  portraitCutoutHero: "/portrait-cutout-hero.png",
   summary:
     "Characters that react, interfaces that explain themselves and explainers that make complex products simple — built web-ready so developers can ship them.",
   meta: ["2014 – Now", "Lottie • Rive • 2D"],
-  // 8+ years and 50+ projects are from the CV; the Fiverr rating is from the previous site — keep it current.
+  // Verified 2026-10-31 from https://www.fiverr.com/timir69
+  // (AggregateRating 4.9 / reviewCount 1029; seller_level level_two_seller).
   stats: [
     { value: "8+ years", label: "in motion design" },
     { value: "50+", label: "animation projects" },
@@ -42,7 +46,7 @@ export const viewers: Viewer[] = [
     blurb: "The full series, in order",
     avatar: { kind: "portrait" },
     tile: "radial-gradient(circle at 50% 40%,#a1243a,#4a0c18)",
-    rows: ["continue", "characters", "top", "films", "explainers", "lottie", "logos", "edits"],
+    rows: ["continue", "characters", "top", "films", "explainers", "lottie", "logos"],
   },
   {
     id: "client",
@@ -50,7 +54,7 @@ export const viewers: Viewer[] = [
     blurb: "Films, characters & how we'd work",
     avatar: { kind: "rive", src: "/animations/rive/cat.riv", stateMachine: "Cat_SM" },
     tile: "linear-gradient(160deg,#7fd3e6,#2f7fa8 55%,#1d4f73)",
-    rows: ["films", "characters", "explainers", "top", "continue", "lottie", "logos", "edits"],
+    rows: ["films", "characters", "explainers", "top", "continue", "lottie", "logos"],
   },
   {
     id: "developer",
@@ -58,7 +62,7 @@ export const viewers: Viewer[] = [
     blurb: "Live .riv & Lottie files, inputs & handoff",
     avatar: { kind: "rive", src: "/animations/rive/countly.riv", stateMachine: "State Machine 1", artboard: "Artboard 1" },
     tile: "linear-gradient(160deg,#8be38f,#2f9a52 55%,#17602f)",
-    rows: ["characters", "lottie", "continue", "top", "logos", "films", "explainers", "edits"],
+    rows: ["characters", "lottie", "continue", "top", "logos", "films", "explainers"],
   },
   {
     id: "recruiter",
@@ -66,7 +70,7 @@ export const viewers: Viewer[] = [
     blurb: "Experience, skills & résumé first",
     avatar: { kind: "rive", src: "/animations/rive/aria.riv", stateMachine: "Aria" },
     tile: "linear-gradient(160deg,#ffd76a,#e09a1c 55%,#a2620b)",
-    rows: ["top", "continue", "characters", "films", "explainers", "lottie", "logos", "edits"],
+    rows: ["top", "continue", "characters", "films", "explainers", "lottie", "logos"],
   },
 ];
 

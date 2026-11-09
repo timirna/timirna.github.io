@@ -173,6 +173,27 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               </div>
             </section>
           ) : null}
+          {p.process?.length ? (
+            <section aria-labelledby="process">
+              <h2 id="process" className="text-2xl font-semibold">
+                Process
+              </h2>
+              <ol className="mt-6 grid gap-6 sm:grid-cols-2">
+                {p.process.map((step, i) => (
+                  <li key={step.title} className="rounded-md border border-white/10 bg-[#1a1a1a] p-5">
+                    <p className="text-xs font-bold tracking-[0.2em] text-red">
+                      {String(i + 1).padStart(2, "0")} · {step.title}
+                    </p>
+                    <p className="mt-3 text-base leading-relaxed text-[#d2d2d2]">{step.text}</p>
+                    {step.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={step.image} alt="" className="mt-4 w-full rounded object-cover" />
+                    ) : null}
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ) : null}
           {p.status === "in-progress" && (
             <p className="rounded border border-dashed border-[#404040] p-6 text-[#d2d2d2]">
               Media and details for this project are being prepared.{" "}

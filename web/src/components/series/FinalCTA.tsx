@@ -23,6 +23,10 @@ export function FinalCTA() {
         <Link href="/contact/" className="flex min-h-11 items-center rounded-full bg-red px-6 text-xs font-bold tracking-[0.12em] shadow-[0_0_30px_rgba(229,9,20,.55)] hover:bg-[var(--red-hover)]">
           ▶ LET&apos;S BUILD
         </Link>
+        <a href={site.dribbbleServices} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center rounded-full bg-white px-6 text-xs font-bold tracking-[0.12em] text-black hover:bg-white/85">
+          Hire me for a Rive mascot — from $300 ↗
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
         {linkedin && (
           <a href={linkedin.href} target="_blank" rel="noopener noreferrer" className={pill}>
             LINKEDIN ↗<span className="sr-only"> (opens in a new tab)</span>

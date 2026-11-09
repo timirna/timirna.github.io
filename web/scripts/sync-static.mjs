@@ -17,6 +17,7 @@ const ENTRIES = [
   ["countly-preview", "countly-preview"],
   ["aria-preview", "aria-preview"],
   ["inovetix-reel", "inovetix-reel"],
+  ["inovetix-demo", "inovetix-demo"],
   ["tavana-lottie-testbench", "tavana-lottie-testbench"],
   ["motiondesk.html", "motiondesk.html"],
   ["admin.html", "admin.html"],
