@@ -263,6 +263,20 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "intraface-globe-hero",
+    title: "Intraface Studio — Globe Hero",
+    client: "Intraface Studio",
+    year: 2026,
+    categories: ["Lottie", "UI Motion"],
+    summary:
+      "A wireframe globe that turns slowly behind the “Architecture in Motion” hero of Intraface Studio's website — a lightweight Lottie loop, shown here in the live page layout.",
+    services: ["Lottie animation", "Website hero motion"],
+    cover: "/assets/intraface-globe-hero.jpg",
+    coverAlt: "Intraface Studio website hero with a white wireframe globe on black",
+    previewVideo: "/assets/intraface-globe-hero.mp4",
+    heroVideo: "/assets/intraface-globe-hero.mp4",
+  },
+  {
     slug: "interactive-micro-animations",
     title: "Interactive Micro Animations",
     categories: ["Lottie", "UI Motion"],
@@ -587,7 +601,7 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 export const homeRows: { title: string; note?: string; slugs: string[] }[] = [
   { title: "Live characters", note: "Interactive Rive — they react", slugs: ["silver-tabby-cat", "countly-character", "zeiziq-bird", "aria-teacher-rig", "koala-sleep-tracker"] },
   { title: "Explainers & product films", slugs: ["sohopay-launch-films", "aura-saas-explainer", "gora-blockchain-explainer", "trace-saas-explainer", "ask-rosie-hero"] },
-  { title: "Lottie & UI motion", slugs: ["interactive-lottie-character", "interactive-micro-animations", "app-splash-screens", "jamin-k-hero", "spoon-micro-animation", "ux-interactive-motion", "sports-app-characters", "lottie-character-design"] },
+  { title: "Lottie & UI motion", slugs: ["intraface-globe-hero", "interactive-lottie-character", "interactive-micro-animations", "app-splash-screens", "jamin-k-hero", "spoon-micro-animation", "ux-interactive-motion", "sports-app-characters", "lottie-character-design"] },
   { title: "Logo animation", slugs: ["unicorn-logo-wink", "logo-lottie-app-web", "logos-to-life-lottie", "blender-3d-roll-lottie"] },
 ];
 

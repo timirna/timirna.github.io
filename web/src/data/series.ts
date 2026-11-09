@@ -130,7 +130,7 @@ export const seasons: Season[] = [
     org: "Fiverr “MotionDesk”, Upwork & direct clients · FocusOn Global",
     summary:
       "Multi-state Rive characters, developer-ready Lottie, SaaS explainers and app promos for clients in the US, Europe and Bangladesh — 50+ projects in all.",
-    episodes: ["koala-sleep-tracker", "silver-tabby-cat", "aura-saas-explainer", "countly-character", "zeiziq-bird", "aria-teacher-rig", "interactive-micro-animations"],
+    episodes: ["intraface-globe-hero", "koala-sleep-tracker", "silver-tabby-cat", "aura-saas-explainer", "countly-character", "zeiziq-bird", "aria-teacher-rig", "interactive-micro-animations"],
   },
   {
     id: "s5",
