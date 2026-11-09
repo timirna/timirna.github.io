@@ -8,7 +8,7 @@ import { readProgress } from "./WatchProgress";
 const tiles = [
   { href: "/journey/", kicker: "Episode 1", title: "The Full Story", bg: "linear-gradient(135deg,#e50914,#5c0a0d)" },
   { href: "/work/countly-character/", kicker: "Live", title: "My Characters", bg: "linear-gradient(135deg,#7a3cff,#2a0f5c)" },
-  { href: "/work/sohopay-launch-films/", kicker: "8 films", title: "SohoPay", bg: "linear-gradient(135deg,#0f9b8e,#073b37)" },
+  { href: "/work/sohopay-launch-films/", kicker: "10 films", title: "SohoPay", bg: "linear-gradient(135deg,#0f9b8e,#073b37)" },
   { href: "/about/", kicker: "Tools", title: "My Skills", bg: "linear-gradient(135deg,#f2a516,#6b4206)" },
   { href: "/playground/", kicker: "Behind the scenes", title: "Playground", bg: "linear-gradient(135deg,#2b6cb0,#0d2647)" },
 ];

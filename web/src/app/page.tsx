@@ -14,7 +14,7 @@ export default function Home() {
   const rows: Record<string, React.ReactNode> = {
     continue: <ContinueExploring />,
     top: <TopTenRow title="Top 10 picks" projects={projectsBySlugs(topPicks)} />,
-    films: <FilmRow title="SohoPay — the eight films" note="Click to play" films={sohopayFilms} />,
+    films: <FilmRow title={`SohoPay — ${sohopayFilms.length} films`} note="Click to play" films={sohopayFilms} />,
   };
   homeRows.forEach((r, i) => {
     rows[rowIds[i]] = (

@@ -223,10 +223,10 @@ export const projects: Project[] = [
     year: 2026,
     categories: ["2D Motion", "Video"],
     summary:
-      "Agents can do the work, but they can't pay for it. Eight films for SohoPay, the payments layer built for AI agents — explainers, launch films, a product film, brand films and a story cut.",
+      "Agents can do the work, but they can't pay for it. Ten films for SohoPay, the payments layer built for AI agents — explainers, launch films, a product film, brand films and a story cut.",
     services: ["Explainer", "Launch film", "Product film", "Brand film"],
     tools: ["After Effects", "Premiere Pro"],
-    deliverables: ["8 films", "1920×1080"],
+    deliverables: ["10 films", "1920×1080"],
     cover: "/assets/sohopay-launch.jpg",
     coverAlt: "SohoPay launch film frame",
     backdrop: "/assets/sohopay-link-film.jpg",
@@ -553,7 +553,7 @@ export const projects: Project[] = [
   },
 ];
 
-/** The eight SohoPay films, shown as their own row and on the SohoPay page. */
+/** The SohoPay films, shown as their own row and on the SohoPay page. */
 export type Film = { title: string; kind: string; duration: string; blurb: string; src: string; poster: string };
 
 export const sohopayFilms: Film[] = [
@@ -561,6 +561,10 @@ export const sohopayFilms: Film[] = [
     blurb: "Opens on the problem — agents can do the work but can't pay for it — then shows how SohoPay clears the blocked payment." },
   { title: "How SohoPay Works", kind: "Explainer", duration: "1:20", src: "/assets/sohopay-howitworks.mp4", poster: "/assets/sohopay-howitworks.jpg",
     blurb: "The full product explainer: a step-by-step walk through the flow, built for the website and sales calls." },
+  { title: "Sign Up & Pay", kind: "Explainer", duration: "0:47", src: "/assets/sohopay-signup.mp4", poster: "/assets/sohopay-signup.jpg",
+    blurb: "The onboarding story: sign up with just a phone number, a quick ID check, $100 of starter purchasing power — then agents paying for APIs and paying each other instantly." },
+  { title: "Your Agent's Credit Line", kind: "Explainer", duration: "0:51", src: "/assets/sohopay-credit-line.mp4", poster: "/assets/sohopay-credit-line.jpg",
+    blurb: "A dark, green-lit walkthrough: create an agent with just your phone, add a card, and it gets its own credit line — then behind the scenes every payment goes request, authorize, settle, on-chain." },
   { title: "Presenter Explainer", kind: "Explainer", duration: "1:17", src: "/inovetix-reel/videos/SohoPay_Explainer_Claude_Reference_v11.mp4", poster: "/assets/sohopay-explainer-v11.jpg",
     blurb: "A presenter-led cut of the explainer: a founder on camera, with animated product UI and titles carrying the walkthrough." },
   { title: "Good to Buy", kind: "Launch", duration: "0:30", src: "/inovetix-reel/videos/SohoPay_Film_Link_Reference_v06h.mp4", poster: "/assets/sohopay-link-film.jpg",

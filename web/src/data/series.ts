@@ -148,7 +148,7 @@ export const seasons: Season[] = [
 /** ▶ Play Intro: a short highlight reel. */
 export const introSlides = [
   { kicker: "Previously on", title: "TIMIR", text: "8+ years in motion design, a computer-science degree and 50+ projects.", media: { kind: "portrait" as const } },
-  { kicker: "Now playing", title: "SohoPay", text: "Eight films for a payments layer built for AI agents.", media: { kind: "image" as const, src: "/assets/sohopay-link-film.jpg" } },
+  { kicker: "Now playing", title: "SohoPay", text: "Ten films for a payments layer built for AI agents.", media: { kind: "image" as const, src: "/assets/sohopay-link-film.jpg" } },
   { kicker: "Live Rive", title: "Countly", text: "Nine animations and a pull-to-refresh bat in one file.", media: { kind: "rive" as const, src: "/animations/rive/countly.riv", stateMachine: "State Machine 1", artboard: "Artboard 1" } },
   { kicker: "Live Rive", title: "Silver Tabby", text: "A sign-in cat that follows your cursor.", media: { kind: "rive" as const, src: "/animations/rive/cat.riv", stateMachine: "Cat_SM" } },
   { kicker: "Explainers", title: "Aura · Gora · TRACE", text: "Complex products, made simple in under two minutes.", media: { kind: "image" as const, src: "/assets/aura-explainer.jpg" } },
