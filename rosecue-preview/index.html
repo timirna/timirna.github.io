@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoseCue Rose · Rive preview</title>
+<style>
+  :root{--bg:#f4f1f4;--panel:#fff;--ink:#241a26;--mute:#7a6b7c;--line:#e4dce5;--acc:#8a2b6e}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+  main{max-width:980px;margin:0 auto;padding:20px 16px 40px;display:grid;gap:16px;grid-template-columns:minmax(0,1fr) 300px}
+  @media (max-width:760px){main{grid-template-columns:1fr}}
+  h1{font-size:20px;margin:0 0 2px}
+  .sub{color:var(--mute);margin:0;font-size:13px}
+  .stage{border:1px solid var(--line);border-radius:14px;aspect-ratio:1;overflow:hidden;background:#fff}
+  .stage.checker{background:repeating-conic-gradient(#d8d2d9 0 25%,#f1edf2 0 50%) 0 0/24px 24px}
+  .stage.dark{background:#121018}
+  canvas{width:100%;height:100%;display:block}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:16px;align-content:start}
+  label{font-size:13px;color:var(--mute);display:flex;justify-content:space-between}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  button{font:inherit;padding:9px 14px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+  button.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+  button[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#fff}
+  #status{font-size:13px;color:var(--mute)}
+  #status.err{color:#b3261e}
+  code{background:#f1ecf2;padding:1px 5px;border-radius:5px;font-size:12px}
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>RoseCue Rose</h1>
+    <p class="sub">Live Rive file, running in the web runtime. Tap the rose to bounce it.</p>
+    <div class="stage checker" id="stage" style="margin-top:12px"><canvas id="c" width="1024" height="1024"></canvas></div>
+  </section>
+  <aside class="panel">
+    <div>
+      <label for="bloom"><span>bloom (Number)</span><span id="bv">0</span></label>
+      <input id="bloom" type="range" min="0" max="100" step="0.1" value="0">
+      <div class="row" style="margin-top:8px"><button id="play" class="primary">Play growth 0 → 100</button></div>
+    </div>
+    <div class="row">
+      <button id="wilt" aria-pressed="false">wilt: off</button>
+      <button id="grow">grow</button>
+      <button id="tap">tap</button>
+    </div>
+    <div>
+      <label><span>Background</span></label>
+      <div class="row" style="margin-top:6px">
+        <button data-bg="checker">Transparent</button><button data-bg="">White</button><button data-bg="dark">Dark</button>
+      </div>
+    </div>
+    <div id="status">Loading…</div>
+    <p class="sub">View model <code>RoseVM</code> · state machine <code>RoseSM</code><br>Inputs: <code>bloom</code>, <code>wilt</code>, <code>grow</code>, <code>tap</code></p>
+  </aside>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@rive-app/webgl2@2.44.0/rive.js"></script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id), status=$('status');
+  const fail=m=>{status.textContent=m;status.className='err';};
+  if(!window.rive){fail('Could not load the Rive runtime (check your connection).');return;}
+  let vmi=null, bloomP=null, wiltP=null, growP=null, tapP=null, wiltOn=false, raf=0;
+  const r=new rive.Rive({
+    src:'rose.riv', canvas:$('c'), autoplay:true, stateMachines:'RoseSM', autoBind:true,
+    layout:new rive.Layout({fit:rive.Fit.Contain,alignment:rive.Alignment.Center}),
+    onLoadError:()=>fail('Could not load rose.riv.'),
+    onLoad:()=>{
+      try{
+        r.resizeDrawingSurfaceToCanvas();
+        vmi=r.viewModelInstance;
+        if(!vmi){ // fall back to binding the default instance by hand
+          const vm=(r.viewModelByName&&r.viewModelByName('RoseVM'))||(r.defaultViewModel&&r.defaultViewModel());
+          vmi=vm&&(vm.defaultInstance?vm.defaultInstance():vm.instance());
+          if(vmi&&r.bindViewModelInstance) r.bindViewModelInstance(vmi);
+        }
+        if(!vmi){fail('File loaded, but no view model instance was found.');return;}
+        bloomP=vmi.number('bloom'); wiltP=vmi.boolean('wilt'); growP=vmi.trigger('grow'); tapP=vmi.trigger('tap');
+        const missing=[['bloom',bloomP],['wilt',wiltP],['grow',growP],['tap',tapP]].filter(x=>!x[1]).map(x=>x[0]);
+        if(missing.length){fail('Missing view model properties: '+missing.join(', '));return;}
+        bloomP.value=0; status.textContent='Ready.';
+      }catch(e){fail('Runtime error: '+e.message);}
+    }
+  });
+  window.addEventListener('resize',()=>{try{r.resizeDrawingSurfaceToCanvas();}catch(e){}});
+  const setBloom=v=>{ $('bloom').value=v; $('bv').textContent=Math.round(v); if(bloomP) bloomP.value=+v; };
+  $('bloom').addEventListener('input',e=>{cancelAnimationFrame(raf);setBloom(+e.target.value);});
+  $('play').addEventListener('click',()=>{
+    cancelAnimationFrame(raf); const t0=performance.now();
+    const step=now=>{const k=Math.min(1,(now-t0)/5000); setBloom(k*100); if(k<1) raf=requestAnimationFrame(step); else if(growP) growP.trigger();};
+    raf=requestAnimationFrame(step);
+  });
+  $('wilt').addEventListener('click',()=>{ wiltOn=!wiltOn; if(wiltP) wiltP.value=wiltOn; $('wilt').setAttribute('aria-pressed',wiltOn); $('wilt').textContent='wilt: '+(wiltOn?'on':'off'); });
+  $('grow').addEventListener('click',()=>{ if(growP) growP.trigger(); });
+  $('tap').addEventListener('click',()=>{ if(tapP) tapP.trigger(); });
+  document.querySelectorAll('[data-bg]').forEach(b=>b.addEventListener('click',()=>{ $('stage').className='stage '+b.dataset.bg; }));
+})();
+</script>
+</body>
+</html>
