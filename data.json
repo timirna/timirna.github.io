@@ -10,15 +10,6 @@
    ]
   },
   {
-   "k": "App Reel",
-   "t": "Cuelize 15s Reel",
-   "cs": "case-cuelize",
-   "d": "15-second vertical reel showing the teleprompter scrolling a creator's script while she records.",
-   "m": [
-    "F|assets/cuelize-reel"
-   ]
-  },
-  {
    "k": "Launch Spot",
    "t": "Cuelize - Every Tool, Live",
    "cs": "case-cuelize",
@@ -573,7 +564,6 @@
     "icon": "&#9654;",
     "t": [
      "Cuelize Promo Film",
-     "Cuelize 15s Reel",
      "Cuelize - Every Tool, Live",
      "Cuelize - Write. Read. Record.",
      "SohoPay Launch Film",
