@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProject, projects, sohopayFilms } from "@/data/projects";
+import { cuelizeFilms, getProject, projects, sohopayFilms } from "@/data/projects";
 import type { Project } from "@/types/project";
 import { RivePlayer } from "@/components/media/RivePlayer";
 import { LottiePlayer } from "@/components/media/LottiePlayer";
@@ -51,7 +51,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   const backdrop = p.backdrop ?? p.cover;
   const live = !!p.riveFile || !!p.lottieFiles?.length;
-  const isSoho = p.slug === "sohopay-launch-films";
+  const filmList = p.slug === "sohopay-launch-films" ? sohopayFilms : p.slug === "cuelize-app-launch" ? cuelizeFilms : null;
+  const isSoho = !!filmList;
   const similar = moreLikeThis(p);
 
   const facts = [
@@ -220,9 +221,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <h2 id="episodes" className="text-2xl font-semibold">
               Films
             </h2>
-            <span className="text-lg text-[#d2d2d2]">{sohopayFilms.length} films</span>
+            <span className="text-lg text-[#d2d2d2]">{filmList?.length} films</span>
           </div>
-          <EpisodeList films={sohopayFilms} />
+          <EpisodeList films={filmList ?? []} />
         </section>
       )}
 

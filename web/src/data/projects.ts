@@ -234,6 +234,23 @@ export const projects: Project[] = [
     heroVideo: "/assets/sohopay-launch.mp4",
   },
   {
+    slug: "cuelize-app-launch",
+    title: "Cuelize",
+    client: "Cuelize (Inovetix)",
+    year: 2026,
+    categories: ["2D Motion", "UI Motion", "Video"],
+    summary:
+      "Your words, in front of you. Six videos for Cuelize, a teleprompter app — a promo film, a 15-second reel and two App Store launch spots, each in landscape and portrait.",
+    services: ["App promo", "Launch reel", "UI motion"],
+    tools: ["After Effects", "Remotion"],
+    deliverables: ["6 videos", "1920×1080 and 1080×1920"],
+    cover: "/assets/cuelize-every-tool-16x9.jpg",
+    coverAlt: "Cuelize launch spot: Forgetting your lines? on red",
+    backdrop: "/assets/cuelize-promo.jpg",
+    previewVideo: "/assets/cuelize-every-tool-16x9.mp4",
+    heroVideo: "/assets/cuelize-promo.mp4",
+  },
+  {
     slug: "aura-saas-explainer",
     title: "Aura — SaaS Explainer",
     client: "Aura",
@@ -575,6 +592,22 @@ export const sohopayFilms: Film[] = [
     blurb: "A slower, typographic piece with ambient green light that sets the tone for the brand." },
 ];
 
+/** The six Cuelize videos, shown on the Cuelize page. */
+export const cuelizeFilms: Film[] = [
+  { title: "Promo Film", kind: "Promo", duration: "0:36", src: "/assets/cuelize-promo.mp4", poster: "/assets/cuelize-promo.jpg",
+    blurb: "The full story: writing the script, the teleprompter settings, recording on camera, and sharing to YouTube, Reels and TikTok." },
+  { title: "Every Tool, Live", kind: "Launch · 16:9", duration: "0:25", src: "/assets/cuelize-every-tool-16x9.mp4", poster: "/assets/cuelize-every-tool-16x9.jpg",
+    blurb: "“Forgetting your lines? Just read.” Real app screens on 3D phones show each tool working live." },
+  { title: "Every Tool, Live — Portrait", kind: "Launch · 9:16", duration: "0:25", src: "/assets/cuelize-every-tool-9x16.mp4", poster: "/assets/cuelize-every-tool-9x16.jpg",
+    blurb: "The same red launch spot, recomposed for Reels, Shorts and TikTok." },
+  { title: "Write. Read. Record.", kind: "Launch · 16:9", duration: "0:21", src: "/assets/cuelize-write-read-record-16x9.mp4", poster: "/assets/cuelize-write-read-record-16x9.jpg",
+    blurb: "A soft lavender spot with floating phones and a creator on camera — the whole app in three words." },
+  { title: "Write. Read. Record. — Portrait", kind: "Launch · 9:16", duration: "0:21", src: "/assets/cuelize-write-read-record-9x16.mp4", poster: "/assets/cuelize-write-read-record-9x16.jpg",
+    blurb: "The lavender spot in portrait, ending on the App Store badge." },
+  { title: "15-second Reel", kind: "Reel · 9:16", duration: "0:15", src: "/assets/cuelize-reel.mp4", poster: "/assets/cuelize-reel.jpg",
+    blurb: "A creator who forgets her lines, then the app scrolling her script word by word while she records." },
+];
+
 export const categories: Category[] = ["Rive", "Lottie", "UI Motion", "2D Motion", "Character", "Video"];
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
@@ -582,11 +615,11 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 /** Homepage rows (Netflix-style). */
 export const homeRows: { title: string; note?: string; slugs: string[] }[] = [
   { title: "Live characters", note: "Interactive Rive — they react", slugs: ["silver-tabby-cat", "countly-character", "zeiziq-bird", "aria-teacher-rig", "koala-sleep-tracker"] },
-  { title: "Explainers & product films", slugs: ["sohopay-launch-films", "aura-saas-explainer", "gora-blockchain-explainer", "trace-saas-explainer", "ask-rosie-hero"] },
+  { title: "Explainers & product films", slugs: ["sohopay-launch-films", "cuelize-app-launch", "aura-saas-explainer", "gora-blockchain-explainer", "trace-saas-explainer", "ask-rosie-hero"] },
   { title: "Lottie & UI motion", slugs: ["interactive-lottie-character", "interactive-micro-animations", "app-splash-screens", "jamin-k-hero", "spoon-micro-animation", "ux-interactive-motion", "sports-app-characters", "lottie-character-design"] },
   { title: "Logo animation", slugs: ["unicorn-logo-wink", "logo-lottie-app-web", "logos-to-life-lottie", "blender-3d-roll-lottie"] },
 ];
 
-export const topPicks = ["sohopay-launch-films", "silver-tabby-cat", "countly-character", "koala-sleep-tracker", "aura-saas-explainer", "zeiziq-bird", "gora-blockchain-explainer", "interactive-micro-animations", "aria-teacher-rig", "interactive-lottie-character"];
+export const topPicks = ["sohopay-launch-films", "cuelize-app-launch", "silver-tabby-cat", "countly-character", "koala-sleep-tracker", "aura-saas-explainer", "zeiziq-bird", "gora-blockchain-explainer", "interactive-micro-animations", "aria-teacher-rig"];
 
 export const projectsBySlugs = (slugs: string[]) => slugs.map((s) => getProject(s)).filter((p): p is Project => !!p);
