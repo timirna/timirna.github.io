@@ -1,6 +1,44 @@
 {
  "projects": [
   {
+   "k": "App Promo",
+   "t": "Cuelize Promo Film",
+   "cs": "case-cuelize",
+   "d": "36-second promo for Cuelize, a teleprompter app: script, settings, recording and sharing to YouTube, Reels and TikTok.",
+   "m": [
+    "F|assets/cuelize-promo"
+   ]
+  },
+  {
+   "k": "App Reel",
+   "t": "Cuelize 15s Reel",
+   "cs": "case-cuelize",
+   "d": "15-second vertical reel showing the teleprompter scrolling a creator's script while she records.",
+   "m": [
+    "F|assets/cuelize-reel"
+   ]
+  },
+  {
+   "k": "Launch Spot",
+   "t": "Cuelize - Every Tool, Live",
+   "cs": "case-cuelize",
+   "d": "Red launch spot with real app screens on 3D phones, in landscape and portrait.",
+   "m": [
+    "F|assets/cuelize-every-tool-16x9",
+    "F|assets/cuelize-every-tool-9x16"
+   ]
+  },
+  {
+   "k": "Launch Spot",
+   "t": "Cuelize - Write. Read. Record.",
+   "cs": "case-cuelize",
+   "d": "Lavender launch spot with floating phones and a creator on camera, in landscape and portrait.",
+   "m": [
+    "F|assets/cuelize-write-read-record-16x9",
+    "F|assets/cuelize-write-read-record-9x16"
+   ]
+  },
+  {
    "k": "Launch Film",
    "t": "SohoPay Launch Film",
    "cs": "case-sohopay",
@@ -534,6 +572,10 @@
     "n": "Explainer Video - SaaS & Product",
     "icon": "&#9654;",
     "t": [
+     "Cuelize Promo Film",
+     "Cuelize 15s Reel",
+     "Cuelize - Every Tool, Live",
+     "Cuelize - Write. Read. Record.",
      "SohoPay Launch Film",
      "How SohoPay Works",
      "SohoPay Agents",
