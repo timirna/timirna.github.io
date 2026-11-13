@@ -24,13 +24,13 @@ export function VideoDialog({
   useEffect(() => {
     const d = dialog.current;
     if (!d) return;
-    if (open && !d.open) {
-      d.showModal();
+    if (open) {
+      if (!d.open) d.showModal();
       video.current?.play().catch(() => {});
     } else if (!open && d.open) {
       d.close();
     }
-  }, [open]);
+  }, [open, src]);
 
   return (
     <dialog
@@ -53,8 +53,16 @@ export function VideoDialog({
         >
           Close <span aria-hidden>✕</span>
         </button>
-        <video ref={video} controls playsInline preload="none" poster={poster} className="aspect-video w-full rounded-md bg-black">
-          <source src={src} />
+        <video
+          key={src}
+          ref={video}
+          src={src || undefined}
+          controls
+          playsInline
+          preload="metadata"
+          poster={poster}
+          className="aspect-video w-full rounded-md bg-black object-contain"
+        >
           {captions && <track kind="captions" src={captions} srcLang="en" label="English" default />}
         </video>
       </div>
