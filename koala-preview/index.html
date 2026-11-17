@@ -37,7 +37,7 @@ h1{font:600 clamp(26px,4vw,36px)/1.1 var(--display);margin:0;text-wrap:balance}
 .rail{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:22px}
 .group{display:grid;gap:10px}
 .label{font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.btns{display:grid;gap:8px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 button{font:600 14px var(--body);border:1px solid var(--line);background:var(--chip);color:var(--fg);padding:10px 8px;border-radius:10px;cursor:pointer;text-align:center}
 button:hover{border-color:var(--accent)}
 button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -51,7 +51,7 @@ button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);bor
   <header>
     <div>
       <h1>Koala, App Mascot Rig</h1>
-      <p class="sub">The live Rive file running in the same web runtime a mobile or web app uses. Bone-rigged head, ears, arms and legs with a soft sleepy idle loop: breathing, ear sway and a drowsy face.</p>
+      <p class="sub">The live Rive files running in the same web runtime a mobile or web app uses. One bone-rigged koala with ten animations: idle, talking, sleepy, tired, celebration, crying, a wake-up scene, a proud scene and two sleeping loops. Pick one to play it.</p>
     </div>
     <span class="badge">Live Rive preview</span>
   </header>
@@ -65,10 +65,14 @@ button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);bor
 
     <aside class="rail">
       <div class="group">
+        <span class="label">Animations</span>
+        <div class="btns" id="anims" role="group" aria-label="Choose an animation"></div>
+      </div>
+      <div class="group">
         <span class="label">Playback</span>
         <div class="btns"><button class="wide" id="play" aria-pressed="true">Pause</button></div>
       </div>
-      <p class="note">Artboard <code>Koala_Idle</code>, animation <code>Idle State</code>. Vector only, about 39 KB, so it stays light on mobile.</p>
+      <p class="note" id="info"></p>
     </aside>
   </div>
 </div>
@@ -76,28 +80,91 @@ button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);bor
 <script src="https://cdn.jsdelivr.net/npm/@rive-app/webgl2@2.44.0/rive.js"></script>
 <script>
 (function(){
+  // Each animation lives on its own artboard, exported as its own small .riv file.
+  // oneShot: the animation plays once in the file, so the preview replays it after a short pause.
+  const ANIMS = [
+    { label:'Idle',        src:'koala.riv',                    artboard:'Koala_Idle',            anim:'Idle State' },
+    { label:'Talking',     src:'anims/koala-talking.riv',      artboard:'Koala_Talking',         anim:'Talking State' },
+    { label:'Sleepy',      src:'anims/koala-sleepy.riv',       artboard:'Koala_sleepy',          anim:'Sleeping State' },
+    { label:'Tired',       src:'anims/koala-tired.riv',        artboard:'Koala_Tired',           anim:'Tired/Exgaysted State' },
+    { label:'Celebration', src:'anims/koala-celebration.riv',  artboard:'Celebration_Victory',   anim:'Celebration/Victory' },
+    { label:'Crying',      src:'anims/koala-crying.riv',       artboard:'Koala_crying',          anim:'Koala_crying' },
+    { label:'Wake up',     src:'anims/koala-wake-up.riv',      artboard:'Wake_up_morning Scene', anim:'Wake_up_morning Scene', oneShot:3.5 },
+    { label:'Proud',       src:'anims/koala-proud.riv',        artboard:'Proud_ scene',          anim:'Proude_scene' },
+    { label:'Sleeping',    src:'anims/koala-sleeping.riv',     artboard:'Sleeping_position',     anim:'Sleeping' },
+    { label:'Sleeping 2',  src:'anims/koala-sleeping-2.riv',   artboard:'Sleeping_position 2',   anim:'Sleeping' }
+  ];
+
   const cv = document.getElementById('cv');
   const playBtn = document.getElementById('play');
-  let playing = true;
+  const loading = document.getElementById('loading');
+  const list = document.getElementById('anims');
+  const info = document.getElementById('info');
+  let r = null, current = ANIMS[0], playing = true, replayTimer = null;
 
-  const r = new rive.Rive({
-    src: 'koala.riv', canvas: cv, animations: 'Idle State', autoplay: true,
-    layout: new rive.Layout({ fit: rive.Fit.Contain, alignment: rive.Alignment.Center }),
-    onLoad: () => { document.getElementById('loading').hidden = true; r.resizeDrawingSurfaceToCanvas(); },
-    onLoadError: e => { document.getElementById('loading').textContent = 'Could not load the Koala file.'; console.error(e); }
+  function code(t){ const c = document.createElement('code'); c.textContent = t; return c; }
+
+  function showInfo(a){
+    info.textContent = '';
+    info.append('Artboard ', code(a.artboard), ', animation ', code(a.anim),
+      a.oneShot ? '. Plays once in the file, replayed here so you can watch it again.' : ', looping. Vector only and light on mobile.');
+  }
+
+  function updateStatus(){
+    document.getElementById('stateName').textContent = current.label + (playing ? ' · playing' : ' · paused');
+    document.getElementById('pState').classList.toggle('on', playing);
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    playBtn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+  }
+
+  function scheduleReplay(){
+    clearTimeout(replayTimer);
+    if (!current.oneShot || !playing || !r) return;
+    replayTimer = setTimeout(() => {
+      if (!playing || !r) return;
+      r.reset({ artboard: current.artboard, animations: current.anim, autoplay: true });
+      scheduleReplay();
+    }, (current.oneShot + 1) * 1000);
+  }
+
+  function load(a){
+    current = a;
+    clearTimeout(replayTimer);
+    [...list.children].forEach(b => b.setAttribute('aria-pressed', b.dataset.label === a.label ? 'true' : 'false'));
+    if (r) { r.cleanup(); r = null; }
+    loading.textContent = 'Loading ' + a.label + '…';
+    loading.hidden = false;
+    playing = true;
+    updateStatus();
+    showInfo(a);
+    r = new rive.Rive({
+      src: a.src, canvas: cv, artboard: a.artboard, animations: a.anim, autoplay: true,
+      layout: new rive.Layout({ fit: rive.Fit.Contain, alignment: rive.Alignment.Center }),
+      onLoad: () => { loading.hidden = true; r.resizeDrawingSurfaceToCanvas(); scheduleReplay(); },
+      onLoadError: e => { loading.textContent = 'Could not load ' + a.label + '.'; console.error(e); }
+    });
+  }
+
+  ANIMS.forEach(a => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = a.label;
+    b.dataset.label = a.label;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => load(a));
+    list.appendChild(b);
   });
 
-  function setPlaying(on){
-    playing = on;
-    if (on) r.play('Idle State'); else r.pause('Idle State');
-    playBtn.textContent = on ? 'Pause' : 'Play';
-    playBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    document.getElementById('stateName').textContent = on ? 'Idle · playing' : 'Idle · paused';
-    document.getElementById('pState').classList.toggle('on', on);
-  }
-  playBtn.addEventListener('click', () => setPlaying(!playing));
+  playBtn.addEventListener('click', () => {
+    if (!r) return;
+    playing = !playing;
+    if (playing) { r.play(current.anim); scheduleReplay(); }
+    else { r.pause(current.anim); clearTimeout(replayTimer); }
+    updateStatus();
+  });
 
-  addEventListener('resize', () => r.resizeDrawingSurfaceToCanvas());
+  addEventListener('resize', () => r && r.resizeDrawingSurfaceToCanvas());
+  load(ANIMS[0]);
 })();
 </script>
 </body></html>
